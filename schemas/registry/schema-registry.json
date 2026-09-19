@@ -1,0 +1,25 @@
+{
+  "registry_version": "0.1.0",
+  "upos_baseline": "v1.0.0",
+  "entries": [
+    {
+      "schema_key": "upos.common.schema_registry",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/meta/schema-registry.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "schema_owner_module": "COMMON",
+      "normative_source_refs": [
+        "schemas/SCHEMA_GOVERNANCE.md",
+        "schemas/SCHEMA_REGISTRY.md",
+        "00_system/GLOBAL_IDENTITY_REFERENCE_REGISTRY.md",
+        "00_system/GLOBAL_OWNERSHIP_MATRIX.md"
+      ],
+      "identity_model": "Registry entries are serialization-contract index records, not U-POS domain entities and do not receive domain IDs.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Bootstraps the machine-readable registry contract for Phase 2A. The registry is explicitly non-authoritative for U-POS semantics."
+    }
+  ]
+}

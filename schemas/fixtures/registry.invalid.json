@@ -1,0 +1,20 @@
+{
+  "registry_version": "0.1.0",
+  "upos_baseline": "v1.0.0",
+  "entries": [
+    {
+      "schema_key": "AgentRun",
+      "schema_version": "0.1",
+      "artifact_path": "not-a-schema.txt",
+      "implementation_state": "STABLE",
+      "upos_baseline": "v1.0.0",
+      "schema_owner_module": "UPOS-02",
+      "normative_source_refs": [],
+      "identity_model": "",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "This fixture must fail."
+    }
+  ]
+}

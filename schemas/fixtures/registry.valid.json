@@ -1,0 +1,22 @@
+{
+  "registry_version": "0.1.0",
+  "upos_baseline": "v1.0.0",
+  "entries": [
+    {
+      "schema_key": "upos.04.workflow.example",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/example.schema.json",
+      "implementation_state": "DRAFT",
+      "upos_baseline": "v1.0.0",
+      "schema_owner_module": "UPOS-04",
+      "normative_source_refs": [
+        "04_workflow_engine/CROSS_MODULE_INTERFACES.md"
+      ],
+      "identity_model": "Example fixture only; preserves owner identity semantics.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Positive validator fixture; artifact/source existence checks are not applied to fixture payloads."
+    }
+  ]
+}
