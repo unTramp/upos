@@ -33,22 +33,41 @@ Phase 2A is complete only when all mandatory items pass.
 
 - [x] Registry purpose and non-ownership boundary defined.
 - [x] Registry entry metadata contract defined.
-- [ ] Machine-readable registry artifact created.
-- [ ] Registry artifact schema-validates.
-- [ ] Broken normative-source references are automatically detected.
+- [x] Machine-readable registry artifact created.
+- [x] Registry artifact schema-validates.
+- [x] Broken normative-source references are automatically detected.
 
 ## Validation tooling
 
-- [ ] JSON Schema dialect selected and pinned.
-- [ ] Validator implementation selected and pinned.
-- [ ] Local validation command added.
-- [ ] CI `schema-validation` check added.
-- [ ] Positive fixture test added.
-- [ ] Negative fixture test added.
-- [ ] Frozen baseline verification remains PASS.
+- [x] JSON Schema dialect selected and pinned: Draft 2020-12.
+- [x] Validator implementation selected and pinned: Python `jsonschema==4.26.0`.
+- [x] Local validation command added: `python tools/validate_schemas.py`.
+- [x] CI `schema-validation` check added.
+- [x] Positive fixture test added.
+- [x] Negative fixture test added.
+- [x] Frozen baseline verification remains PASS.
+
+## CI evidence
+
+For PR #1 at commit `4ac38a55a3133d19a4d635e0e295b45fdeaa4ae7`:
+
+```text
+Baseline Integrity   PASS
+Schema Validation   PASS
+```
+
+The dependency pin was selected against the current PyPI release of `jsonschema` at the time of Phase 2A implementation.
 
 ## Exit condition
 
-Phase 2A MUST NOT be declared complete until machine-readable registry + automated validation exist.
+The mechanical foundation required by Phase 2A is operational.
 
-Phase 2B (Documentation Authority schemas) MAY be designed in parallel, but MUST NOT be promoted as stable before the 2A validation foundation is operational.
+Phase 2A is not yet declared frozen/complete until an independent reconciliation pass confirms that:
+
+- governance rules do not create semantic ownership leakage;
+- registry metadata is sufficient for the first domain schema families;
+- namespace rules do not collide with owner-module terminology;
+- no frozen identity exclusion was weakened;
+- Phase 2B can consume this foundation without introducing a second Source of Truth.
+
+Phase 2B (Documentation Authority schemas) MAY now proceed as candidate work, but no schema family should be promoted to STABLE until this reconciliation is complete.
