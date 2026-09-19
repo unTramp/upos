@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": {
+    "id": "example-product",
+    "name": "Example Product",
+    "docsRoot": "docs",
+    "sourceOfTruthPath": "docs/00_governance/SOURCE_OF_TRUTH.md",
+    "docsIndexPath": "docs/README.md"
+  },
+  "documents": [
+    {
+      "id": "UX-CONST-001",
+      "title": "UX Constitution",
+      "path": "docs/05_ux/UX_CONSTITUTION.md",
+      "type": "CONSTITUTION",
+      "status": "ACTIVE",
+      "normativity": "NORMATIVE",
+      "owner": "Product Design",
+      "version": "1.0",
+      "lifetime": "STABLE",
+      "canonicalScope": "Experience principles and navigation semantics",
+      "created": "2026-09-19",
+      "lastReviewed": "2026-09-19",
+      "reviewTrigger": "Major IA or interaction-grammar change",
+      "freshness": "CURRENT",
+      "supersedes": [],
+      "supersededBy": null,
+      "related": [
+        "DS-STD-001"
+      ],
+      "implementationRefs": [],
+      "testRefs": [],
+      "evidenceRefs": [],
+      "generated": {
+        "isGenerated": false,
+        "source": null,
+        "command": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "1.1.0",
+  "designSystem": {
+    "id": "example-product-ds",
+    "name": "Example Product Design System",
+    "version": "1.1.0",
+    "objectLifecycleBaseline": "v1",
+    "profilePath": "docs/06_design_system/DESIGN_SYSTEM_PROFILE.md",
+    "uiKitPath": "/ui-kit",
+    "tokenSourcePath": "src/design-system/tokens",
+    "changelogPath": "docs/06_design_system/CHANGELOG.md"
+  },
+  "items": [
+    {
+      "id": "COMP-PHRASE-CARD",
+      "name": "Phrase Card",
+      "slug": "phrase-card",
+      "type": "component",
+      "contractVersion": "2.0.0",
+      "objectStatus": "IMPLEMENTED",
+      "owner": "Design System",
+      "purpose": "Compact content discovery with detail on demand.",
+      "userJob": "Understand primary content quickly and inspect details only when needed.",
+      "designPrinciple": "Summary first. Detail on demand.",
+      "platforms": [
+        "web",
+        "mobile-web"
+      ],
+      "modes": [
+        "light"
+      ],
+      "tags": [
+        "learning",
+        "audio",
+        "disclosure"
+      ],
+      "aliases": [
+        "phrase"
+      ],
+      "review": {
+        "lastReviewed": "2026-09-19",
+        "reviewTrigger": "Interaction contract or content-priority change",
+        "freshness": "CURRENT"
+      },
+      "paths": {
+        "spec": "docs/06_design_system/components/phrase-card/spec.md",
+        "board": "docs/06_design_system/boards/phrase-card-v2.png",
+        "source": "src/design-system/components/PhraseCard.tsx",
+        "story": "src/design-system/components/PhraseCard.stories.tsx",
+        "tests": [
+          "src/design-system/components/PhraseCard.test.tsx"
+        ],
+        "implementedScreenshots": [
+          "docs/11_quality_testing/evidence/phrase-card-mobile.png"
+        ]
+      },
+      "relations": {
+        "uses": [
+          "PRIM-ICON-BUTTON",
+          "PRIM-CHIP"
+        ],
+        "usedBy": [],
+        "related": [
+          "PATTERN-BOTTOM-SHEET-DETAILS"
+        ],
+        "doNotConfuseWith": [
+          "COMP-PHRASE-PRACTICE"
+        ],
+        "replacement": null
+      },
+      "truths": {
+        "visualVersion": "2.0.0",
+        "specVersion": "2.0.0",
+        "codeVersion": "2.0.0",
+        "parity": "IN_SYNC"
+      },
+      "traceability": {
+        "requirements": [],
+        "featureSpecs": [
+          "SPEC-PHRASE-DISCOVERY"
+        ],
+        "uxRefs": [
+          "UX-CONST-001"
+        ],
+        "architectureRefs": [],
+        "decisionRefs": [
+          "DDR-012"
+        ],
+        "testRefs": [
+          "src/design-system/components/PhraseCard.test.tsx"
+        ],
+        "telemetryRefs": [],
+        "evidenceRefs": [
+          "docs/11_quality_testing/evidence/phrase-card-mobile.png"
+        ]
+      },
+      "deprecation": null
+    }
+  ]
+}

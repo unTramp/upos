@@ -1,0 +1,123 @@
+{
+  "system": "Universal Project Operating System",
+  "release": "v1",
+  "date": "2026-09-20",
+  "source_inputs": {
+    "universal_ai_agent_operating_model_v1.0": "f03b6fae20ac00241afd79a5763673c2781459870fd24608bee99c18b0c66699",
+    "documentation_system_module_001": "0eed3f1319103b9fef7956519da9754986b7c512a05278c030c38edbaddcb3a1"
+  },
+  "modules": {
+    "001": {
+      "name": "Documentation System",
+      "status": "STABLE DOCUMENTATION BASELINE v1.2",
+      "file": "UPOS_001_DOCUMENTATION_SYSTEM_CHATGPT_SINGLE_FILE_v1.2.md",
+      "sha256": "0eed3f1319103b9fef7956519da9754986b7c512a05278c030c38edbaddcb3a1",
+      "size": 218947,
+      "virtual_files": 56
+    },
+    "002": {
+      "name": "Agent Organization",
+      "status": "FROZEN v1.0",
+      "file": "UPOS_002_AGENT_ORGANIZATION_CHATGPT_SINGLE_FILE_v1.0_FROZEN.md",
+      "sha256": "34274f4f102150826e599def36b940d23c15a66a8b0be4b8f5e01964cc1dc043",
+      "size": 216987,
+      "virtual_files": 33
+    },
+    "003": {
+      "name": "Skills System",
+      "status": "FROZEN v1.0",
+      "file": "UPOS_003_SKILLS_SYSTEM_CHATGPT_SINGLE_FILE_v1.0_FROZEN.md",
+      "sha256": "94726e67917808cee0ca3a62d04ce22cdd9b3ad213ea69a93e630336159945ad",
+      "size": 218155,
+      "virtual_files": 45
+    },
+    "004": {
+      "name": "Workflow Engine",
+      "status": "FROZEN v1.0",
+      "file": "UPOS_004_WORKFLOW_ENGINE_CHATGPT_SINGLE_FILE_v1.0_FROZEN.md",
+      "sha256": "abf2fbc069af77a70cf6ee2b1242435c6a510b7196b2cac92f03e91e5b09fae1",
+      "size": 205716,
+      "virtual_files": 44
+    },
+    "005": {
+      "name": "Context & Memory",
+      "status": "FROZEN v1.0",
+      "file": "UPOS_005_CONTEXT_MEMORY_CHATGPT_SINGLE_FILE_v1.0_FROZEN.md",
+      "sha256": "186ded26c69d7d1115fa25c50aa83beacfecda8b347175da1d29a294395a3528",
+      "size": 177600,
+      "virtual_files": 36
+    },
+    "006": {
+      "name": "Engineering Governance",
+      "status": "FROZEN v1.0",
+      "file": "UPOS_006_ENGINEERING_GOVERNANCE_CHATGPT_SINGLE_FILE_v1.0_FROZEN.md",
+      "sha256": "49301fa994e2d47c146f84260e4783585c950faf0c73dbe129767c2c2c95e45e",
+      "size": 199673,
+      "virtual_files": 42
+    },
+    "007": {
+      "name": "Quality System",
+      "status": "FROZEN v1.0",
+      "file": "UPOS_007_QUALITY_SYSTEM_CHATGPT_SINGLE_FILE_v1.0_FROZEN.md",
+      "sha256": "36c52764ccafdfef053d224ec1af5d297e3cd6eceacbc45d287d4bc96a1833b0",
+      "size": 192636,
+      "virtual_files": 46
+    },
+    "008": {
+      "name": "Observability",
+      "status": "FROZEN v1.0",
+      "file": "UPOS_008_OBSERVABILITY_CHATGPT_SINGLE_FILE_v1.0_FROZEN.md",
+      "sha256": "e6eed6e9d7e006a5bf3a3d9baa300d8917f6d9ccb3e76c6301a9fcef1b25a0ba",
+      "size": 271989,
+      "virtual_files": 56
+    },
+    "009": {
+      "name": "Learning System",
+      "status": "FROZEN v1.0",
+      "file": "UPOS_009_LEARNING_SYSTEM_CHATGPT_SINGLE_FILE_v1.0_FROZEN.md",
+      "sha256": "76f8e1c43ae35890a63d527acdc285d25ea6c6494b2aa2af9839928dbb923fbb",
+      "size": 103131,
+      "virtual_files": 41
+    },
+    "010": {
+      "name": "Security & Permissions",
+      "status": "FROZEN v1.0",
+      "file": "UPOS_010_SECURITY_PERMISSIONS_CHATGPT_SINGLE_FILE_v1.0_FROZEN.md",
+      "sha256": "c751ee3d3c44b14c84bb14378f04453fbcda38cad13b7a937239f214324d814f",
+      "size": 123844,
+      "virtual_files": 44
+    },
+    "011": {
+      "name": "Project Adapter",
+      "status": "FROZEN v1.0",
+      "file": "UPOS_011_PROJECT_ADAPTER_CHATGPT_SINGLE_FILE_v1.0_FROZEN.md",
+      "sha256": "6ac7863ae589407d72fc20adf80d9ceaafff186dd5e850ac6066b8c638ce0a5a",
+      "size": 123814,
+      "virtual_files": 53
+    }
+  },
+  "global_assertions": {
+    "unresolved_internal_p0_p1": 0,
+    "unresolved_cross_module_p0_p1": 0,
+    "008_011_reconciliation": "COMPLETE",
+    "same_baseline_validation": "PASS",
+    "ownership_leakage": "NONE_KNOWN",
+    "module_source_requirements_unmapped": 0,
+    "architecture_freeze": "PASS"
+  },
+  "non_blocking_transport_exceptions": [
+    {
+      "module": "001",
+      "type": "legacy_embedded_checksum_metadata",
+      "count": 4,
+      "paths": [
+        "README.md",
+        "UNIVERSAL_PROJECT_DOCUMENTATION_IMPLEMENTATION_GUIDE_v2.0.md",
+        "CHANGELOG.md",
+        "00_governance/PROJECT_DOCUMENTATION_OPERATING_MODEL_v1.1.md"
+      ],
+      "semantic_impact": "none identified",
+      "disposition": "preserve canonical bytes/hash; whole-file SHA-256 governs this release"
+    }
+  ]
+}
