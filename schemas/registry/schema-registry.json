@@ -540,6 +540,37 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Reference-only representation. Scope/precedence/compatibility/availability resolution and Adapter resolver runtime remain Phase 3."
+    },
+    {
+      "schema_key": "upos.common.cross_module_reference_conformance",
+      "schema_uri": "urn:upos:schema:common:cross-module-reference-conformance:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/meta/cross-module-reference-conformance.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "NONE_INFRASTRUCTURE",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "00_system/GLOBAL_IDENTITY_REFERENCE_REGISTRY.md",
+        "schemas/SCHEMA_GOVERNANCE.md",
+        "schemas/SCHEMA_URI_AND_REFERENCE_CONVENTIONS.md"
+      ],
+      "identity_model": "Infrastructure-only conformance harness proving canonical cross-schema identity/reference reuse. It is not a domain entity or runtime contract.",
+      "reference_dependencies": [
+        "upos.02.agent_organization.identity_references",
+        "upos.03.skills.identity_references",
+        "upos.04.workflow.identity_references",
+        "upos.05.context_memory.identity_references",
+        "upos.06.engineering.identity_references",
+        "upos.07.quality.identity_references",
+        "upos.08.observability.identity_references",
+        "upos.09.learning.identity_references",
+        "upos.10.security.identity_references",
+        "upos.11.project_adapter.adapter_resolution_reference"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Conformance-only artifact. Future Phase 3 schemas should import owner refs directly; they do not consume this harness as a domain model."
     }
   ]
 }

@@ -59,6 +59,9 @@ PROJECT_ADAPTER_FIXTURES = [
 ARTIST_OS_PROJECT_MANIFEST = SCHEMAS / "dogfooding" / "artist-os" / "project-manifest.json"
 ARTIST_OS_PROJECT_ADAPTER = SCHEMAS / "dogfooding" / "artist-os" / "project-adapter.json"
 IDENTITY_FIXTURE_ROOT = SCHEMAS / "fixtures" / "identity_references"
+CROSS_MODULE_REFERENCE_SCHEMA = SCHEMAS / "meta" / "cross-module-reference-conformance.schema.json"
+CROSS_MODULE_REFERENCE_VALID = SCHEMAS / "fixtures" / "cross_module_references" / "valid.json"
+CROSS_MODULE_REFERENCE_INVALID = SCHEMAS / "fixtures" / "cross_module_references" / "invalid-imported-version-requirement.json"
 
 OWNER_BY_PREFIX = {
     "upos.common.": "NONE_INFRASTRUCTURE",
@@ -715,6 +718,13 @@ def validate_fixtures(
     validate_sot_registry_fixtures(docs, resource_registry)
     validate_project_adapter_fixtures(docs, resource_registry)
     validate_identity_reference_fixtures(docs, resource_registry)
+    validate_pair(
+        CROSS_MODULE_REFERENCE_SCHEMA,
+        CROSS_MODULE_REFERENCE_VALID,
+        CROSS_MODULE_REFERENCE_INVALID,
+        docs,
+        resource_registry,
+    )
 
 
 def main() -> int:
@@ -731,6 +741,7 @@ def main() -> int:
     print("Project Manifest / Adapter fixtures: PASS")
     print("Artist OS Phase 2C dogfooding: PASS")
     print("Cross-module identity/reference fixtures: PASS")
+    print("Canonical cross-schema reference conformance: PASS")
     return 0
 
 
