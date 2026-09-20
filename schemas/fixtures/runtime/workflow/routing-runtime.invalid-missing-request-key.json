@@ -1,0 +1,21 @@
+{
+  "operation_control": {
+    "runtime_contract_ref": "UPOS-04-ROUTING-RUNTIME",
+    "runtime_contract_version": "0.1.0",
+    "operation_kind": "ROUTING_EVALUATION",
+    "subject_ref": "task:T-1"
+  },
+  "task_ref": "task:T-1",
+  "routing_basis_refs": [
+    "classification:C3"
+  ],
+  "runtime_outcome": {
+    "runtime_contract_ref": "UPOS-04-ROUTING-RUNTIME",
+    "runtime_contract_version": "0.1.0",
+    "operation_kind": "ROUTING_EVALUATION",
+    "subject_ref": "task:T-1",
+    "execution_outcome": "FAILED",
+    "started_at": "2026-09-20T10:00:00Z",
+    "ended_at": "2026-09-20T10:00:01Z"
+  }
+}

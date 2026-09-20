@@ -136,6 +136,17 @@ RUNTIME_TASK_FIXTURES = [
     ),
 ]
 
+RUNTIME_ROUTING_FIXTURES = [
+    (
+        SCHEMAS / "04" / "workflow" / "routing-runtime.schema.json",
+        SCHEMAS / "fixtures" / "runtime" / "workflow" / "routing-runtime.valid-failed-no-decision.json",
+        SCHEMAS / "fixtures" / "runtime" / "workflow" / "routing-runtime.invalid-missing-request-key.json",
+    ),
+]
+RUNTIME_ROUTING_INVALID_SAME_KEY = (
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "routing-runtime.invalid-request-key-equals-decision.json"
+)
+
 FORBIDDEN_SYNTHETIC_IDENTITY_FIELDS = {
     "agent_instance_id",
     "context_view_id",
@@ -837,6 +848,26 @@ def validate_artist_os_identity_namespace() -> None:
             fail(f"Artist OS product concept collides with U-POS namespace: {concept!r}")
 
 
+def validate_routing_runtime_semantics(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    schema_path = SCHEMAS / "04" / "workflow" / "routing-runtime.schema.json"
+    validator = validator_for(schema_path, docs, resource_registry)
+    data = load_json(RUNTIME_ROUTING_INVALID_SAME_KEY)
+    try:
+        validator.validate(data)
+    except ValidationError as exc:
+        fail(
+            "routing same-key fixture must be structurally valid before semantic "
+            f"validation, but failed schema validation: {exc.message}"
+        )
+    request_key = data["operation_control"]["operation_request_key"]
+    decision_ref = data.get("routing_decision_ref")
+    if decision_ref is None or request_key != decision_ref:
+        fail("routing same-key negative fixture does not exercise request/result identity collision")
+
+
 def validate_fixtures(
     docs: dict[str, dict[str, Any]],
     resource_registry: Registry,
@@ -884,6 +915,10 @@ def validate_fixtures(
     for schema_path, valid_path, invalid_path in RUNTIME_TASK_FIXTURES:
         validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
 
+    for schema_path, valid_path, invalid_path in RUNTIME_ROUTING_FIXTURES:
+        validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
+    validate_routing_runtime_semantics(docs, resource_registry)
+
 
 def main() -> int:
     schema_ids, docs = load_schema_documents()
@@ -908,6 +943,7 @@ def main() -> int:
     print("Phase-3 common runtime primitive fixtures: PASS")
     print("Phase-3 attribution fixtures: PASS")
     print("Phase-3 Task runtime fixtures: PASS")
+    print("Phase-3 Routing runtime fixtures: PASS")
     return 0
 
 

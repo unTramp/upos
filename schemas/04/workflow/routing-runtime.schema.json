@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:04:workflow:routing-runtime:0.1.0",
+  "title": "UPOS-04 Routing Runtime",
+  "description": "Phase-3 routing operation contract. It represents request/result/failure attribution without implementing the routing algorithm.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "operation_control",
+    "task_ref",
+    "routing_basis_refs",
+    "runtime_outcome"
+  ],
+  "properties": {
+    "operation_control": {
+      "allOf": [
+        {
+          "$ref": "urn:upos:schema:common:runtime-operation-control:0.1.0"
+        },
+        {
+          "type": "object",
+          "required": [
+            "operation_request_key"
+          ],
+          "properties": {
+            "operation_kind": {
+              "const": "ROUTING_EVALUATION"
+            }
+          }
+        }
+      ]
+    },
+    "task_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/taskRef"
+    },
+    "routing_basis_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "routing_decision_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/routingDecisionRef"
+    },
+    "prior_routing_decision_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/routingDecisionRef"
+    },
+    "runtime_outcome": {
+      "allOf": [
+        {
+          "$ref": "urn:upos:schema:common:runtime-operation-outcome:0.1.0"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "operation_kind": {
+              "const": "ROUTING_EVALUATION"
+            }
+          }
+        }
+      ]
+    },
+    "owner_failure_ref": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
