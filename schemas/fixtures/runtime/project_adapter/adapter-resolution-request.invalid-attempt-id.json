@@ -1,0 +1,23 @@
+{
+  "runtime_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
+  "runtime_contract_version": "0.1.0",
+  "runtime_schema_version": "0.1.0",
+  "operation_control": {
+    "runtime_contract_ref": "UPOS-RUNTIME-OPS-001",
+    "runtime_contract_version": "0.1.0",
+    "operation_kind": "ADAPTER_RESOLUTION",
+    "subject_ref": "abstract-requirement:repository-write",
+    "operation_request_key": "adapter-resolution-request:project:upos:repository-write:1"
+  },
+  "project_id": "project:upos",
+  "project_adapter_version": "1.0.0",
+  "manifest_version": "1.0.0",
+  "abstract_requirement_ref": "abstract-requirement:repository-write",
+  "scope": {
+    "project_id": "project:upos",
+    "repository_ref": "repository:unTramp/upos",
+    "environment_ref": "environment:dev",
+    "operation_ref": "operation:repository-write"
+  },
+  "adapter_resolution_attempt_id": "adapter-resolution-attempt:1"
+}

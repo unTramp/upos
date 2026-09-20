@@ -1,0 +1,33 @@
+{
+  "runtime_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
+  "runtime_contract_version": "0.1.0",
+  "runtime_schema_version": "0.1.0",
+  "failure_code": "FALLBACK_EXHAUSTED",
+  "abstract_requirement_ref": "abstract-requirement:repository-write",
+  "scope": {
+    "project_id": "project:upos",
+    "repository_ref": "repository:unTramp/upos",
+    "environment_ref": "environment:dev",
+    "operation_ref": "operation:repository-write"
+  },
+  "binding_ref": "binding:B-REPO-WRITE-ALT",
+  "retryability_hint": "NOT_RETRYABLE",
+  "observability_refs": [
+    "event:E-ADAPTER-FAIL-1"
+  ],
+  "validation_result": {
+    "runtime_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
+    "runtime_contract_version": "0.1.0",
+    "runtime_schema_version": "0.1.0",
+    "validation_state": "INVALID",
+    "configuration_completeness": "INVALID",
+    "evaluated_binding_refs": [
+      "binding:B-REPO-WRITE",
+      "binding:B-REPO-WRITE-ALT"
+    ],
+    "missing_required_binding_refs": [],
+    "validation_basis_refs": [
+      "binding-validation:precedence"
+    ]
+  }
+}

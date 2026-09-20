@@ -1,0 +1,44 @@
+{
+  "runtime_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
+  "runtime_contract_version": "0.1.0",
+  "runtime_schema_version": "0.1.0",
+  "adapter_resolution_id": "adapter-resolution:AR-1",
+  "operation_request_key": "adapter-resolution-request:project:upos:repository-write:1",
+  "project_id": "project:upos",
+  "project_adapter_version": "1.0.0",
+  "manifest_version": "1.0.0",
+  "abstract_requirement_ref": "abstract-requirement:repository-write",
+  "scope": {
+    "project_id": "project:upos",
+    "repository_ref": "repository:unTramp/upos",
+    "environment_ref": "environment:dev",
+    "operation_ref": "operation:repository-write"
+  },
+  "evaluated_binding_refs": [
+    "binding:B-REPO-WRITE"
+  ],
+  "applied_precedence_level": "REPOSITORY",
+  "selected_binding_ref": "binding:B-REPO-WRITE",
+  "concrete_target_ref": "repository:unTramp/upos",
+  "provider_adapter_ref": "provider-adapter:github",
+  "provider_adapter_version": "1.0.0",
+  "validation_result": {
+    "runtime_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
+    "runtime_contract_version": "0.1.0",
+    "runtime_schema_version": "0.1.0",
+    "validation_state": "VALID",
+    "configuration_completeness": "COMPLETE",
+    "evaluated_binding_refs": [
+      "binding:B-REPO-WRITE"
+    ],
+    "missing_required_binding_refs": [],
+    "validation_basis_refs": [
+      "binding-validation:static",
+      "binding-validation:runtime"
+    ],
+    "capability_support_state": "SUPPORTED"
+  },
+  "canonical_policy_ref": "policy:repository-write",
+  "security_policy_ref": "security-policy:default",
+  "binding_attempt_id": "binding-attempt:1"
+}
