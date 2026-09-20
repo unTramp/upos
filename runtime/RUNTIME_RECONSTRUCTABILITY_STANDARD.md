@@ -1,6 +1,7 @@
 # Runtime Reconstructability Standard
 
 **ID:** UPOS-RUNTIME-REC-001  
+**Version:** 0.1.0  
 **Phase:** 3  
 **Status:** CANDIDATE  
 **Normativity:** NORMATIVE IMPLEMENTATION-LAYER STANDARD  
