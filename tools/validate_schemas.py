@@ -163,7 +163,12 @@ RUNTIME_WORKFLOW_FIXTURES = [
 ]
 
 RUNTIME_EXECUTION_ATTEMPT_SCHEMA = SCHEMAS / "04" / "workflow" / "execution-attempt.schema.json"
-RUNTIME_EXECUTION_ATTEMPT_VALID = SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.valid.json"
+RUNTIME_EXECUTION_ATTEMPT_VALIDS = [
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.valid.json",
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.failed.valid.json",
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.created.valid.json",
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.cancelled.valid.json",
+]
 RUNTIME_EXECUTION_ATTEMPT_INVALIDS = [
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.invalid-blocked-state.json",
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.invalid-synthetic-id.json",
@@ -179,6 +184,7 @@ RUNTIME_RETRY_INVALIDS = [
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-provenance.invalid-missing-trigger.json",
 ]
 RUNTIME_RETRY_INVALID_SAME_REF = SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-provenance.invalid-reused-identity.json"
+RUNTIME_RETRY_CHAIN_VALID = SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-chain.agent-run.valid.json"
 
 RUNTIME_EVENT_SCHEMA = SCHEMAS / "08" / "observability" / "event.schema.json"
 RUNTIME_EVENT_VALID = SCHEMAS / "fixtures" / "runtime" / "observability" / "event.valid.json"
@@ -1257,6 +1263,11 @@ def validate_retry_provenance_fixtures(
     resource_registry: Registry,
 ) -> None:
     validator = validator_for(RUNTIME_RETRY_SCHEMA, docs, resource_registry)
+    attempt_validator = validator_for(
+        RUNTIME_EXECUTION_ATTEMPT_SCHEMA,
+        docs,
+        resource_registry,
+    )
     for valid_path in RUNTIME_RETRY_VALIDS:
         valid = load_json(valid_path)
         try:
@@ -1286,16 +1297,52 @@ def validate_retry_provenance_fixtures(
         reused,
     )
 
+    chain = load_json(RUNTIME_RETRY_CHAIN_VALID)
+    predecessor = chain["predecessor_attempt"]
+    retry = chain["retry_provenance"]
+    successor = chain["successor_attempt"]
+    for label, attempt in (
+        ("retry-chain predecessor", predecessor),
+        ("retry-chain successor", successor),
+    ):
+        try:
+            attempt_validator.validate(attempt)
+        except ValidationError as exc:
+            fail(f"{label} execution attempt unexpectedly failed: {exc.message}")
+    try:
+        validator.validate(retry)
+    except ValidationError as exc:
+        fail(f"retry-chain provenance unexpectedly failed: {exc.message}")
+    if predecessor["execution_state"] != "FAILED":
+        fail("retry-chain predecessor must be a terminal FAILED execution attempt")
+    if predecessor.get("failure_ref") != retry.get("trigger_ref"):
+        fail("retry-chain trigger_ref must anchor to predecessor failure_ref")
+    if predecessor["subject_ref"] != retry["predecessor_ref"]:
+        fail("retry-chain predecessor_ref must match failed predecessor subject_ref")
+    if successor["execution_state"] != "CREATED":
+        fail("retry-chain successor must start as CREATED")
+    if successor["subject_ref"] != retry["successor_ref"]:
+        fail("retry-chain successor_ref must match CREATED successor subject_ref")
+    expect_runtime_conformance_pass(
+        "retry-chain successor/predecessor identity separation",
+        enforce_retry_identity_separation,
+        retry,
+    )
+
 
 def validate_execution_attempt_fixtures(
     docs: dict[str, dict[str, Any]],
     resource_registry: Registry,
 ) -> None:
     validator = validator_for(RUNTIME_EXECUTION_ATTEMPT_SCHEMA, docs, resource_registry)
-    try:
-        validator.validate(load_json(RUNTIME_EXECUTION_ATTEMPT_VALID))
-    except ValidationError as exc:
-        fail(f"positive execution-attempt fixture unexpectedly failed: {exc.message}")
+    for valid_path in RUNTIME_EXECUTION_ATTEMPT_VALIDS:
+        try:
+            validator.validate(load_json(valid_path))
+        except ValidationError as exc:
+            fail(
+                f"positive execution-attempt fixture unexpectedly failed "
+                f"for {valid_path.name}: {exc.message}"
+            )
     for invalid_path in RUNTIME_EXECUTION_ATTEMPT_INVALIDS:
         try:
             validator.validate(load_json(invalid_path))
