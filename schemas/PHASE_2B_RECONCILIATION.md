@@ -1,9 +1,10 @@
 # Phase 2B Reconciliation — Documentation Authority
 
 **ID:** UPOS-SCHEMA-P2B-REC-001  
-**Status:** RESOLVED — PENDING FINAL CI  
+**Status:** PASS  
 **Baseline:** U-POS v1.0.0  
-**Date:** 2026-09-20
+**Date:** 2026-09-20  
+**Verified implementation HEAD:** 0aa30c3f27d718f02f292639990b0da5a3d994a9
 
 ## Scope
 
@@ -18,24 +19,11 @@ Frozen UPOS-01 files were not modified.
 - PROJECT_SOURCE_OF_TRUTH_MODEL_v1.0.md
 - PROJECT_KNOWLEDGE_LIFECYCLE_MODEL_v1.0.md
 
-## Reconciliation findings
+## Resolved findings
 
 ### P1-01 — Registry profile did not require normativity
 
-Initial Source-of-Truth Registry profile required:
-
-~~~text
-scope
-owner
-canonicalSource
-status
-~~~
-
-but UPOS-01 defines canonical source resolution around ACTIVE normative source(s).
-
-Without normativity, an operational registry could not distinguish current authority from merely informative/evidence material.
-
-Resolution:
+Resolved by requiring:
 
 ~~~text
 scope
@@ -45,68 +33,68 @@ status
 normativity
 ~~~
 
-are required in the registry profile.
+for operational Source-of-Truth Registry entries.
 
-### P1-02 — ACTIVE informative/evidence entry could masquerade as canonical authority
+### P1-02 — ACTIVE non-authority material could masquerade as canonical authority
 
-Initial profile allowed:
-
-~~~text
-status = ACTIVE
-normativity = INFORMATIVE / EVIDENCE
-~~~
-
-inside the Source-of-Truth Registry.
-
-Resolution:
+Resolved with:
 
 ~~~text
 ACTIVE → NORMATIVE or GENERATED
 ~~~
 
-GENERATED is retained because UPOS-01 explicitly permits generated contracts to be canonical for their designated machine scope.
+GENERATED remains valid only because UPOS-01 explicitly permits generated contracts to be canonical for a designated machine scope.
 
-### P2-01 — Structural owner ambiguity check needed authority filtering
+### P2-01 — Structural ambiguity validation needed authority filtering
 
-Custom validation is now defined in terms of ACTIVE authority-bearing entries, not generic active documents.
-
-This preserves the distinction:
+Custom checks now evaluate ACTIVE authority-bearing entries rather than all active documents.
 
 ~~~text
-authority
-!= supporting material
+authority != supporting material
 ~~~
 
-### P2-02 — Artist OS audit labels looked like candidate enum expansion
+### P2-02 — Artist OS audit labels looked like possible enum expansion
 
-Real project labels included:
+Dogfooding demonstrated that no new universal enum is required.
 
 ~~~text
 CANONICAL
+→ scoped Source-of-Truth authority
+
 NORMATIVE_COMPANION
+→ ACTIVE + NORMATIVE + owned scope
+
 TEMPORARY PLAN
+→ PLAN + INFORMATIVE + TEMPORARY
+
 HISTORICAL EVIDENCE
+→ REPORT/DECISION_RECORD + EVIDENCE + HISTORICAL
 ~~~
 
-Dogfooding showed no enum expansion is needed.
+### P2-03 — Reconciliation fixture/tooling drift
 
-They decompose across existing UPOS-01 dimensions:
+The strengthened registry profile exposed two stale test-tool assumptions:
+
+1. semantic-negative fixtures lacked the newly required normativity field;
+2. the ACTIVE-INFORMATIVE negative fixture path was referenced but not registered in the validator constants.
+
+Both were corrected as test/tooling fixes.
+
+No schema rule was weakened to obtain a green result.
+
+## Conflict boundary preserved
 
 ~~~text
-Source-of-Truth scope/owner/source
-status
-normativity
-lifetime
-type
+STRUCTURAL AUTHORITY AMBIGUITY
+!=
+SEMANTIC CLAIM CONFLICT
 ~~~
 
-## Source-of-Truth status vocabulary
+The validator rejects structurally provable ambiguity but does not declare SOT-C4 solely because one owner has multiple ACTIVE normative sources.
 
-The Source-of-Truth Entry schema reuses the frozen UPOS-01 document status/normativity vocabulary from DOCUMENT_MANIFEST_SCHEMA_v1.0.json.
+Claim disagreement remains governed by UPOS-01.
 
-This is representational reuse of UPOS-01's own metadata model, not a new semantic owner.
-
-## Artist OS result
+## Artist OS dogfooding result
 
 ~~~text
 MASTER v1.4 current authority                  PASS
@@ -115,19 +103,40 @@ AR companion current authority                 PASS
 temporary UI plan                              PASS
 historical completion evidence                 PASS
 stale historical self-metadata preserved       PASS
-same-owner multi-source domain scope            WARNING / REVIEW as designed
+same-owner multi-source domain scope           WARNING / REVIEW as designed
 ~~~
 
-## Final unresolved findings before CI
+No universal U-POS semantic expansion was required.
+
+## Final evidence
+
+At exact HEAD:
+
+~~~text
+0aa30c3f27d718f02f292639990b0da5a3d994a9
+
+Baseline Integrity   PASS
+Schema Validation   PASS
+~~~
+
+Final unresolved findings:
 
 ~~~text
 P0: 0
 P1: 0
 P2: 0
+
+Frozen files modified: 0
+Semantic ownership moved: 0
+Synthetic Source-of-Truth IDs introduced: 0
+New universal documentation enums introduced: 0
 ~~~
 
-Status:
+## Result
 
 ~~~text
-READY FOR FINAL CI REVALIDATION
+PHASE 2B RECONCILIATION:
+PASS
 ~~~
+
+Phase 2C may now define Project Manifest and Project Adapter schemas using UPOS-011 identities and the real Artist OS adoption artifacts as dogfooding inputs.
