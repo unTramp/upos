@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "0.1.0",
+  "entries": [
+    {
+      "scope": "product.architecture",
+      "owner": "Architecture Governance",
+      "canonicalSource": "docs/reference/ARCHITECTURE_NOTES.md",
+      "status": "ACTIVE",
+      "normativity": "INFORMATIVE"
+    }
+  ]
+}

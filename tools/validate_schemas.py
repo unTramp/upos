@@ -324,6 +324,14 @@ def validate_sot_registry_fixtures(
         )
     validate_sot_registry_semantics(owner_ambiguity, expect_valid=False)
 
+    active_informative = load_json(SOT_REGISTRY_INVALID_ACTIVE_INFORMATIVE)
+    try:
+        validator.validate(active_informative)
+    except ValidationError:
+        pass
+    else:
+        fail("ACTIVE informative Source-of-Truth registry fixture unexpectedly passed")
+
 
 def validate_fixtures(
     docs: dict[str, dict[str, Any]],
