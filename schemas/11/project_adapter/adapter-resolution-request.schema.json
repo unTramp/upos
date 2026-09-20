@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:11:project-adapter:adapter-resolution-request:0.1.0",
+  "title": "UPOS-11 Adapter Resolution Request",
+  "description": "Technical Adapter Resolution request. Carries infrastructure-only request correlation plus the abstract requirement and scope being resolved. It introduces no identity, produces no result, and does not contact a provider.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "runtime_contract_ref",
+    "runtime_contract_version",
+    "runtime_schema_version",
+    "operation_control",
+    "project_id",
+    "project_adapter_version",
+    "manifest_version",
+    "abstract_requirement_ref",
+    "scope"
+  ],
+  "properties": {
+    "runtime_contract_ref": {
+      "const": "UPOS-11-ADAPTER-RESOLUTION"
+    },
+    "runtime_contract_version": {
+      "const": "0.1.0"
+    },
+    "runtime_schema_version": {
+      "const": "0.1.0"
+    },
+    "operation_control": {
+      "allOf": [
+        {
+          "$ref": "urn:upos:schema:common:runtime-operation-control:0.1.0"
+        },
+        {
+          "type": "object",
+          "required": [
+            "operation_request_key"
+          ],
+          "properties": {
+            "operation_kind": {
+              "const": "ADAPTER_RESOLUTION"
+            }
+          }
+        }
+      ]
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_adapter_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "manifest_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "abstract_requirement_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "$ref": "urn:upos:schema:11:project-adapter:binding:0.1.0#/$defs/core/properties/scope"
+    },
+    "requested_binding_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "required_capability_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "canonical_policy_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "security_policy_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}
