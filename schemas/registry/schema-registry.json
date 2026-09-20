@@ -439,6 +439,26 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Identity/reference-only representation. No Git operation execution, workspace creation, merge execution, provider calls, persistence, or runtime error/result semantics."
+    },
+    {
+      "schema_key": "upos.07.quality.identity_references",
+      "schema_uri": "urn:upos:schema:07:quality:identity-references:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/07/quality/identity-references.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-07",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "00_system/GLOBAL_IDENTITY_REFERENCE_REGISTRY.md",
+        "07_quality_system/QUALITY_ONTOLOGY.md",
+        "07_quality_system/CROSS_MODULE_INTERFACES.md"
+      ],
+      "identity_model": "Serializes Quality Criteria Set, Assessment, Evidence Record, Finding, Gate, Gate Result, and Exception identities. Quality Readiness remains a projection with no quality_readiness_id.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Identity/reference-only representation. No evidence collection, criterion evaluation, verdict computation, gate execution, readiness evaluation, or runtime persistence."
     }
   ]
 }

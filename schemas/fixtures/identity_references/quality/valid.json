@@ -1,0 +1,9 @@
+{
+  "quality_criteria_set_ref": "quality-criteria-set-0001",
+  "quality_assessment_ref": "quality-assessment-0001",
+  "evidence_record_ref": "evidence-record-0001",
+  "finding_ref": "finding-0001",
+  "quality_gate_ref": "quality-gate-0001",
+  "quality_gate_result_ref": "quality-gate-result-0001",
+  "quality_exception_ref": "quality-exception-0001"
+}
