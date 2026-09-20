@@ -775,6 +775,31 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Technical states are limited to CREATED/RUNNING/COMPLETED/FAILED/CANCELLED. COMPLETED does not imply Quality PASS, Security ALLOW, Task DONE or Workflow COMPLETED."
+    },
+    {
+      "schema_key": "upos.04.workflow.retry_provenance",
+      "schema_uri": "urn:upos:schema:04:workflow:retry-provenance:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/04/workflow/retry-provenance.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-04",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "04_workflow_engine/FAILURE_RETRY_RECOVERY.md",
+        "02_agent_organization/AGENT_OPERATING_MODEL.md",
+        "03_skills_system/SKILLS_OPERATING_MODEL.md",
+        "runtime/RUNTIME_OPERATION_AND_IDEMPOTENCY_STANDARD.md"
+      ],
+      "identity_model": "No retry_id or retry_attempt_id. RETRY_OF relates distinct existing Agent Run or Skill Invocation identities while ownership of those identities remains UPOS-02/03.",
+      "reference_dependencies": [
+        "upos.02.agent_organization.identity_references",
+        "upos.03.skills.identity_references",
+        "upos.04.workflow.identity_references"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "RETRY is distinct from REWORK and RECOVERY. Full bounded-operation retry uses a new successor execution identity."
     }
   ]
 }

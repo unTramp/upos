@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:04:workflow:retry-provenance:0.1.0",
+  "title": "UPOS-04 Retry Provenance",
+  "description": "UPOS-04-owned RETRY_OF relation between bounded execution identities. It introduces no retry identity and is distinct from rework/recovery.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "subject_type",
+    "relation",
+    "successor_ref",
+    "predecessor_ref",
+    "trigger_ref",
+    "task_ref",
+    "workflow_instance_ref",
+    "stage_ref"
+  ],
+  "properties": {
+    "subject_type": {
+      "enum": [
+        "AGENT_RUN",
+        "SKILL_INVOCATION"
+      ]
+    },
+    "relation": {
+      "const": "RETRY_OF"
+    },
+    "successor_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "predecessor_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trigger_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/taskRef"
+    },
+    "workflow_instance_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/workflowInstanceRef"
+    },
+    "stage_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/stageRef"
+    },
+    "transition_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/transitionRef"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "subject_type": {
+            "const": "AGENT_RUN"
+          }
+        },
+        "required": [
+          "subject_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "successor_ref": {
+            "$ref": "urn:upos:schema:02:agent-organization:identity-references:0.1.0#/$defs/agentRunRef"
+          },
+          "predecessor_ref": {
+            "$ref": "urn:upos:schema:02:agent-organization:identity-references:0.1.0#/$defs/agentRunRef"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "subject_type": {
+            "const": "SKILL_INVOCATION"
+          }
+        },
+        "required": [
+          "subject_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "successor_ref": {
+            "$ref": "urn:upos:schema:03:skills:identity-references:0.1.0#/$defs/skillInvocationRef"
+          },
+          "predecessor_ref": {
+            "$ref": "urn:upos:schema:03:skills:identity-references:0.1.0#/$defs/skillInvocationRef"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -158,6 +158,17 @@ RUNTIME_EXECUTION_ATTEMPT_INVALIDS = [
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.invalid-blocked-state.json",
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.invalid-synthetic-id.json",
 ]
+
+RUNTIME_RETRY_SCHEMA = SCHEMAS / "04" / "workflow" / "retry-provenance.schema.json"
+RUNTIME_RETRY_VALIDS = [
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-provenance.agent-run.valid.json",
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-provenance.skill-invocation.valid.json",
+]
+RUNTIME_RETRY_INVALIDS = [
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-provenance.invalid-missing-predecessor.json",
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-provenance.invalid-missing-trigger.json",
+]
+RUNTIME_RETRY_INVALID_SAME_REF = SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-provenance.invalid-reused-identity.json"
 RUNTIME_ROUTING_INVALID_SAME_KEY = (
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "routing-runtime.invalid-request-key-equals-decision.json"
 )
@@ -182,6 +193,8 @@ FORBIDDEN_SYNTHETIC_IDENTITY_FIELDS = {
     "run_attempt_id",
     "invocation_attempt_id",
     "runtime_error_id",
+    "retry_id",
+    "retry_attempt_id",
 }
 
 OWNER_BY_PREFIX = {
@@ -867,6 +880,32 @@ def validate_artist_os_identity_namespace() -> None:
             fail(f"Artist OS product concept collides with U-POS namespace: {concept!r}")
 
 
+def validate_retry_provenance_fixtures(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    validator = validator_for(RUNTIME_RETRY_SCHEMA, docs, resource_registry)
+    for valid_path in RUNTIME_RETRY_VALIDS:
+        try:
+            validator.validate(load_json(valid_path))
+        except ValidationError as exc:
+            fail(f"positive retry provenance fixture unexpectedly failed: {valid_path.name}: {exc.message}")
+    for invalid_path in RUNTIME_RETRY_INVALIDS:
+        try:
+            validator.validate(load_json(invalid_path))
+        except ValidationError:
+            continue
+        fail(f"negative retry provenance fixture unexpectedly passed: {invalid_path.name}")
+
+    reused = load_json(RUNTIME_RETRY_INVALID_SAME_REF)
+    try:
+        validator.validate(reused)
+    except ValidationError as exc:
+        fail(f"retry reused-identity fixture must be structurally valid before semantic validation: {exc.message}")
+    if reused["successor_ref"] != reused["predecessor_ref"]:
+        fail("retry reused-identity negative fixture does not exercise identity reuse")
+
+
 def validate_execution_attempt_fixtures(
     docs: dict[str, dict[str, Any]],
     resource_registry: Registry,
@@ -958,6 +997,7 @@ def validate_fixtures(
     for schema_path, valid_path, invalid_path in RUNTIME_WORKFLOW_FIXTURES:
         validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
     validate_execution_attempt_fixtures(docs, resource_registry)
+    validate_retry_provenance_fixtures(docs, resource_registry)
 
 
 def main() -> int:
@@ -986,6 +1026,7 @@ def main() -> int:
     print("Phase-3 Routing runtime fixtures: PASS")
     print("Phase-3 Workflow runtime fixtures: PASS")
     print("Phase-3 Execution Attempt fixtures: PASS")
+    print("Phase-3 Retry provenance fixtures: PASS")
     return 0
 
 
