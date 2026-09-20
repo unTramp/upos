@@ -1035,10 +1035,6 @@ def validate_runtime_contract_references() -> None:
             fail(f"runtime contract artifact ID mismatch for {contract_ref}: {artifact_path}")
         if f"**Version:** {supported_version}" in text:
             continue
-        if contract_ref.startswith("UPOS-RUNTIME-") and f"**Status:** CANDIDATE" in text:
-            # Cross-cutting Slice-1 standards predate explicit Version metadata.
-            # Their supported runtime-contract version is fixed by the machine fixtures.
-            continue
         fail(
             f"runtime contract artifact version mismatch for {contract_ref}: "
             f"expected {supported_version} in {artifact_path}"
