@@ -373,13 +373,81 @@ def validate_project_manifest_adapter_pair(
         errors.append("manifest/adapter U-POS baseline mismatch")
 
     binding_ids: dict[str, dict[str, Any]] = {}
+    repository_refs: dict[str, dict[str, Any]] = {}
+
     for binding in adapter.get("bindings", []):
         binding_id = binding["binding_id"]
         if binding_id in binding_ids:
             errors.append(f"duplicate binding_id: {binding_id}")
         binding_ids[binding_id] = binding
-        if binding.get("scope", {}).get("project_id") != adapter.get("project_id"):
-            errors.append(f"binding {binding_id} belongs to a different project scope")
+
+        binding_type = binding.get("binding_type")
+        if binding_type == "REPOSITORY_BINDING":
+            repository_ref = binding.get("repository_ref")
+            if repository_ref in repository_refs:
+                errors.append(f"duplicate repository_ref: {repository_ref}")
+            elif repository_ref:
+                repository_refs[repository_ref] = binding
+        elif "scope" in binding:
+            if binding.get("scope", {}).get("project_id") != adapter.get("project_id"):
+                errors.append(f"binding {binding_id} belongs to a different project scope")
+
+    # Repository declarations preserve both the reusable repository_ref and
+    # the concrete Repository Binding identity.
+    all_refs: set[str] = set()
+    for declaration in manifest.get("repositories", []):
+        repository_ref = declaration.get("repository_ref")
+        binding_id = declaration.get("binding_id")
+        all_refs.add(binding_id)
+        binding = binding_ids.get(binding_id)
+        if binding is None:
+            errors.append(f"manifest repository declaration references missing binding: {binding_id}")
+            continue
+        if binding.get("binding_type") != "REPOSITORY_BINDING":
+            errors.append(
+                f"manifest repository binding {binding_id} has incompatible type "
+                f"{binding.get('binding_type')}"
+            )
+        if binding.get("repository_ref") != repository_ref:
+            errors.append(
+                f"manifest repository_ref {repository_ref!r} does not match "
+                f"Repository Binding {binding_id} repository_ref "
+                f"{binding.get('repository_ref')!r}"
+            )
+
+    # Specialized repository-relative contracts must resolve repository_ref,
+    # never a Repository Binding ID substituted by convenience.
+    for binding in adapter.get("bindings", []):
+        if binding.get("binding_type") == "PATH_BINDING":
+            repository_ref = binding.get("repository_ref")
+            if repository_ref not in repository_refs:
+                errors.append(
+                    f"path binding {binding['binding_id']} references unknown "
+                    f"repository_ref: {repository_ref}"
+                )
+
+    # Repository Binding path_binding_refs must point back to PATH_BINDINGs
+    # in the same repository namespace.
+    for repository_ref, repository_binding in repository_refs.items():
+        for path_binding_id in repository_binding.get("path_binding_refs", []):
+            path_binding = binding_ids.get(path_binding_id)
+            if path_binding is None:
+                errors.append(
+                    f"Repository Binding {repository_binding['binding_id']} references "
+                    f"missing path binding: {path_binding_id}"
+                )
+                continue
+            if path_binding.get("binding_type") != "PATH_BINDING":
+                errors.append(
+                    f"Repository Binding {repository_binding['binding_id']} path ref "
+                    f"{path_binding_id} is not PATH_BINDING"
+                )
+            elif path_binding.get("repository_ref") != repository_ref:
+                errors.append(
+                    f"path binding {path_binding_id} repository_ref "
+                    f"{path_binding.get('repository_ref')!r} does not match owning "
+                    f"Repository Binding repository_ref {repository_ref!r}"
+                )
 
     command_ids: dict[str, dict[str, Any]] = {}
     for command in adapter.get("command_bindings", []):
@@ -387,9 +455,14 @@ def validate_project_manifest_adapter_pair(
         if command_id in command_ids:
             errors.append(f"duplicate command_binding_id: {command_id}")
         command_ids[command_id] = command
+        repository_ref = command.get("repository_ref")
+        if repository_ref not in repository_refs:
+            errors.append(
+                f"command binding {command_id} references unknown repository_ref: "
+                f"{repository_ref}"
+            )
 
     expected_types = {
-        "repositories": {"REPOSITORY_BINDING"},
         "paths": {"PATH_BINDING"},
         "providers": {"PROVIDER_BINDING"},
         "environments": {"ENVIRONMENT_BINDING"},
@@ -402,7 +475,6 @@ def validate_project_manifest_adapter_pair(
         "learning_bindings": {"LEARNING_BINDING"},
     }
 
-    all_refs: set[str] = set()
     for section, allowed_types in expected_types.items():
         for ref in manifest.get(section, []):
             all_refs.add(ref)
@@ -425,21 +497,25 @@ def validate_project_manifest_adapter_pair(
         if ref not in binding_ids:
             errors.append(f"manifest runtime references missing binding: {ref}")
 
+    # Security bindings may compose multiple binding classes; existence is
+    # enforced here while permission semantics remain UPOS-010-owned.
     for ref in manifest.get("security_bindings", []):
         all_refs.add(ref)
         if ref not in binding_ids:
             errors.append(f"manifest security_bindings references missing binding: {ref}")
 
+    # Requiredness is only evaluated where the frozen specialized/generic
+    # contract actually defines it. Do not invent requiredness for
+    # Repository/Environment Binding standards that omit that field.
     unreferenced_required = [
         b["binding_id"]
         for b in adapter.get("bindings", [])
-        if b.get("status") == "ACTIVE"
-        and b.get("requiredness") == "REQUIRED"
+        if b.get("requiredness") == "REQUIRED"
         and b["binding_id"] not in all_refs
     ]
     if unreferenced_required:
         errors.append(
-            "ACTIVE REQUIRED bindings are not referenced by manifest: "
+            "REQUIRED bindings are not referenced by manifest: "
             + ", ".join(sorted(unreferenced_required))
         )
 
@@ -447,7 +523,6 @@ def validate_project_manifest_adapter_pair(
         fail("Project Manifest/Adapter validation failed: " + "; ".join(errors))
     if not expect_valid and not errors:
         fail("negative Project Manifest/Adapter semantic fixture unexpectedly passed")
-
 
 def validate_project_adapter_fixtures(
     docs: dict[str, dict[str, Any]],
