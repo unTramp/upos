@@ -1,0 +1,29 @@
+{
+  "workflow_instance_ref": "workflow:W-1",
+  "task_ref": "task:T-1",
+  "routing_decision_ref": "routing:R-1",
+  "workflow_definition_id": "WFL-FEATURE",
+  "workflow_version": "1.0.0",
+  "current_state": "RUNNING",
+  "stages": [
+    {
+      "stage_ref": "WFL-FEATURE:IMPLEMENT",
+      "current_state": "READY",
+      "dependency_refs": [
+        "WFL-FEATURE:PLAN"
+      ],
+      "transition_request": {
+        "transition_ref": "WFL-FEATURE:TR-IMPLEMENT-START",
+        "expected_current_state": "READY",
+        "requested_state": "RUNNING",
+        "transition_basis_ref": "dependency-state:complete"
+      }
+    }
+  ],
+  "transition_request": {
+    "transition_ref": "WST-RUNNING-PAUSED",
+    "expected_current_state": "RUNNING",
+    "requested_state": "PAUSED",
+    "transition_basis_ref": "human-checkpoint:HC-1"
+  }
+}

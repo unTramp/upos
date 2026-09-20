@@ -143,6 +143,14 @@ RUNTIME_ROUTING_FIXTURES = [
         SCHEMAS / "fixtures" / "runtime" / "workflow" / "routing-runtime.invalid-missing-request-key.json",
     ),
 ]
+
+RUNTIME_WORKFLOW_FIXTURES = [
+    (
+        SCHEMAS / "04" / "workflow" / "workflow-instance-runtime.schema.json",
+        SCHEMAS / "fixtures" / "runtime" / "workflow" / "workflow-instance-runtime.valid.json",
+        SCHEMAS / "fixtures" / "runtime" / "workflow" / "workflow-instance-runtime.invalid-state.json",
+    ),
+]
 RUNTIME_ROUTING_INVALID_SAME_KEY = (
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "routing-runtime.invalid-request-key-equals-decision.json"
 )
@@ -919,6 +927,9 @@ def validate_fixtures(
         validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
     validate_routing_runtime_semantics(docs, resource_registry)
 
+    for schema_path, valid_path, invalid_path in RUNTIME_WORKFLOW_FIXTURES:
+        validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
+
 
 def main() -> int:
     schema_ids, docs = load_schema_documents()
@@ -944,6 +955,7 @@ def main() -> int:
     print("Phase-3 attribution fixtures: PASS")
     print("Phase-3 Task runtime fixtures: PASS")
     print("Phase-3 Routing runtime fixtures: PASS")
+    print("Phase-3 Workflow runtime fixtures: PASS")
     return 0
 
 

@@ -728,6 +728,28 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Routing algorithm execution is out of scope. A technical routing failure may exist without a Routing Decision result."
+    },
+    {
+      "schema_key": "upos.04.workflow.workflow_instance_runtime",
+      "schema_uri": "urn:upos:schema:04:workflow:workflow-instance-runtime:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/04/workflow/workflow-instance-runtime.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-04",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "04_workflow_engine/TASK_AND_WORKFLOW_INSTANCE_MODEL.md",
+        "04_workflow_engine/WORKFLOW_STATE_MODEL.md",
+        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md"
+      ],
+      "identity_model": "Reuses WorkflowInstanceRef, TaskRef, RoutingDecisionRef, StageRef and TransitionRef. No new runtime identity is introduced.",
+      "reference_dependencies": [
+        "upos.04.workflow.identity_references"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Expected-state transition requests are concurrency preconditions only; scheduler/transition execution remains Phase 4."
     }
   ]
 }
