@@ -53,6 +53,30 @@ Event emission               → event_id
 
 Routing evaluation requires `operation_request_key` because a technical failure may occur before `routing_decision_id` exists.
 
+## 3.1 Operations requiring a technical request key
+
+Some bounded operations have no pre-existing owner identity that safely names the
+attempt, because the owner identity is minted only on success. These require
+`operation_request_key`.
+
+```text
+Routing evaluation   → TECHNICAL REQUEST KEY REQUIRED
+                       a technical failure may occur before routing_decision_id exists
+
+Adapter Resolution   → TECHNICAL REQUEST KEY REQUIRED
+                       adapter_resolution_id identifies the successful immutable
+                       Resolved Adapter View, not a failed resolver attempt
+```
+
+Slice-2 addition: `adapter_resolution_id` is adopted by UPOS-11 for immutable
+execution-time Resolved Adapter Views only. A resolution that terminates in an
+Adapter Failure produces no Resolved Adapter View and therefore no
+`adapter_resolution_id`, so attempt correlation is carried solely by
+`operation_request_key`.
+
+Operations owned by later slices are not enumerated here; each slice states its
+own per-operation basis when the operation enters scope.
+
 ## 4. Redelivery vs retry
 
 ```text
