@@ -368,5 +368,6 @@
       "observability_semantic_binding": "PARTIAL",
       "learning_semantic_binding": "PARTIAL"
     }
-  }
+  },
+  "provider_adapters": []
 }
