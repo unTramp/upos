@@ -1,0 +1,8 @@
+{
+  "skill_ref": {
+    "skill_id": "SKL-REVIEW-DIFF",
+    "skill_version": "1.0.0"
+  },
+  "skill_invocation_ref": "skill-invocation-0001",
+  "skill_result_ref": "skill-result-0001"
+}

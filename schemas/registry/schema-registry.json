@@ -358,6 +358,27 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Identity/reference-only representation. No Agent Run lifecycle, execution, persistence, result, error, retry, or event semantics."
+    },
+    {
+      "schema_key": "upos.03.skills.identity_references",
+      "schema_uri": "urn:upos:schema:03:skills:identity-references:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/03/skills/identity-references.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-03",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "00_system/GLOBAL_IDENTITY_REFERENCE_REGISTRY.md",
+        "03_skills_system/SKILL_CONTRACT_STANDARD.md",
+        "03_skills_system/CROSS_MODULE_INTERFACES.md",
+        "05_context_memory/CONTEXT_BUNDLE_STANDARD.md"
+      ],
+      "identity_model": "Serializes versioned Skill identity (skill_id + skill_version) plus Skill Invocation and Skill Result references. It does not define Skill execution behavior.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Identity/reference-only representation. Invocation/result payloads, execution lifecycle, errors, retries, evaluation, and persistence remain outside Phase 2."
     }
   ]
 }
