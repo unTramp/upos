@@ -136,14 +136,10 @@
         "11_project_adapter/templates/PROJECT_MANIFEST_TEMPLATE.md"
       ],
       "identity_model": "Project Manifest identity is project_id + manifest_version; no project_manifest_id.",
-      "reference_dependencies": [
-        "upos.11.project_adapter.binding",
-        "upos.11.project_adapter.command_binding",
-        "upos.11.project_adapter.provider_adapter"
-      ],
+      "reference_dependencies": [],
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
-      "notes": "Manifest repository declarations preserve repository_ref + binding_id; provider declarations preserve provider_adapter_ref + provider_adapter_version; other binding sections use explicit references."
+      "notes": "Manifest repository/provider declarations carry external identities as data references; they are validated semantically against Project Adapter, not via JSON Schema $ref. Therefore schema reference_dependencies is empty."
     },
     {
       "schema_key": "upos.11.project_adapter.project_adapter",
