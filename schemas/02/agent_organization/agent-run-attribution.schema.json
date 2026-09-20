@@ -13,6 +13,15 @@
     "task_ref"
   ],
   "properties": {
+    "runtime_contract_ref": {
+      "const": "UPOS-02-AGENT-RUN-ATTRIBUTION"
+    },
+    "runtime_contract_version": {
+      "const": "0.1.0"
+    },
+    "runtime_schema_version": {
+      "const": "0.1.0"
+    },
     "agent_run_ref": {
       "$ref": "urn:upos:schema:02:agent-organization:identity-references:0.1.0#/$defs/agentRunRef"
     },

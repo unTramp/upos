@@ -172,6 +172,7 @@ RUNTIME_EXECUTION_ATTEMPT_VALIDS = [
 RUNTIME_EXECUTION_ATTEMPT_INVALIDS = [
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.invalid-blocked-state.json",
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.invalid-synthetic-id.json",
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.invalid-unsupported-version.json",
 ]
 
 RUNTIME_RETRY_SCHEMA = SCHEMAS / "04" / "workflow" / "retry-provenance.schema.json"
@@ -243,6 +244,7 @@ RUNTIME_CONTRACT_ARTIFACTS = {
     "UPOS-04-ROUTING-RUNTIME": ("runtime/contracts/ROUTING_RUNTIME_CONTRACT.md", "0.1.0"),
     "UPOS-04-WORKFLOW-INSTANCE-RUNTIME": ("runtime/contracts/WORKFLOW_INSTANCE_RUNTIME_CONTRACT.md", "0.1.0"),
     "UPOS-04-EXECUTION-ATTEMPT": ("runtime/contracts/EXECUTION_ATTEMPT_RUNTIME_CONTRACT.md", "0.1.0"),
+    "UPOS-04-RETRY-PROVENANCE": ("runtime/contracts/RETRY_PROVENANCE_RUNTIME_CONTRACT.md", "0.1.0"),
     "UPOS-08-EVENT-EMISSION": ("runtime/contracts/EVENT_EMISSION_INTERFACE.md", "0.1.0"),
     "UPOS-08-EVT-001": ("08_observability/EVENT_STANDARD.md", "1.0.0"),
 }

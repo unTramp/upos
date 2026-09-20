@@ -16,6 +16,15 @@
     "stage_ref"
   ],
   "properties": {
+    "runtime_contract_ref": {
+      "const": "UPOS-04-RETRY-PROVENANCE"
+    },
+    "runtime_contract_version": {
+      "const": "0.1.0"
+    },
+    "runtime_schema_version": {
+      "const": "0.1.0"
+    },
     "subject_type": {
       "enum": [
         "AGENT_RUN",
