@@ -5,13 +5,15 @@
       "scope": "product.master",
       "owner": "Product",
       "canonicalSource": "docs/MASTER_v1.4.md",
-      "status": "ACTIVE"
+      "status": "ACTIVE",
+      "normativity": "NORMATIVE"
     },
     {
       "scope": "product.master",
       "owner": "Product",
       "canonicalSource": "docs/MASTER_v1.4.md",
-      "status": "APPROVED"
+      "status": "APPROVED",
+      "normativity": "NORMATIVE"
     }
   ]
 }
