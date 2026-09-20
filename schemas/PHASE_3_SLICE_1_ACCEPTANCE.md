@@ -1,110 +1,116 @@
-# Phase 3 / Slice 1 — Execution Spine Acceptance
+# Phase 3 / Slice 1 — Execution Spine Remediation Evidence
 
 **ID:** UPOS-P3-S1-ACC-001  
-**Status:** CANDIDATE COMPLETE — PENDING INDEPENDENT BLIND AUDIT  
+**Status:** REMEDIATED CANDIDATE — PENDING INDEPENDENT RE-AUDIT  
 **Baseline:** U-POS v1.0.0  
-**Starting SHA:** `338692cb3677bf395e9c5f17dc3e2a3ff9793960`  
-**Implementation checkpoint before acceptance docs:** `142299f8437e8e93c0407bc7788535c8436f2265`
+**Canonical baseline:** `338692cb3677bf395e9c5f17dc3e2a3ff9793960`  
+**Audited candidate:** `2a291aa5d8e76198205efbfec075bb0755dd4bfc`
 
-## 1. Pre-implementation gate
+This artifact records implementation evidence after remediation of blind-audit findings F-01 through F-05. It does **not** perform the independent acceptance, stability decision, merge decision, or CANDIDATE→STABLE promotion.
 
-- [x] exact baseline SHA verified
-- [x] Baseline Integrity rerun PASS on baseline-equivalent tree
-- [x] Schema Validation rerun PASS on baseline-equivalent tree
-- [x] 27/27 pre-existing registry entries STABLE
-- [x] frozen owner sources recorded/unchanged
-- [x] one Slice-1 branch created
+## 1. Remediation evidence
 
-## 2. Contract acceptance
+### F-01 — deterministic enforcement
 
-- [x] runtime governance standards exist
-- [x] common runtime operation control exists
-- [x] common technical outcome exists
-- [x] common technical failure envelope exists
-- [x] Agent Run attribution exists without technical lifecycle ownership
-- [x] Skill Invocation attribution exists without technical lifecycle ownership
-- [x] Task runtime uses frozen states
-- [x] Routing runtime separates request key from Routing Decision result
-- [x] Workflow Instance/Stage runtime uses frozen states
-- [x] expected-state transition preconditions are represented
-- [x] UPOS-04 Execution Attempt exists without independent ID
-- [x] technical attempt states are exactly CREATED/RUNNING/COMPLETED/FAILED/CANCELLED
-- [x] UPOS-04 Retry provenance exists without retry identity
-- [x] full Run/Invocation retry uses new execution identity
-- [x] Runtime Outcome is distinct from owner result
-- [x] Runtime Failure rejects Quality/Security result vocabularies as technical failure
-- [x] UPOS-08 Event representation exists
-- [x] Trace/Span are references only
-- [x] same logical Event redelivery preserves event_id
-- [x] Event correction requires new identity + correction relation
-- [x] full reconstructability fixture passes
-- [x] private chain-of-thought is excluded from provenance
+The validator now performs actual cross-record conformance rejection rather than asserting that an illustrative negative fixture still contains the forbidden shape.
 
-## 3. Registry acceptance
+Focused checks cover:
+
+- full bounded retry: `successor_ref != predecessor_ref`;
+- Routing: `operation_request_key != routing_decision_ref`;
+- Routing/runtime outcome: `operation_request_key != runtime_outcome.owner_result_ref`;
+- Permission/Adapter examples: `operation_request_key != owner_result_ref`;
+- Event correction: `event_id != correction_of_event_id`;
+- persisted private reasoning: recursive forbidden-field rejection;
+- transport redelivery must not be represented as UPOS-04 `RETRY_OF`.
+
+Each former false-negative path has a focused reject path. Corresponding valid cases are also exercised.
+
+### F-02 — positive Execution Attempt / retry evidence
+
+Positive fixtures now cover:
+
+- COMPLETED;
+- FAILED with `failure_ref` and `terminal_at`;
+- CREATED;
+- CANCELLED with `terminal_at`.
+
+The Agent Run retry chain is anchored as:
 
 ```text
-existing STABLE = 27
-new CANDIDATE = 11
-total = 38
+AR-1 / FAILED / failure_ref
+→ RETRY_OF(trigger_ref == predecessor.failure_ref)
+→ AR-2 / CREATED
 ```
 
-- [x] all new schemas registered
-- [x] all new entries remain CANDIDATE
-- [x] semantic owner metadata matches namespace
-- [x] external $ref dependency metadata matches actual refs
-- [x] no automatic STABLE promotion
+The predecessor and successor references must match the corresponding Execution Attempt subjects, while the bounded execution identity must change.
 
-## 4. Boundary acceptance
+### F-04 — runtime contract resolution
 
-- [x] no routing engine
-- [x] no scheduler
-- [x] no orchestrator
-- [x] no execution engine
-- [x] no automatic retry/rework/recovery
-- [x] no Event Store
-- [x] no trace runtime
-- [x] no provider adapters
-- [x] no database implementation
-- [x] no Control Plane/dashboard
-- [x] Slice 2 not started
+Owner-bound Slice-1 runtime contract artifacts now exist under `runtime/contracts/`.
 
-## 5. Validation acceptance
+Validator resolution is fail-closed for runtime/Event/producer contract references used by runtime fixtures:
 
-Every semantic schema checkpoint was required to pass exact-SHA GitHub checks before continuing.
+- unknown contract reference → reject;
+- unsupported referenced contract version → reject;
+- referenced artifact missing or ID/version mismatch → reject.
 
-Final implementation checkpoint `142299f8437e8e93c0407bc7788535c8436f2265`:
+### F-03 — version carriage and fail-closed compatibility
+
+The six durable schema families identified by the blind audit can now carry separate:
+
+- `runtime_contract_ref`;
+- `runtime_contract_version`;
+- `runtime_schema_version`.
+
+Supported values are constrained by the corresponding schema contract. A supported version fixture passes; an unsupported runtime-contract version fixture is required to reject.
+
+These axes remain distinct; the implementation does not assert that semantic-contract and serialization versions must evolve together.
+
+### F-05 — evidence truthfulness
+
+Traceability and reconciliation now distinguish:
+
+- JSON Schema structural rejection;
+- deterministic cross-record conformance rejection;
+- positive conformance evidence.
+
+No illustrative negative fixture is described as rejection evidence unless a validator path actually rejects it.
+
+## 2. Registry / scope state to verify at exact remediation HEAD
+
+Required end-state:
 
 ```text
-Baseline Integrity — PASS
-Schema Validation   — PASS
+27 pre-existing Phase-2 schemas = STABLE
+11 Slice-1 schemas = CANDIDATE
+CANDIDATE→STABLE promotion = NONE
+Slice 2 = NOT STARTED
+Phase 4/5/6/7 implementation = NOT STARTED
+frozen UPOS-001—011 sources = UNCHANGED
 ```
 
-The acceptance-document commit itself MUST also pass final exact-HEAD checks before this Slice is reported externally as CANDIDATE COMPLETE.
+## 3. Validation gate
 
-## 6. Blocking status
+The remediation is not considered ready for re-audit until the exact remediation HEAD has:
 
-```text
-P0 = 0
-P1 = 0
-```
+- Baseline Integrity PASS;
+- full Schema Validation PASS;
+- focused F-01 reject/pass evidence;
+- F-02 positive lifecycle/retry evidence;
+- F-03 supported-version PASS and unsupported-version REJECT;
+- F-04 contract-reference resolution PASS.
 
-No stability decision is made here.
+## 4. Authority boundary
 
-No merge is authorized here.
+This document does not close the blind-audit findings on behalf of the independent auditor.
 
-## 7. Required next action
+Required next action after an exact-HEAD green gate:
 
 ```text
 STOP
-→ independent blind audit
-→ reconcile audit findings
-→ only then consider stability/merge
+→ independent blind re-audit
+→ independent finding closure / stability decision
 ```
 
-Explicitly:
-
-```text
-PHASE 3 SLICE 1 — CANDIDATE COMPLETE
-SLICE 2 — NOT STARTED
-PHASE 4/5/6/7 — NOT STARTED
-```
+No merge or STABLE promotion is authorized here.

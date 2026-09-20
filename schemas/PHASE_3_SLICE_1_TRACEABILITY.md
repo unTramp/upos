@@ -1,108 +1,78 @@
-# Phase 3 / Slice 1 — Execution Spine Traceability
+# Phase 3 / Slice 1 — Remediation Traceability
 
 **ID:** UPOS-P3-S1-TRACE-001  
-**Status:** COMPLETE  
-**Baseline:** U-POS v1.0.0  
-**Starting SHA:** `338692cb3677bf395e9c5f17dc3e2a3ff9793960`  
-**Implementation checkpoint before acceptance docs:** `142299f8437e8e93c0407bc7788535c8436f2265`
+**Status:** REMEDIATED CANDIDATE — PENDING INDEPENDENT RE-AUDIT  
+**Canonical baseline:** `338692cb3677bf395e9c5f17dc3e2a3ff9793960`  
+**Audited candidate:** `2a291aa5d8e76198205efbfec075bb0755dd4bfc`
 
-## 1. Scope
+## 1. Evidence taxonomy
 
-Slice 1 implements machine-readable Execution Spine contracts only:
+Negative evidence is classified explicitly:
 
-```text
-Task
-→ Routing operation / Routing Decision
-→ Workflow Instance / Stage
-→ Agent Run attribution
-→ UPOS-04 Execution Attempt
-→ Skill Invocation attribution
-→ UPOS-04 Execution Attempt
-→ Context Bundle reference
-→ Skill Result / owner result reference
-→ technical Runtime Outcome / Failure
-→ UPOS-08 Event
-```
+- **SCHEMA REJECT** — JSON Schema validation rejects the instance.
+- **CONFORMANCE REJECT** — deterministic cross-record/runtime rule rejects an otherwise structurally valid instance.
+- **POSITIVE PASS** — schema and applicable conformance checks accept the valid case.
 
-No execution engine is implemented.
+An illustrative bad fixture alone is not rejection evidence.
 
 ## 2. Contract traceability
 
-| Contract | Semantic owner | Primary frozen sources | Phase-2 refs consumed | Positive evidence | Negative evidence |
-|---|---|---|---|---|---|
-| Runtime Operation Control | NONE_INFRASTRUCTURE | runtime governance + Phase-2 schema governance | none | non-empty `operation_request_key` | empty key |
-| Runtime Operation Outcome | NONE_INFRASTRUCTURE | Runtime Result/Failure Standard | UPOS-08 Event/Trace refs | technical COMPLETED + Security DENY / Quality FAIL owner results | DENY/PASS as technical execution outcome |
-| Runtime Failure Envelope | NONE_INFRASTRUCTURE | Runtime Result/Failure + owner failure boundaries | none | provider timeout failure | synthetic runtime_error_id; Security DENY / Quality FAIL as runtime failure |
-| Agent Run Attribution | UPOS-02 | Agent Operating Model; Agent Lifecycle | UPOS-02 + UPOS-04 refs | Role/Definition/version/Instance/Run/Task attribution | technical execution_state in UPOS-02 contract |
-| Skill Invocation Attribution | UPOS-03 | Skills Operating Model; Skill Contract/Lifecycle | UPOS-03 + UPOS-02 + UPOS-04 + UPOS-05 refs | Skill/version/Invocation/AgentRun/Task/Context/Result | technical execution_state in UPOS-03 contract |
-| Task Runtime | UPOS-04 | Task & Workflow Instance Model | TaskRef | frozen Task state + expected-state transition intent | non-frozen IN_REVIEW Task state |
-| Routing Runtime | UPOS-04 | Routing Standard; Failure/Retry/Recovery | TaskRef / RoutingDecisionRef + common runtime schemas | technical failure before Routing Decision exists | missing operation_request_key; request key/result collision |
-| Workflow Instance Runtime | UPOS-04 | Task/Workflow Instance + Workflow State Model | Task/Routing/Workflow/Stage/Transition refs | frozen Workflow/Stage states + transition preconditions | non-frozen Workflow state |
-| Execution Attempt | UPOS-04 | Agent/Skill deferred-runtime boundaries; Workflow failure/retry | AgentRunRef or SkillInvocationRef + Trace/Span refs | terminal technical COMPLETED | BLOCKED attempt state; execution_attempt_id |
-| Retry Provenance | UPOS-04 | Failure/Retry/Recovery | AgentRunRef / SkillInvocationRef + Workflow refs | new Run retry + new Invocation retry | no predecessor; no trigger; reused terminal execution identity |
-| Event | UPOS-08 | Event Standard; Observability Lifecycle | UPOS-08/02/03/04/05/10 refs | attributable Slice-1 Event + same-id redelivery | correction without reason; correction reusing same event identity |
+| Contract / invariant | Positive evidence | Negative evidence |
+|---|---|---|
+| Runtime Operation Control | non-empty request key; distinct result reference | empty key — SCHEMA REJECT; permission/adapter request-key=result — CONFORMANCE REJECT |
+| Routing Runtime | failed evaluation before decision; execution-spine request/result separation — POSITIVE PASS | missing request key — SCHEMA REJECT; request-key=decision/result — CONFORMANCE REJECT |
+| Execution Attempt | COMPLETED, FAILED, CREATED, CANCELLED — POSITIVE PASS | BLOCKED state; synthetic attempt ID; unsupported contract version — SCHEMA REJECT |
+| Retry Provenance | failed predecessor → RETRY_OF → distinct CREATED successor — POSITIVE PASS | missing predecessor/trigger — SCHEMA REJECT; reused bounded identity — CONFORMANCE REJECT |
+| Technical redelivery | same request key + same owner subject without RETRY_OF — POSITIVE PASS | same bounded identity encoded as RETRY_OF — CONFORMANCE REJECT |
+| Event correction | new Event ID + correction relation/reason — POSITIVE PASS | missing reason — SCHEMA REJECT; correction reuses own Event ID — CONFORMANCE REJECT |
+| Reconstructability | execution-spine fixture validates and cross-references canonical refs — POSITIVE PASS | persisted private reasoning — recursive CONFORMANCE REJECT |
+| Runtime contract resolution | known contract IDs and supported versions resolve — POSITIVE PASS | unknown/dangling or unsupported referenced contract version — fail-closed |
+| Durable version carriage | supported Execution Attempt contract/schema version — POSITIVE PASS | unsupported runtime-contract version — SCHEMA REJECT |
 
-## 3. Cross-runtime conformance
-
-`schemas/fixtures/runtime/execution-spine.valid.json` is explicitly labeled:
+## 3. Owner-bound runtime contract artifacts
 
 ```text
-FIXTURE
+runtime/contracts/TASK_RUNTIME_CONTRACT.md
+runtime/contracts/ROUTING_RUNTIME_CONTRACT.md
+runtime/contracts/WORKFLOW_INSTANCE_RUNTIME_CONTRACT.md
+runtime/contracts/EXECUTION_ATTEMPT_RUNTIME_CONTRACT.md
+runtime/contracts/AGENT_RUN_ATTRIBUTION_CONTRACT.md
+runtime/contracts/SKILL_INVOCATION_ATTRIBUTION_CONTRACT.md
+runtime/contracts/EVENT_EMISSION_INTERFACE.md
+runtime/contracts/RETRY_PROVENANCE_RUNTIME_CONTRACT.md
 ```
 
-It is not a simulation, controlled execution or production dogfooding.
+The extra Retry Provenance contract binds the already-authorized UPOS-04 retry-provenance durable schema to an explicit runtime contract/version; it does not create a new domain identity or semantic owner.
 
-The validator reconstructs and cross-checks:
+## 4. Version carriage
+
+The six durable families called out by the blind audit can carry:
 
 ```text
-TaskRef
-RoutingDecisionRef
-WorkflowInstanceRef
-StageRef
-AgentRunRef
-SkillInvocationRef
-ContextBundleRef
-SkillResultRef
-Runtime Outcome
-EventRef
+runtime_contract_ref
+runtime_contract_version
+runtime_schema_version
 ```
 
-No private chain-of-thought is required.
-
-## 4. Identity invariants
-
-Slice 1 introduces no:
-
-```text
-execution_attempt_id
-run_attempt_id
-invocation_attempt_id
-runtime_error_id
-retry_id
-retry_attempt_id
-generic workflow_id
-```
-
-`operation_request_key` is infrastructure-only and is not added to the Global Identity & Reference Registry.
+Their values are constrained to the supported Slice-1 contract/schema version where present.
 
 ## 5. Phase boundary
 
 Not implemented:
 
 ```text
-routing algorithm
-scheduler
-orchestrator
-worker queue
+orchestrator / scheduler / execution engine
 automatic retry/rework/recovery
-Agent/Skill executor
-Context retrieval/assembly implementation
 Event Store
 trace creation/propagation/span runtime
-metrics/projections
 provider adapters
-Git/GitHub execution
 database implementation
 Control Plane/dashboard
 Phase-3 Slice 2+
 ```
+
+## 6. Re-audit handoff
+
+This traceability document records remediation evidence only.
+
+It does not substitute for independent closure of F-01…F-05, a stability decision, merge, or STABLE promotion.
