@@ -63,7 +63,8 @@ PROJECT_ADAPTER_SIMPLE_FIXTURES = [
 
 PROJECT_ADAPTER_VALID = SCHEMAS / "fixtures" / "project-adapter" / "project-adapter.valid.json"
 PROJECT_ADAPTER_INVALID_MISMATCH = SCHEMAS / "fixtures" / "project-adapter" / "project-adapter.invalid-project-mismatch.json"
-PROJECT_MANIFEST_VALID = SCHEMAS / "fixtures" / "project-adapter" / "project-manifest.valid.json"\nPROJECT_MANIFEST_INVALID_BASELINE = SCHEMAS / "fixtures" / "project-adapter" / "project-manifest.invalid-baseline.json"
+PROJECT_MANIFEST_VALID = SCHEMAS / "fixtures" / "project-adapter" / "project-manifest.valid.json"
+PROJECT_MANIFEST_INVALID_BASELINE = SCHEMAS / "fixtures" / "project-adapter" / "project-manifest.invalid-baseline.json"
 
 REPOSITORY_BINDING_SCHEMA = SCHEMAS / "11" / "project-adapter" / "repository-binding.schema.json"
 COMMAND_BINDING_SCHEMA = SCHEMAS / "11" / "project-adapter" / "command-binding.schema.json"
