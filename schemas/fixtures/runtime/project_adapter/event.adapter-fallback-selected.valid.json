@@ -1,0 +1,33 @@
+{
+  "event_id": "event:E-AR-6",
+  "event_type": "upos.project-adapter.adapter-fallback.selected",
+  "event_class": "DOMAIN_RUNTIME",
+  "event_schema_version": "0.1.0",
+  "event_contract_ref": "UPOS-08-EVT-001",
+  "event_contract_version": "1.0.0",
+  "occurred_at": "2026-09-21T10:00:00Z",
+  "recorded_at": "2026-09-21T10:00:00Z",
+  "timestamp_quality": "EXACT",
+  "producer_module": "UPOS-11",
+  "producer_component_ref": "runtime:adapter-resolution",
+  "producer_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
+  "producer_contract_version": "0.1.0",
+  "domain_owner_module": "UPOS-11",
+  "initiator_type": "AGENT_RUN",
+  "initiator_ref": "agent-run:AR-1",
+  "primary_domain_entity_type": "ADAPTER_RESOLUTION",
+  "primary_domain_entity_ref": "adapter-resolution:AR-FB-1",
+  "event_payload": {
+    "requested_binding_ref": "binding:B-REPO-WRITE-PREFERRED",
+    "resolved_binding_ref": "binding:B-REPO-WRITE-FALLBACK",
+    "fallback_reason": "adapter-failure:PROVIDER_UNAVAILABLE",
+    "actual_provider_adapter_ref": "provider-adapter:gitlab",
+    "actual_provider_adapter_version": "2.0.0"
+  },
+  "telemetry_importance": "REQUIRED_AUDIT",
+  "owner_result_ref": "adapter-resolution:AR-FB-1",
+  "related_domain_refs": [
+    "binding:B-REPO-WRITE-PREFERRED",
+    "binding:B-REPO-WRITE-FALLBACK"
+  ]
+}

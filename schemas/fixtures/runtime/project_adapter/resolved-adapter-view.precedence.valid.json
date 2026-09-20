@@ -1,0 +1,45 @@
+{
+  "runtime_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
+  "runtime_contract_version": "0.1.0",
+  "runtime_schema_version": "0.1.0",
+  "adapter_resolution_id": "adapter-resolution:AR-PREC-1",
+  "operation_request_key": "adapter-resolution-request:project:upos:repository-write:precedence-1",
+  "project_id": "project:upos",
+  "project_adapter_version": "1.0.0",
+  "manifest_version": "1.0.0",
+  "abstract_requirement_ref": "abstract-requirement:repository-write",
+  "scope": {
+    "project_id": "project:upos",
+    "repository_ref": "repository:unTramp/upos",
+    "environment_ref": "environment:dev",
+    "operation_ref": "operation:repository-write"
+  },
+  "evaluated_binding_refs": [
+    "binding:B-ORG-DEFAULT",
+    "binding:B-PROJECT",
+    "binding:B-REPOSITORY",
+    "binding:B-ENVIRONMENT"
+  ],
+  "applied_precedence_level": "ENVIRONMENT",
+  "selected_binding_ref": "binding:B-ENVIRONMENT",
+  "concrete_target_ref": "repository:unTramp/upos",
+  "provider_adapter_ref": "provider-adapter:github",
+  "provider_adapter_version": "1.0.0",
+  "validation_result": {
+    "runtime_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
+    "runtime_contract_version": "0.1.0",
+    "runtime_schema_version": "0.1.0",
+    "validation_state": "VALID",
+    "configuration_completeness": "COMPLETE",
+    "evaluated_binding_refs": [
+      "binding:B-ORG-DEFAULT",
+      "binding:B-PROJECT",
+      "binding:B-REPOSITORY",
+      "binding:B-ENVIRONMENT"
+    ],
+    "missing_required_binding_refs": [],
+    "validation_basis_refs": [
+      "binding-validation:precedence"
+    ]
+  }
+}

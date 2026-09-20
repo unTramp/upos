@@ -1,0 +1,28 @@
+{
+  "event_id": "event:E-AR-2",
+  "event_type": "upos.project-adapter.binding.evaluated",
+  "event_class": "DOMAIN_RUNTIME",
+  "event_schema_version": "0.1.0",
+  "event_contract_ref": "UPOS-08-EVT-001",
+  "event_contract_version": "1.0.0",
+  "occurred_at": "2026-09-21T10:00:00Z",
+  "recorded_at": "2026-09-21T10:00:00Z",
+  "timestamp_quality": "EXACT",
+  "producer_module": "UPOS-11",
+  "producer_component_ref": "runtime:adapter-resolution",
+  "producer_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
+  "producer_contract_version": "0.1.0",
+  "domain_owner_module": "UPOS-11",
+  "initiator_type": "AGENT_RUN",
+  "initiator_ref": "agent-run:AR-1",
+  "primary_domain_entity_type": "ADAPTER_RESOLUTION_REQUEST",
+  "primary_domain_entity_ref": "adapter-resolution-request:project:upos:repository-write:1",
+  "event_payload": {
+    "applied_precedence_level": "REPOSITORY"
+  },
+  "telemetry_importance": "REQUIRED_AUDIT",
+  "related_domain_refs": [
+    "binding:B-ORG-DEFAULT",
+    "binding:B-REPOSITORY"
+  ]
+}

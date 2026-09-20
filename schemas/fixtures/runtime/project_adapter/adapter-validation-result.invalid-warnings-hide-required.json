@@ -1,0 +1,18 @@
+{
+  "runtime_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
+  "runtime_contract_version": "0.1.0",
+  "runtime_schema_version": "0.1.0",
+  "validation_state": "VALID_WITH_WARNINGS",
+  "configuration_completeness": "COMPLETE",
+  "evaluated_binding_refs": [
+    "binding:B-REPO-WRITE"
+  ],
+  "missing_required_binding_refs": [
+    "binding:B-REQUIRED-SECRET"
+  ],
+  "validation_basis_refs": [
+    "binding-validation:static",
+    "binding-validation:runtime"
+  ],
+  "capability_support_state": "SUPPORTED"
+}

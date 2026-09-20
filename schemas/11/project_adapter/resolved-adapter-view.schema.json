@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:11:project-adapter:resolved-adapter-view:0.1.0",
+  "title": "UPOS-11 Resolved Adapter View",
+  "description": "Immutable execution-time projection of effective bindings after scope, precedence, compatibility and availability validation. Produced only by a successful resolution, so adapter_resolution_id exists here and nowhere else. It is not Source of Truth and does not execute a provider.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "runtime_contract_ref",
+    "runtime_contract_version",
+    "runtime_schema_version",
+    "adapter_resolution_id",
+    "operation_request_key",
+    "project_id",
+    "project_adapter_version",
+    "manifest_version",
+    "abstract_requirement_ref",
+    "scope",
+    "evaluated_binding_refs",
+    "applied_precedence_level",
+    "selected_binding_ref",
+    "concrete_target_ref",
+    "provider_adapter_ref",
+    "provider_adapter_version",
+    "validation_result"
+  ],
+  "properties": {
+    "runtime_contract_ref": {
+      "const": "UPOS-11-ADAPTER-RESOLUTION"
+    },
+    "runtime_contract_version": {
+      "const": "0.1.0"
+    },
+    "runtime_schema_version": {
+      "const": "0.1.0"
+    },
+    "adapter_resolution_id": {
+      "$ref": "urn:upos:schema:11:project-adapter:adapter-resolution-reference:0.1.0"
+    },
+    "operation_request_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_adapter_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "manifest_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "abstract_requirement_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "$ref": "urn:upos:schema:11:project-adapter:binding:0.1.0#/$defs/core/properties/scope"
+    },
+    "evaluated_binding_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "applied_precedence_level": {
+      "enum": [
+        "ORGANIZATION_DEFAULT",
+        "PROJECT",
+        "REPOSITORY",
+        "ENVIRONMENT",
+        "OPERATION",
+        "EXECUTION_SCOPED_OVERRIDE"
+      ]
+    },
+    "selected_binding_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "concrete_target_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_adapter_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_adapter_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "validation_result": {
+      "$ref": "urn:upos:schema:11:project-adapter:adapter-validation-result:0.1.0"
+    },
+    "canonical_policy_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "security_policy_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "observability_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "trace_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "span_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "fallback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requested_binding_ref",
+        "resolved_binding_ref",
+        "fallback_reason",
+        "actual_provider_adapter_ref",
+        "actual_provider_adapter_version"
+      ],
+      "properties": {
+        "requested_binding_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resolved_binding_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fallback_reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actual_provider_adapter_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actual_provider_adapter_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rejected_candidate_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "fallback_chain_position": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "validation_result"
+        ],
+        "properties": {
+          "validation_result": {
+            "required": [
+              "validation_state"
+            ],
+            "properties": {
+              "validation_state": {
+                "const": "INVALID"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "not": {}
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "validation_result"
+        ],
+        "properties": {
+          "validation_result": {
+            "required": [
+              "validation_state"
+            ],
+            "properties": {
+              "validation_state": {
+                "const": "INCOMPLETE"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "validation_result": {
+            "properties": {
+              "missing_required_binding_refs": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

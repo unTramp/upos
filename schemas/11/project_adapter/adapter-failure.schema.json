@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:11:project-adapter:adapter-failure:0.1.0",
+  "title": "UPOS-11 Adapter Failure",
+  "description": "Owner failure for one Adapter Resolution. It retains the originating infrastructure-only operation_request_key for durable request correlation, introduces no identity, and never carries an adapter_resolution_id because a failed resolution produces no Resolved Adapter View.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "runtime_contract_ref",
+    "runtime_contract_version",
+    "runtime_schema_version",
+    "operation_request_key",
+    "failure_code",
+    "abstract_requirement_ref",
+    "scope"
+  ],
+  "properties": {
+    "runtime_contract_ref": {
+      "const": "UPOS-11-ADAPTER-RESOLUTION"
+    },
+    "runtime_contract_version": {
+      "const": "0.1.0"
+    },
+    "runtime_schema_version": {
+      "const": "0.1.0"
+    },
+    "operation_request_key": {
+      "$ref": "urn:upos:schema:common:runtime-operation-control:0.1.0#/properties/operation_request_key"
+    },
+    "failure_code": {
+      "enum": [
+        "BINDING_NOT_FOUND",
+        "BINDING_AMBIGUOUS",
+        "BINDING_CONFLICT",
+        "PROVIDER_UNAVAILABLE",
+        "CAPABILITY_UNSUPPORTED",
+        "REFERENCE_NOT_FOUND",
+        "COMMAND_NOT_AVAILABLE",
+        "PATH_INVALID",
+        "IDENTITY_UNRESOLVED",
+        "RESOURCE_UNRESOLVED",
+        "SECRET_BINDING_UNAVAILABLE",
+        "SECURITY_BINDING_INVALID",
+        "OBSERVABILITY_BINDING_INVALID",
+        "VERSION_INCOMPATIBLE",
+        "PROVIDER_AUTH_FAILURE",
+        "CONFIGURATION_INVALID",
+        "BINDING_DRIFT_DETECTED"
+      ]
+    },
+    "abstract_requirement_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "$ref": "urn:upos:schema:11:project-adapter:binding:0.1.0#/$defs/core/properties/scope"
+    },
+    "binding_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "provider_adapter_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "provider_adapter_version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "provider_error_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "retryability_hint": {
+      "enum": [
+        "SAFE_RETRY",
+        "CONDITIONALLY_RETRYABLE",
+        "NOT_RETRYABLE",
+        "UNKNOWN"
+      ]
+    },
+    "observability_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "validation_result": {
+      "$ref": "urn:upos:schema:11:project-adapter:adapter-validation-result:0.1.0"
+    },
+    "fallback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requested_binding_ref",
+        "resolved_binding_ref",
+        "fallback_reason"
+      ],
+      "properties": {
+        "requested_binding_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resolved_binding_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fallback_reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actual_provider_adapter_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "actual_provider_adapter_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rejected_candidate_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "fallback_chain_position": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  }
+}

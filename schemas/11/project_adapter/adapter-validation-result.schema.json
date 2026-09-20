@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:11:project-adapter:adapter-validation-result:0.1.0",
+  "title": "UPOS-11 Adapter Validation Result",
+  "description": "Result of validating bindings and configuration for one Adapter Resolution. It is not a Quality Verdict and not a Security Decision, and it introduces no identity.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "runtime_contract_ref",
+    "runtime_contract_version",
+    "runtime_schema_version",
+    "validation_state",
+    "evaluated_binding_refs",
+    "missing_required_binding_refs"
+  ],
+  "properties": {
+    "runtime_contract_ref": {
+      "const": "UPOS-11-ADAPTER-RESOLUTION"
+    },
+    "runtime_contract_version": {
+      "const": "0.1.0"
+    },
+    "runtime_schema_version": {
+      "const": "0.1.0"
+    },
+    "validation_state": {
+      "enum": [
+        "VALID",
+        "VALID_WITH_WARNINGS",
+        "INCOMPLETE",
+        "INVALID"
+      ]
+    },
+    "configuration_completeness": {
+      "enum": [
+        "COMPLETE",
+        "PARTIALLY_CONFIGURED",
+        "UNRESOLVED",
+        "INVALID"
+      ]
+    },
+    "evaluated_binding_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "missing_required_binding_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "validation_basis_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "warning_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "capability_support_state": {
+      "enum": [
+        "SUPPORTED",
+        "PARTIALLY_SUPPORTED",
+        "UNSUPPORTED",
+        "UNAVAILABLE",
+        "UNKNOWN"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "validation_state"
+        ],
+        "properties": {
+          "validation_state": {
+            "enum": [
+              "VALID",
+              "VALID_WITH_WARNINGS"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "missing_required_binding_refs": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ]
+}

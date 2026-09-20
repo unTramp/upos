@@ -1,0 +1,69 @@
+{
+  "fixture_level": "FIXTURE",
+  "request": {
+    "runtime_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
+    "runtime_contract_version": "0.1.0",
+    "runtime_schema_version": "0.1.0",
+    "operation_control": {
+      "runtime_contract_ref": "UPOS-RUNTIME-OPS-001",
+      "runtime_contract_version": "0.1.0",
+      "operation_kind": "ADAPTER_RESOLUTION",
+      "subject_ref": "abstract-requirement:repository-write",
+      "operation_request_key": "adapter-resolution-request:project:upos:repository-write:conflict-1"
+    },
+    "project_id": "project:upos",
+    "project_adapter_version": "1.0.0",
+    "manifest_version": "1.0.0",
+    "abstract_requirement_ref": "abstract-requirement:repository-write",
+    "scope": {
+      "project_id": "project:upos",
+      "repository_ref": "repository:unTramp/upos",
+      "environment_ref": "environment:dev",
+      "operation_ref": "operation:repository-write"
+    }
+  },
+  "adapter_failure": {
+    "runtime_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
+    "runtime_contract_version": "0.1.0",
+    "runtime_schema_version": "0.1.0",
+    "operation_request_key": "adapter-resolution-request:project:upos:repository-write:conflict-1",
+    "failure_code": "BINDING_CONFLICT",
+    "abstract_requirement_ref": "abstract-requirement:repository-write",
+    "scope": {
+      "project_id": "project:upos",
+      "repository_ref": "repository:unTramp/upos",
+      "environment_ref": "environment:dev",
+      "operation_ref": "operation:repository-write"
+    },
+    "binding_ref": "binding:B-REPO-WRITE-ALT",
+    "retryability_hint": "NOT_RETRYABLE",
+    "observability_refs": [
+      "event:E-ADAPTER-FAIL-1"
+    ],
+    "validation_result": {
+      "runtime_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
+      "runtime_contract_version": "0.1.0",
+      "runtime_schema_version": "0.1.0",
+      "validation_state": "INVALID",
+      "configuration_completeness": "INVALID",
+      "evaluated_binding_refs": [
+        "binding:B-REPO-WRITE",
+        "binding:B-REPO-WRITE-ALT"
+      ],
+      "missing_required_binding_refs": [],
+      "validation_basis_refs": [
+        "binding-validation:precedence"
+      ]
+    }
+  },
+  "runtime_outcome": {
+    "runtime_contract_ref": "UPOS-RUNTIME-OPS-001",
+    "runtime_contract_version": "0.1.0",
+    "operation_kind": "ADAPTER_RESOLUTION",
+    "subject_ref": "abstract-requirement:repository-write",
+    "execution_outcome": "COMPLETED",
+    "owner_failure_ref": "adapter-failure:BINDING_CONFLICT",
+    "started_at": "2026-09-21T10:00:00Z",
+    "ended_at": "2026-09-21T10:00:01Z"
+  }
+}
