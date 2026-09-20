@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:09:learning:identity-references:0.1.0",
+  "title": "UPOS-09 Learning Identity References",
+  "description": "Canonical serialization of frozen UPOS-09 identity/reference semantics only.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "pattern_candidate_ref": { "$ref": "#/$defs/patternCandidateRef" },
+    "learning_candidate_ref": { "$ref": "#/$defs/learningCandidateRef" },
+    "root_cause_assessment_ref": { "$ref": "#/$defs/rootCauseAssessmentRef" },
+    "improvement_proposal_ref": { "$ref": "#/$defs/improvementProposalRef" },
+    "validation_plan_ref": { "$ref": "#/$defs/validationPlanRef" },
+    "learning_outcome_ref": { "$ref": "#/$defs/learningOutcomeRef" }
+  },
+  "$defs": {
+    "patternCandidateRef": { "type": "string", "minLength": 1, "description": "Reference to pattern_candidate_id." },
+    "learningCandidateRef": { "type": "string", "minLength": 1, "description": "Reference to learning_candidate_id." },
+    "rootCauseAssessmentRef": { "type": "string", "minLength": 1, "description": "Reference to root_cause_assessment_id." },
+    "improvementProposalRef": { "type": "string", "minLength": 1, "description": "Reference to improvement_proposal_id." },
+    "validationPlanRef": { "type": "string", "minLength": 1, "description": "Reference to validation_plan_id." },
+    "learningOutcomeRef": { "type": "string", "minLength": 1, "description": "Reference to learning_outcome_id." }
+  }
+}
