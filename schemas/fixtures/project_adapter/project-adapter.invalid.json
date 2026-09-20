@@ -1,0 +1,61 @@
+{
+  "project_id": "example-project",
+  "project_manifest_version": "1.0.0",
+  "project_adapter_version": "1.0.0",
+  "upos_baseline": "v1.0.0",
+  "bindings": [
+    {
+      "binding_id": "dup",
+      "binding_type": "PATH_BINDING",
+      "version": "1.0.0",
+      "status": "ACTIVE",
+      "abstract_requirement_ref": "a",
+      "scope": {
+        "project_id": "example-project",
+        "repository_ref": "repo-primary",
+        "environment_ref": null,
+        "operation_ref": null
+      },
+      "concrete_target_ref": "a",
+      "requiredness": "REQUIRED",
+      "validation_state": "VALID",
+      "compatibility_state": "COMPATIBLE",
+      "health_state": "HEALTHY",
+      "abstract_path_ref": "a",
+      "repository_ref": "repo-primary",
+      "environment_ref": null,
+      "concrete_path": "a",
+      "path_kind": "FILE",
+      "validation_rule_ref": null
+    },
+    {
+      "binding_id": "dup",
+      "binding_type": "PATH_BINDING",
+      "version": "1.0.0",
+      "status": "ACTIVE",
+      "abstract_requirement_ref": "b",
+      "scope": {
+        "project_id": "example-project",
+        "repository_ref": "repo-primary",
+        "environment_ref": null,
+        "operation_ref": null
+      },
+      "concrete_target_ref": "b",
+      "requiredness": "REQUIRED",
+      "validation_state": "VALID",
+      "compatibility_state": "COMPATIBLE",
+      "health_state": "HEALTHY",
+      "abstract_path_ref": "b",
+      "repository_ref": "repo-primary",
+      "environment_ref": null,
+      "concrete_path": "b",
+      "path_kind": "FILE",
+      "validation_rule_ref": null
+    }
+  ],
+  "command_bindings": [],
+  "validation_result": "VALID",
+  "configuration_completeness": "COMPLETE",
+  "extensions": {},
+  "provider_adapters": []
+}

@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:11:project-adapter:provider-adapter:0.1.0",
+  "title": "U-POS Provider Adapter",
+  "description": "Machine-readable representation of the UPOS-011 Provider Adapter contract. Identity is provider_adapter_ref + provider_adapter_version.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "provider_adapter_ref",
+    "provider_adapter_version",
+    "provider_class",
+    "provider_identity_ref",
+    "supported_capabilities",
+    "support_constraints",
+    "configuration_contract_ref",
+    "authentication_binding_ref",
+    "resource_resolution_interface",
+    "operation_execution_interface",
+    "event_translation_interface",
+    "health_interface",
+    "error_normalization_interface",
+    "raw_provider_error_ref_support",
+    "compatibility_requirements"
+  ],
+  "properties": {
+    "provider_adapter_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_adapter_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_class": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_identity_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "supported_capabilities": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "support_constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "configuration_contract_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authentication_binding_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "resource_resolution_interface": {
+      "type": "string",
+      "minLength": 1
+    },
+    "operation_execution_interface": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_translation_interface": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "health_interface": {
+      "type": "string",
+      "minLength": 1
+    },
+    "error_normalization_interface": {
+      "type": "string",
+      "minLength": 1
+    },
+    "raw_provider_error_ref_support": {
+      "type": "boolean"
+    },
+    "compatibility_requirements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:11:project-adapter:resource-binding:0.1.0",
+  "title": "U-POS Resource Binding",
+  "allOf": [
+    {
+      "$ref": "urn:upos:schema:11:project-adapter:binding:0.1.0#/$defs/core"
+    },
+    {
+      "type": "object",
+      "required": [
+        "binding_type",
+        "abstract_resource_ref",
+        "resource_type",
+        "provider_adapter_ref",
+        "provider_adapter_version",
+        "provider_resource_ref",
+        "environment_ref",
+        "security_resource_ref"
+      ],
+      "properties": {
+        "binding_type": {
+          "const": "RESOURCE_BINDING"
+        },
+        "abstract_resource_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resource_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provider_adapter_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provider_adapter_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provider_resource_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "environment_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "security_resource_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

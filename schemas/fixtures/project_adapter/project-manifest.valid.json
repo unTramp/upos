@@ -1,0 +1,39 @@
+{
+  "project": {
+    "project_id": "example-project",
+    "name": "Example Project",
+    "canonical_project_source_ref": "docs/00_governance/SOURCE_OF_TRUTH.md"
+  },
+  "upos_baseline": {
+    "version": "v1.0.0",
+    "module_interface_requirements": {}
+  },
+  "manifest_version": "1.0.0",
+  "project_adapter_version": "1.0.0",
+  "repositories": [
+    {
+      "repository_ref": "repo-primary",
+      "binding_id": "repo-binding-primary"
+    }
+  ],
+  "paths": [
+    "path-architecture"
+  ],
+  "commands": [
+    "cmd-test"
+  ],
+  "providers": [],
+  "runtime": {
+    "binding_refs": []
+  },
+  "environments": [],
+  "identity_bindings": [],
+  "resource_bindings": [],
+  "capability_bindings": [],
+  "security_bindings": [],
+  "secret_bindings": [],
+  "quality_bindings": [],
+  "observability_bindings": [],
+  "learning_bindings": [],
+  "extensions": {}
+}
