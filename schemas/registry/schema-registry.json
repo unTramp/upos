@@ -82,6 +82,91 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Operational larger-project profile. Requires minimum authority-resolution fields while preserving optional upstream metadata."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.binding",
+      "schema_uri": "urn:upos:schema:11:project-adapter:binding:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project_adapter/binding.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "11_project_adapter/BINDING_STANDARD.md",
+        "11_project_adapter/BINDING_VALIDATION_STANDARD.md",
+        "11_project_adapter/PROJECT_ADAPTER_ONTOLOGY.md"
+      ],
+      "identity_model": "Generic non-command Binding identity is binding_id. Command mappings use command_binding_id.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Candidate generic non-command Binding representation."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.command_binding",
+      "schema_uri": "urn:upos:schema:11:project-adapter:command-binding:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project_adapter/command-binding.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "11_project_adapter/COMMAND_BINDING_STANDARD.md",
+        "11_project_adapter/templates/COMMAND_BINDING_TEMPLATE.md"
+      ],
+      "identity_model": "Command Binding identity is command_binding_id.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Dedicated schema preserves command identity."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.project_manifest",
+      "schema_uri": "urn:upos:schema:11:project-adapter:project-manifest:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project_adapter/project-manifest.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "11_project_adapter/PROJECT_MANIFEST_STANDARD.md",
+        "11_project_adapter/templates/PROJECT_MANIFEST_TEMPLATE.md"
+      ],
+      "identity_model": "Project Manifest identity is project_id + manifest_version; no project_manifest_id.",
+      "reference_dependencies": [
+        "upos.11.project_adapter.binding",
+        "upos.11.project_adapter.command_binding"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Manifest binding/declaration sections normalized to reference lists."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.project_adapter",
+      "schema_uri": "urn:upos:schema:11:project-adapter:project-adapter:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project_adapter/project-adapter.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "11_project_adapter/PROJECT_ADAPTER_ONTOLOGY.md",
+        "11_project_adapter/PROJECT_ADAPTER_OPERATING_MODEL.md",
+        "11_project_adapter/BINDING_RESOLUTION_STANDARD.md",
+        "11_project_adapter/BINDING_VALIDATION_STANDARD.md"
+      ],
+      "identity_model": "Project Adapter identity is project_id + project_adapter_version; no project_adapter_id.",
+      "reference_dependencies": [
+        "upos.11.project_adapter.binding",
+        "upos.11.project_adapter.command_binding"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Governed binding collection; not project Source of Truth."
     }
   ]
 }

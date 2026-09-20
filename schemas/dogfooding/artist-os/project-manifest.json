@@ -1,0 +1,53 @@
+{
+  "project": {
+    "project_id": "artist-os",
+    "name": "Artist OS",
+    "canonical_project_source_ref": ".upos/SOURCE_OF_TRUTH_MAP.md"
+  },
+  "upos_baseline": {
+    "version": "v1.0.0",
+    "module_interface_requirements": {}
+  },
+  "manifest_version": "candidate-0.1",
+  "project_adapter_version": "candidate-0.1",
+  "repositories": [
+    "artist-os-primary"
+  ],
+  "paths": [
+    "artist-os-path-architecture",
+    "artist-os-path-companion-architecture",
+    "artist-os-path-doc-index",
+    "artist-os-path-engineering"
+  ],
+  "commands": [
+    "artist-os-cmd-arch-check",
+    "artist-os-cmd-lint",
+    "artist-os-cmd-typecheck",
+    "artist-os-cmd-unit",
+    "artist-os-cmd-integration",
+    "artist-os-cmd-build",
+    "artist-os-cmd-e2e",
+    "artist-os-cmd-db-migrate"
+  ],
+  "providers": [],
+  "runtime": {
+    "binding_refs": []
+  },
+  "environments": [
+    "artist-os-env-ci"
+  ],
+  "identity_bindings": [],
+  "resource_bindings": [],
+  "capability_bindings": [],
+  "security_bindings": [],
+  "secret_bindings": [],
+  "quality_bindings": [],
+  "observability_bindings": [],
+  "learning_bindings": [],
+  "extensions": {
+    "artist_os": {
+      "audited_revision": "94ff0e0219bd441b02044f419528b7243b9b318f",
+      "adoption_branch": "feat/upos-adoption"
+    }
+  }
+}

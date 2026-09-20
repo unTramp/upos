@@ -1,0 +1,88 @@
+{
+  "project_id": "example-project",
+  "project_manifest_version": "1.0.0",
+  "project_adapter_version": "1.0.0",
+  "upos_baseline": "v1.0.0",
+  "bindings": [
+    {
+      "binding_id": "repo-primary",
+      "binding_type": "REPOSITORY_BINDING",
+      "version": "1.0.0",
+      "status": "ACTIVE",
+      "abstract_requirement_ref": "engineering.repository.primary",
+      "scope": {
+        "project_id": "example-project",
+        "repository_ref": null,
+        "environment_ref": null,
+        "operation_ref": null
+      },
+      "concrete_target_ref": "provider:example/repository",
+      "provider_adapter_ref": null,
+      "provider_adapter_version": null,
+      "configuration_ref": null,
+      "canonical_policy_ref": null,
+      "security_policy_ref": null,
+      "requiredness": "REQUIRED",
+      "effective_from": null,
+      "expires_at": null,
+      "validation_state": "VALID",
+      "compatibility_state": "COMPATIBLE",
+      "health_state": "HEALTHY",
+      "supersedes": null,
+      "replacement": null
+    },
+    {
+      "binding_id": "path-architecture",
+      "binding_type": "PATH_BINDING",
+      "version": "1.0.0",
+      "status": "ACTIVE",
+      "abstract_requirement_ref": "project.source.architecture",
+      "scope": {
+        "project_id": "example-project",
+        "repository_ref": "repo-primary",
+        "environment_ref": null,
+        "operation_ref": null
+      },
+      "concrete_target_ref": "docs/MASTER.md",
+      "provider_adapter_ref": null,
+      "provider_adapter_version": null,
+      "configuration_ref": null,
+      "canonical_policy_ref": "docs/00_governance/SOURCE_OF_TRUTH.md",
+      "security_policy_ref": null,
+      "requiredness": "REQUIRED",
+      "effective_from": null,
+      "expires_at": null,
+      "validation_state": "VALID",
+      "compatibility_state": "COMPATIBLE",
+      "health_state": "HEALTHY",
+      "supersedes": null,
+      "replacement": null
+    }
+  ],
+  "command_bindings": [
+    {
+      "command_binding_id": "cmd-test",
+      "version": "1.0.0",
+      "abstract_operation_ref": "quality.unit_test_evidence",
+      "repository_ref": "repo-primary",
+      "working_directory_ref": ".",
+      "executable": "pnpm",
+      "arguments": [
+        "test"
+      ],
+      "environment_binding_refs": [],
+      "secret_binding_refs": [],
+      "timeout_policy_ref": "N/A",
+      "expected_result_interface_ref": "process.exit",
+      "produced_artifact_or_check_type": "test_result",
+      "required_capability_refs": [],
+      "provider_or_runtime_binding_ref": "N/A",
+      "platform_constraints": [],
+      "requiredness": "OPTIONAL",
+      "validation_state": "VALID"
+    }
+  ],
+  "validation_result": "VALID",
+  "configuration_completeness": "PARTIALLY_CONFIGURED",
+  "extensions": {}
+}

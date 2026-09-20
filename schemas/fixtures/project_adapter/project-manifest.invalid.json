@@ -1,0 +1,11 @@
+{
+  "project": {
+    "project_id": "example-project",
+    "name": "Example Project"
+  },
+  "upos_baseline": {
+    "version": "v2.0.0",
+    "module_interface_requirements": {}
+  },
+  "manifest_version": "1.0.0"
+}

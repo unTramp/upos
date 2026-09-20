@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:11:project-adapter:project-manifest:0.1.0",
+  "title": "U-POS Project Manifest",
+  "description": "Machine-readable Project Manifest for U-POS v1.0.0. Identity is project.project_id + manifest_version.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "project",
+    "upos_baseline",
+    "manifest_version",
+    "project_adapter_version",
+    "repositories",
+    "paths",
+    "commands",
+    "providers",
+    "runtime",
+    "environments",
+    "identity_bindings",
+    "resource_bindings",
+    "capability_bindings",
+    "security_bindings",
+    "secret_bindings",
+    "quality_bindings",
+    "observability_bindings",
+    "learning_bindings",
+    "extensions"
+  ],
+  "properties": {
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "project_id",
+        "name",
+        "canonical_project_source_ref"
+      ],
+      "properties": {
+        "project_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_project_source_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "upos_baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "module_interface_requirements"
+      ],
+      "properties": {
+        "version": {
+          "const": "v1.0.0"
+        },
+        "module_interface_requirements": {
+          "type": "object"
+        }
+      }
+    },
+    "manifest_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_adapter_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repositories": {
+      "$ref": "#/$defs/refList"
+    },
+    "paths": {
+      "$ref": "#/$defs/refList"
+    },
+    "commands": {
+      "$ref": "#/$defs/refList"
+    },
+    "providers": {
+      "$ref": "#/$defs/refList"
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "binding_refs": {
+          "$ref": "#/$defs/refList"
+        }
+      }
+    },
+    "environments": {
+      "$ref": "#/$defs/refList"
+    },
+    "identity_bindings": {
+      "$ref": "#/$defs/refList"
+    },
+    "resource_bindings": {
+      "$ref": "#/$defs/refList"
+    },
+    "capability_bindings": {
+      "$ref": "#/$defs/refList"
+    },
+    "security_bindings": {
+      "$ref": "#/$defs/refList"
+    },
+    "secret_bindings": {
+      "$ref": "#/$defs/refList"
+    },
+    "quality_bindings": {
+      "$ref": "#/$defs/refList"
+    },
+    "observability_bindings": {
+      "$ref": "#/$defs/refList"
+    },
+    "learning_bindings": {
+      "$ref": "#/$defs/refList"
+    },
+    "extensions": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_.-]*$"
+      },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "refList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

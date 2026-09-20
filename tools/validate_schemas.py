@@ -39,6 +39,20 @@ SOT_REGISTRY_INVALID_DUPLICATE = SCHEMAS / "fixtures" / "documentation" / "sourc
 SOT_REGISTRY_INVALID_OWNER = SCHEMAS / "fixtures" / "documentation" / "source-of-truth-registry.invalid-owner-ambiguity.json"
 SOT_REGISTRY_INVALID_ACTIVE_INFORMATIVE = SCHEMAS / "fixtures" / "documentation" / "source-of-truth-registry.invalid-active-informative.json"
 
+PROJECT_MANIFEST_SCHEMA = SCHEMAS / "11" / "project_adapter" / "project-manifest.schema.json"
+PROJECT_ADAPTER_SCHEMA = SCHEMAS / "11" / "project_adapter" / "project-adapter.schema.json"
+
+PROJECT_ADAPTER_FIXTURES = [
+    (
+        PROJECT_MANIFEST_SCHEMA,
+        SCHEMAS / "fixtures" / "project_adapter" / "project-manifest.valid.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "project-manifest.invalid.json",
+    ),
+]
+
+ARTIST_OS_PROJECT_MANIFEST = SCHEMAS / "dogfooding" / "artist-os" / "project-manifest.json"
+ARTIST_OS_PROJECT_ADAPTER = SCHEMAS / "dogfooding" / "artist-os" / "project-adapter.json"
+
 OWNER_BY_PREFIX = {
     "upos.common.": "NONE_INFRASTRUCTURE",
     "upos.01.documentation.": "UPOS-01",
@@ -334,6 +348,157 @@ def validate_sot_registry_fixtures(
         fail("ACTIVE informative Source-of-Truth registry fixture unexpectedly passed")
 
 
+
+def validate_project_manifest_adapter_pair(
+    manifest: dict[str, Any],
+    adapter: dict[str, Any],
+    *,
+    expect_valid: bool,
+) -> None:
+    errors: list[str] = []
+
+    project_id = manifest.get("project", {}).get("project_id")
+    if project_id != adapter.get("project_id"):
+        errors.append(
+            f"project mismatch: manifest={project_id!r}, adapter={adapter.get('project_id')!r}"
+        )
+
+    if manifest.get("manifest_version") != adapter.get("project_manifest_version"):
+        errors.append("manifest/adapter manifest version mismatch")
+
+    if manifest.get("project_adapter_version") != adapter.get("project_adapter_version"):
+        errors.append("manifest/adapter adapter version mismatch")
+
+    if manifest.get("upos_baseline", {}).get("version") != adapter.get("upos_baseline"):
+        errors.append("manifest/adapter U-POS baseline mismatch")
+
+    binding_ids: dict[str, dict[str, Any]] = {}
+    for binding in adapter.get("bindings", []):
+        binding_id = binding["binding_id"]
+        if binding_id in binding_ids:
+            errors.append(f"duplicate binding_id: {binding_id}")
+        binding_ids[binding_id] = binding
+        if binding.get("scope", {}).get("project_id") != adapter.get("project_id"):
+            errors.append(f"binding {binding_id} belongs to a different project scope")
+
+    command_ids: dict[str, dict[str, Any]] = {}
+    for command in adapter.get("command_bindings", []):
+        command_id = command["command_binding_id"]
+        if command_id in command_ids:
+            errors.append(f"duplicate command_binding_id: {command_id}")
+        command_ids[command_id] = command
+
+    expected_types = {
+        "repositories": {"REPOSITORY_BINDING"},
+        "paths": {"PATH_BINDING"},
+        "providers": {"PROVIDER_BINDING"},
+        "environments": {"ENVIRONMENT_BINDING"},
+        "identity_bindings": {"IDENTITY_BINDING"},
+        "resource_bindings": {"RESOURCE_BINDING"},
+        "capability_bindings": {"CAPABILITY_BINDING"},
+        "secret_bindings": {"SECRET_BINDING"},
+        "quality_bindings": {"QUALITY_BINDING"},
+        "observability_bindings": {"OBSERVABILITY_BINDING"},
+        "learning_bindings": {"LEARNING_BINDING"},
+    }
+
+    all_refs: set[str] = set()
+    for section, allowed_types in expected_types.items():
+        for ref in manifest.get(section, []):
+            all_refs.add(ref)
+            binding = binding_ids.get(ref)
+            if binding is None:
+                errors.append(f"manifest {section} references missing binding: {ref}")
+                continue
+            if binding.get("binding_type") not in allowed_types:
+                errors.append(
+                    f"manifest {section} ref {ref} has incompatible type "
+                    f"{binding.get('binding_type')}"
+                )
+
+    for ref in manifest.get("commands", []):
+        if ref not in command_ids:
+            errors.append(f"manifest commands references missing command binding: {ref}")
+
+    for ref in manifest.get("runtime", {}).get("binding_refs", []):
+        all_refs.add(ref)
+        if ref not in binding_ids:
+            errors.append(f"manifest runtime references missing binding: {ref}")
+
+    for ref in manifest.get("security_bindings", []):
+        all_refs.add(ref)
+        if ref not in binding_ids:
+            errors.append(f"manifest security_bindings references missing binding: {ref}")
+
+    unreferenced_required = [
+        b["binding_id"]
+        for b in adapter.get("bindings", [])
+        if b.get("status") == "ACTIVE"
+        and b.get("requiredness") == "REQUIRED"
+        and b["binding_id"] not in all_refs
+    ]
+    if unreferenced_required:
+        errors.append(
+            "ACTIVE REQUIRED bindings are not referenced by manifest: "
+            + ", ".join(sorted(unreferenced_required))
+        )
+
+    if expect_valid and errors:
+        fail("Project Manifest/Adapter validation failed: " + "; ".join(errors))
+    if not expect_valid and not errors:
+        fail("negative Project Manifest/Adapter semantic fixture unexpectedly passed")
+
+
+def validate_project_adapter_fixtures(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    for schema_path, valid_path, invalid_path in PROJECT_ADAPTER_FIXTURES:
+        validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
+
+    adapter_validator = validator_for(PROJECT_ADAPTER_SCHEMA, docs, resource_registry)
+
+    manifest = load_json(
+        SCHEMAS / "fixtures" / "project_adapter" / "project-manifest.valid.json"
+    )
+    adapter = load_json(
+        SCHEMAS / "fixtures" / "project_adapter" / "project-adapter.valid.json"
+    )
+    try:
+        adapter_validator.validate(adapter)
+    except ValidationError as exc:
+        fail(f"positive Project Adapter fixture unexpectedly failed: {exc.message}")
+    validate_project_manifest_adapter_pair(manifest, adapter, expect_valid=True)
+
+    invalid_adapter = load_json(
+        SCHEMAS / "fixtures" / "project_adapter" / "project-adapter.invalid.json"
+    )
+    try:
+        adapter_validator.validate(invalid_adapter)
+    except ValidationError as exc:
+        fail(
+            "negative Project Adapter semantic fixture should pass structural schema "
+            f"before semantic validation, but failed: {exc.message}"
+        )
+    validate_project_manifest_adapter_pair(manifest, invalid_adapter, expect_valid=False)
+
+    artist_manifest = load_json(ARTIST_OS_PROJECT_MANIFEST)
+    artist_adapter = load_json(ARTIST_OS_PROJECT_ADAPTER)
+    manifest_validator = validator_for(PROJECT_MANIFEST_SCHEMA, docs, resource_registry)
+
+    try:
+        manifest_validator.validate(artist_manifest)
+        adapter_validator.validate(artist_adapter)
+    except ValidationError as exc:
+        fail(f"Artist OS Phase 2C dogfooding schema validation failed: {exc.message}")
+
+    validate_project_manifest_adapter_pair(
+        artist_manifest,
+        artist_adapter,
+        expect_valid=True,
+    )
+
+
 def validate_fixtures(
     docs: dict[str, dict[str, Any]],
     resource_registry: Registry,
@@ -362,6 +527,7 @@ def validate_fixtures(
         )
 
     validate_sot_registry_fixtures(docs, resource_registry)
+    validate_project_adapter_fixtures(docs, resource_registry)
 
 
 def main() -> int:
@@ -375,6 +541,8 @@ def main() -> int:
     print("Registry: schemas/registry/schema-registry.json")
     print(f"Schema documents: {len(schema_ids)}")
     print("Documentation Authority fixtures: PASS")
+    print("Project Manifest / Adapter fixtures: PASS")
+    print("Artist OS Phase 2C dogfooding: PASS")
     return 0
 
 

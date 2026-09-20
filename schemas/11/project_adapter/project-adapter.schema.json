@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:11:project-adapter:project-adapter:0.1.0",
+  "title": "U-POS Project Adapter",
+  "description": "Governed collection of project-specific bindings. Identity is project_id + project_adapter_version; no project_adapter_id exists.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "project_id",
+    "project_manifest_version",
+    "project_adapter_version",
+    "upos_baseline",
+    "bindings",
+    "command_bindings",
+    "validation_result",
+    "configuration_completeness",
+    "extensions"
+  ],
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_manifest_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_adapter_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "upos_baseline": {
+      "const": "v1.0.0"
+    },
+    "bindings": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:upos:schema:11:project-adapter:binding:0.1.0"
+      }
+    },
+    "command_bindings": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:upos:schema:11:project-adapter:command-binding:0.1.0"
+      }
+    },
+    "validation_result": {
+      "enum": [
+        "VALID",
+        "VALID_WITH_WARNINGS",
+        "INCOMPLETE",
+        "INVALID"
+      ]
+    },
+    "configuration_completeness": {
+      "enum": [
+        "COMPLETE",
+        "PARTIALLY_CONFIGURED",
+        "UNRESOLVED",
+        "INVALID"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_.-]*$"
+      },
+      "additionalProperties": true
+    }
+  }
+}

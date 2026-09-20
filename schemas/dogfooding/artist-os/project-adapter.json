@@ -1,0 +1,376 @@
+{
+  "project_id": "artist-os",
+  "project_manifest_version": "candidate-0.1",
+  "project_adapter_version": "candidate-0.1",
+  "upos_baseline": "v1.0.0",
+  "bindings": [
+    {
+      "binding_id": "artist-os-primary",
+      "binding_type": "REPOSITORY_BINDING",
+      "version": "candidate-0.1",
+      "status": "ACTIVE",
+      "abstract_requirement_ref": "engineering.repository.primary",
+      "scope": {
+        "project_id": "artist-os",
+        "repository_ref": null,
+        "environment_ref": null,
+        "operation_ref": null
+      },
+      "concrete_target_ref": "github:unTramp/artistos",
+      "provider_adapter_ref": null,
+      "provider_adapter_version": null,
+      "configuration_ref": null,
+      "canonical_policy_ref": null,
+      "security_policy_ref": null,
+      "requiredness": "REQUIRED",
+      "effective_from": null,
+      "expires_at": null,
+      "validation_state": "VALID",
+      "compatibility_state": "CANDIDATE_REVIEW_REQUIRED",
+      "health_state": "NOT_RUNTIME_VERIFIED",
+      "supersedes": null,
+      "replacement": null
+    },
+    {
+      "binding_id": "artist-os-path-architecture",
+      "binding_type": "PATH_BINDING",
+      "version": "candidate-0.1",
+      "status": "ACTIVE",
+      "abstract_requirement_ref": "project.source.architecture",
+      "scope": {
+        "project_id": "artist-os",
+        "repository_ref": "artist-os-primary",
+        "environment_ref": null,
+        "operation_ref": null
+      },
+      "concrete_target_ref": "docs/artist-os/00_governance/MASTER_ARCHITECTURE_v1.4.md",
+      "provider_adapter_ref": null,
+      "provider_adapter_version": null,
+      "configuration_ref": null,
+      "canonical_policy_ref": ".upos/SOURCE_OF_TRUTH_MAP.md",
+      "security_policy_ref": null,
+      "requiredness": "REQUIRED",
+      "effective_from": null,
+      "expires_at": null,
+      "validation_state": "VALID",
+      "compatibility_state": "CANDIDATE_REVIEW_REQUIRED",
+      "health_state": "NOT_RUNTIME_VERIFIED",
+      "supersedes": null,
+      "replacement": null
+    },
+    {
+      "binding_id": "artist-os-path-companion-architecture",
+      "binding_type": "PATH_BINDING",
+      "version": "candidate-0.1",
+      "status": "ACTIVE",
+      "abstract_requirement_ref": "project.source.architecture_companion",
+      "scope": {
+        "project_id": "artist-os",
+        "repository_ref": "artist-os-primary",
+        "environment_ref": null,
+        "operation_ref": null
+      },
+      "concrete_target_ref": "docs/artist-os/00_governance/ARCHITECTURE_RESOLUTION_PASS1.md",
+      "provider_adapter_ref": null,
+      "provider_adapter_version": null,
+      "configuration_ref": null,
+      "canonical_policy_ref": ".upos/SOURCE_OF_TRUTH_MAP.md",
+      "security_policy_ref": null,
+      "requiredness": "REQUIRED",
+      "effective_from": null,
+      "expires_at": null,
+      "validation_state": "VALID_WITH_WARNINGS",
+      "compatibility_state": "CANDIDATE_REVIEW_REQUIRED",
+      "health_state": "NOT_RUNTIME_VERIFIED",
+      "supersedes": null,
+      "replacement": null
+    },
+    {
+      "binding_id": "artist-os-path-doc-index",
+      "binding_type": "PATH_BINDING",
+      "version": "candidate-0.1",
+      "status": "ACTIVE",
+      "abstract_requirement_ref": "project.source.documentation_index",
+      "scope": {
+        "project_id": "artist-os",
+        "repository_ref": "artist-os-primary",
+        "environment_ref": null,
+        "operation_ref": null
+      },
+      "concrete_target_ref": "docs/artist-os/README.md",
+      "provider_adapter_ref": null,
+      "provider_adapter_version": null,
+      "configuration_ref": null,
+      "canonical_policy_ref": ".upos/SOURCE_OF_TRUTH_MAP.md",
+      "security_policy_ref": null,
+      "requiredness": "REQUIRED",
+      "effective_from": null,
+      "expires_at": null,
+      "validation_state": "VALID",
+      "compatibility_state": "CANDIDATE_REVIEW_REQUIRED",
+      "health_state": "NOT_RUNTIME_VERIFIED",
+      "supersedes": null,
+      "replacement": null
+    },
+    {
+      "binding_id": "artist-os-path-engineering",
+      "binding_type": "PATH_BINDING",
+      "version": "candidate-0.1",
+      "status": "ACTIVE",
+      "abstract_requirement_ref": "project.source.engineering",
+      "scope": {
+        "project_id": "artist-os",
+        "repository_ref": "artist-os-primary",
+        "environment_ref": null,
+        "operation_ref": null
+      },
+      "concrete_target_ref": "docs/artist-os/engineering/",
+      "provider_adapter_ref": null,
+      "provider_adapter_version": null,
+      "configuration_ref": null,
+      "canonical_policy_ref": ".upos/SOURCE_OF_TRUTH_MAP.md",
+      "security_policy_ref": null,
+      "requiredness": "REQUIRED",
+      "effective_from": null,
+      "expires_at": null,
+      "validation_state": "VALID",
+      "compatibility_state": "CANDIDATE_REVIEW_REQUIRED",
+      "health_state": "NOT_RUNTIME_VERIFIED",
+      "supersedes": null,
+      "replacement": null
+    },
+    {
+      "binding_id": "artist-os-env-ci",
+      "binding_type": "ENVIRONMENT_BINDING",
+      "version": "candidate-0.1",
+      "status": "ACTIVE",
+      "abstract_requirement_ref": "environment.ci",
+      "scope": {
+        "project_id": "artist-os",
+        "repository_ref": "artist-os-primary",
+        "environment_ref": null,
+        "operation_ref": null
+      },
+      "concrete_target_ref": "github-actions",
+      "provider_adapter_ref": null,
+      "provider_adapter_version": null,
+      "configuration_ref": null,
+      "canonical_policy_ref": null,
+      "security_policy_ref": null,
+      "requiredness": "OPTIONAL",
+      "effective_from": null,
+      "expires_at": null,
+      "validation_state": "VALID_WITH_WARNINGS",
+      "compatibility_state": "CANDIDATE_REVIEW_REQUIRED",
+      "health_state": "NOT_RUNTIME_VERIFIED",
+      "supersedes": null,
+      "replacement": null
+    }
+  ],
+  "command_bindings": [
+    {
+      "command_binding_id": "artist-os-cmd-arch-check",
+      "version": "candidate-0.1",
+      "abstract_operation_ref": "engineering.architecture_check",
+      "repository_ref": "artist-os-primary",
+      "working_directory_ref": ".",
+      "executable": "pnpm",
+      "arguments": [
+        "arch:check"
+      ],
+      "environment_binding_refs": [],
+      "secret_binding_refs": [],
+      "timeout_policy_ref": "UNRESOLVED",
+      "expected_result_interface_ref": "process.exit",
+      "produced_artifact_or_check_type": "static_analysis",
+      "required_capability_refs": [],
+      "provider_or_runtime_binding_ref": "UNRESOLVED",
+      "platform_constraints": [
+        "Node.js >=22.16.0",
+        "pnpm 12.4.1"
+      ],
+      "requiredness": "OPTIONAL",
+      "validation_state": "VALID_WITH_WARNINGS"
+    },
+    {
+      "command_binding_id": "artist-os-cmd-lint",
+      "version": "candidate-0.1",
+      "abstract_operation_ref": "quality.lint_evidence",
+      "repository_ref": "artist-os-primary",
+      "working_directory_ref": ".",
+      "executable": "pnpm",
+      "arguments": [
+        "lint"
+      ],
+      "environment_binding_refs": [],
+      "secret_binding_refs": [],
+      "timeout_policy_ref": "UNRESOLVED",
+      "expected_result_interface_ref": "process.exit",
+      "produced_artifact_or_check_type": "lint_result",
+      "required_capability_refs": [],
+      "provider_or_runtime_binding_ref": "UNRESOLVED",
+      "platform_constraints": [
+        "Node.js >=22.16.0",
+        "pnpm 12.4.1"
+      ],
+      "requiredness": "OPTIONAL",
+      "validation_state": "VALID_WITH_WARNINGS"
+    },
+    {
+      "command_binding_id": "artist-os-cmd-typecheck",
+      "version": "candidate-0.1",
+      "abstract_operation_ref": "quality.typecheck_evidence",
+      "repository_ref": "artist-os-primary",
+      "working_directory_ref": ".",
+      "executable": "pnpm",
+      "arguments": [
+        "typecheck"
+      ],
+      "environment_binding_refs": [],
+      "secret_binding_refs": [],
+      "timeout_policy_ref": "UNRESOLVED",
+      "expected_result_interface_ref": "process.exit",
+      "produced_artifact_or_check_type": "typecheck_result",
+      "required_capability_refs": [],
+      "provider_or_runtime_binding_ref": "UNRESOLVED",
+      "platform_constraints": [
+        "Node.js >=22.16.0",
+        "pnpm 12.4.1"
+      ],
+      "requiredness": "OPTIONAL",
+      "validation_state": "VALID_WITH_WARNINGS"
+    },
+    {
+      "command_binding_id": "artist-os-cmd-unit",
+      "version": "candidate-0.1",
+      "abstract_operation_ref": "quality.unit_test_evidence",
+      "repository_ref": "artist-os-primary",
+      "working_directory_ref": ".",
+      "executable": "pnpm",
+      "arguments": [
+        "test"
+      ],
+      "environment_binding_refs": [],
+      "secret_binding_refs": [],
+      "timeout_policy_ref": "UNRESOLVED",
+      "expected_result_interface_ref": "process.exit",
+      "produced_artifact_or_check_type": "test_result",
+      "required_capability_refs": [],
+      "provider_or_runtime_binding_ref": "UNRESOLVED",
+      "platform_constraints": [
+        "Node.js >=22.16.0",
+        "pnpm 12.4.1"
+      ],
+      "requiredness": "OPTIONAL",
+      "validation_state": "VALID_WITH_WARNINGS"
+    },
+    {
+      "command_binding_id": "artist-os-cmd-integration",
+      "version": "candidate-0.1",
+      "abstract_operation_ref": "quality.integration_test_evidence",
+      "repository_ref": "artist-os-primary",
+      "working_directory_ref": ".",
+      "executable": "pnpm",
+      "arguments": [
+        "test:integration"
+      ],
+      "environment_binding_refs": [],
+      "secret_binding_refs": [],
+      "timeout_policy_ref": "UNRESOLVED",
+      "expected_result_interface_ref": "process.exit",
+      "produced_artifact_or_check_type": "test_result",
+      "required_capability_refs": [],
+      "provider_or_runtime_binding_ref": "UNRESOLVED",
+      "platform_constraints": [
+        "Node.js >=22.16.0",
+        "pnpm 12.4.1"
+      ],
+      "requiredness": "OPTIONAL",
+      "validation_state": "VALID_WITH_WARNINGS"
+    },
+    {
+      "command_binding_id": "artist-os-cmd-build",
+      "version": "candidate-0.1",
+      "abstract_operation_ref": "quality.build_evidence",
+      "repository_ref": "artist-os-primary",
+      "working_directory_ref": ".",
+      "executable": "pnpm",
+      "arguments": [
+        "build"
+      ],
+      "environment_binding_refs": [],
+      "secret_binding_refs": [],
+      "timeout_policy_ref": "UNRESOLVED",
+      "expected_result_interface_ref": "process.exit",
+      "produced_artifact_or_check_type": "build_result",
+      "required_capability_refs": [],
+      "provider_or_runtime_binding_ref": "UNRESOLVED",
+      "platform_constraints": [
+        "Node.js >=22.16.0",
+        "pnpm 12.4.1"
+      ],
+      "requiredness": "OPTIONAL",
+      "validation_state": "VALID_WITH_WARNINGS"
+    },
+    {
+      "command_binding_id": "artist-os-cmd-e2e",
+      "version": "candidate-0.1",
+      "abstract_operation_ref": "quality.browser_e2e_evidence",
+      "repository_ref": "artist-os-primary",
+      "working_directory_ref": ".",
+      "executable": "pnpm",
+      "arguments": [
+        "test:e2e"
+      ],
+      "environment_binding_refs": [],
+      "secret_binding_refs": [],
+      "timeout_policy_ref": "UNRESOLVED",
+      "expected_result_interface_ref": "process.exit",
+      "produced_artifact_or_check_type": "test_result",
+      "required_capability_refs": [],
+      "provider_or_runtime_binding_ref": "UNRESOLVED",
+      "platform_constraints": [
+        "Node.js >=22.16.0",
+        "pnpm 12.4.1"
+      ],
+      "requiredness": "OPTIONAL",
+      "validation_state": "VALID_WITH_WARNINGS"
+    },
+    {
+      "command_binding_id": "artist-os-cmd-db-migrate",
+      "version": "candidate-0.1",
+      "abstract_operation_ref": "engineering.database_migration",
+      "repository_ref": "artist-os-primary",
+      "working_directory_ref": ".",
+      "executable": "pnpm",
+      "arguments": [
+        "db:migrate"
+      ],
+      "environment_binding_refs": [],
+      "secret_binding_refs": [],
+      "timeout_policy_ref": "UNRESOLVED",
+      "expected_result_interface_ref": "process.exit",
+      "produced_artifact_or_check_type": "migration_result",
+      "required_capability_refs": [],
+      "provider_or_runtime_binding_ref": "UNRESOLVED",
+      "platform_constraints": [
+        "Node.js >=22.16.0",
+        "pnpm 12.4.1"
+      ],
+      "requiredness": "CONDITIONAL",
+      "validation_state": "VALID_WITH_WARNINGS"
+    }
+  ],
+  "validation_result": "VALID_WITH_WARNINGS",
+  "configuration_completeness": "PARTIALLY_CONFIGURED",
+  "extensions": {
+    "artist_os": {
+      "production_bindings": "UNRESOLVED",
+      "live_ai_binding": "UNRESOLVED",
+      "quality_semantic_binding": "PARTIAL",
+      "security_semantic_binding": "PARTIAL",
+      "observability_semantic_binding": "PARTIAL",
+      "learning_semantic_binding": "PARTIAL"
+    }
+  }
+}
