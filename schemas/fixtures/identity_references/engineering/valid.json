@@ -1,0 +1,11 @@
+{
+  "engineering_change_ref": "engineering-change-0001",
+  "repository_change_unit_ref": "rcu-0001",
+  "workspace_ref": "workspace-0001",
+  "merge_operation_ref": "merge-operation-0001",
+  "branch_ref": "refs/heads/feat/example",
+  "commit_ref": "abc123",
+  "integration_request_ref": "github-pr:5",
+  "check_ref": "github-check:101",
+  "revision_ref": "revision:abc123"
+}

@@ -420,6 +420,25 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Identity/reference-only representation. Retrieval, ranking, assembly, freshness evaluation, invalidation, reassembly, cache, and persistence remain outside Phase 2."
+    },
+    {
+      "schema_key": "upos.06.engineering.identity_references",
+      "schema_uri": "urn:upos:schema:06:engineering:identity-references:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/06/engineering/identity-references.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-06",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "00_system/GLOBAL_IDENTITY_REFERENCE_REGISTRY.md",
+        "06_engineering_governance/CROSS_MODULE_INTERFACES.md"
+      ],
+      "identity_model": "Serializes engineering_change_id, repository_change_unit_id, workspace_id, merge_operation_id, plus provider/native branch/commit/integration-request/check/revision references.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Identity/reference-only representation. No Git operation execution, workspace creation, merge execution, provider calls, persistence, or runtime error/result semantics."
     }
   ]
 }

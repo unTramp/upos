@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:06:engineering:identity-references:0.1.0",
+  "title": "UPOS-06 Engineering Governance Identity References",
+  "description": "Canonical serialization of frozen UPOS-06 identity/reference semantics only.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "engineering_change_ref": { "$ref": "#/$defs/engineeringChangeRef" },
+    "repository_change_unit_ref": { "$ref": "#/$defs/repositoryChangeUnitRef" },
+    "workspace_ref": { "$ref": "#/$defs/workspaceRef" },
+    "merge_operation_ref": { "$ref": "#/$defs/mergeOperationRef" },
+    "branch_ref": { "$ref": "#/$defs/branchRef" },
+    "commit_ref": { "$ref": "#/$defs/commitRef" },
+    "integration_request_ref": { "$ref": "#/$defs/integrationRequestRef" },
+    "check_ref": { "$ref": "#/$defs/checkRef" },
+    "revision_ref": { "$ref": "#/$defs/revisionRef" }
+  },
+  "$defs": {
+    "engineeringChangeRef": { "type": "string", "minLength": 1, "description": "Reference to engineering_change_id." },
+    "repositoryChangeUnitRef": { "type": "string", "minLength": 1, "description": "Reference to repository_change_unit_id." },
+    "workspaceRef": { "type": "string", "minLength": 1, "description": "Reference to workspace_id." },
+    "mergeOperationRef": { "type": "string", "minLength": 1, "description": "Reference to merge_operation_id." },
+    "branchRef": { "type": "string", "minLength": 1, "description": "Provider/native branch reference." },
+    "commitRef": { "type": "string", "minLength": 1, "description": "Provider/native commit reference." },
+    "integrationRequestRef": { "type": "string", "minLength": 1, "description": "Provider/native Integration Request reference; no global integration_request_id is introduced." },
+    "checkRef": { "type": "string", "minLength": 1, "description": "Provider/native engineering check reference." },
+    "revisionRef": { "type": "string", "minLength": 1, "description": "Provider/native revision/integrated revision reference." }
+  }
+}
