@@ -1080,6 +1080,81 @@ def validate_runtime_contract_references() -> None:
         walk(load_json(fixture), fixture)
 
 
+def validate_durable_runtime_version_carriage(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    cases = [
+        (
+            SCHEMAS / "02" / "agent_organization" / "agent-run-attribution.schema.json",
+            SCHEMAS / "fixtures" / "runtime" / "agent_organization" / "agent-run-attribution.valid.json",
+            "UPOS-02-AGENT-RUN-ATTRIBUTION",
+        ),
+        (
+            SCHEMAS / "03" / "skills" / "skill-invocation-attribution.schema.json",
+            SCHEMAS / "fixtures" / "runtime" / "skills" / "skill-invocation-attribution.valid.json",
+            "UPOS-03-SKILL-INVOCATION-ATTRIBUTION",
+        ),
+        (
+            SCHEMAS / "04" / "workflow" / "task-runtime.schema.json",
+            SCHEMAS / "fixtures" / "runtime" / "workflow" / "task-runtime.valid.json",
+            "UPOS-04-TASK-RUNTIME",
+        ),
+        (
+            SCHEMAS / "04" / "workflow" / "workflow-instance-runtime.schema.json",
+            SCHEMAS / "fixtures" / "runtime" / "workflow" / "workflow-instance-runtime.valid.json",
+            "UPOS-04-WORKFLOW-INSTANCE-RUNTIME",
+        ),
+        (
+            RUNTIME_EXECUTION_ATTEMPT_SCHEMA,
+            SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.created.valid.json",
+            "UPOS-04-EXECUTION-ATTEMPT",
+        ),
+        (
+            RUNTIME_RETRY_SCHEMA,
+            SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-provenance.agent-run.valid.json",
+            "UPOS-04-RETRY-PROVENANCE",
+        ),
+    ]
+
+    for schema_path, fixture_path, contract_ref in cases:
+        validator = validator_for(schema_path, docs, resource_registry)
+        supported = load_json(fixture_path)
+        supported.update(
+            {
+                "runtime_contract_ref": contract_ref,
+                "runtime_contract_version": "0.1.0",
+                "runtime_schema_version": "0.1.0",
+            }
+        )
+        try:
+            validator.validate(supported)
+        except ValidationError as exc:
+            fail(
+                f"durable runtime version carriage unexpectedly failed for "
+                f"{schema_path.relative_to(ROOT)}: {exc.message}"
+            )
+        print(
+            f"FOCUSED PASS: durable version carriage "
+            f"{schema_path.relative_to(ROOT)}"
+        )
+
+        unsupported = json.loads(json.dumps(supported))
+        unsupported["runtime_contract_version"] = "99.0.0"
+        try:
+            validator.validate(unsupported)
+        except ValidationError:
+            print(
+                f"FOCUSED REJECT: unsupported runtime contract version "
+                f"{schema_path.relative_to(ROOT)}"
+            )
+        else:
+            fail(
+                f"unsupported runtime contract version unexpectedly passed for "
+                f"{schema_path.relative_to(ROOT)}"
+            )
+
+
 def validate_forbidden_identity_properties(
     docs: dict[str, dict[str, Any]],
 ) -> None:
@@ -1536,6 +1611,7 @@ def main() -> int:
     resource_registry = build_resource_registry(docs)
     validate_registry(schema_ids)
     validate_runtime_contract_references()
+    validate_durable_runtime_version_carriage(docs, resource_registry)
     validate_forbidden_identity_properties(docs)
     validate_artist_os_identity_namespace()
     validate_fixtures(docs, resource_registry)
@@ -1551,6 +1627,7 @@ def main() -> int:
     print("Cross-module identity/reference fixtures: PASS")
     print("Canonical cross-schema reference conformance: PASS")
     print("Runtime contract reference/version resolution: PASS")
+    print("Durable runtime version carriage/fail-closed validation: PASS")
     print("Identity anti-duplication validation: PASS")
     print("Artist OS namespace compatibility: PASS")
     print("Phase-3 common runtime primitive fixtures: PASS")
