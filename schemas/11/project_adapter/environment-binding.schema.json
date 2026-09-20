@@ -2,52 +2,54 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:upos:schema:11:project-adapter:environment-binding:0.1.0",
   "title": "U-POS Environment Binding",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "binding_id",
-    "binding_type",
-    "abstract_environment_ref",
-    "project_environment_name",
-    "provider_environment_ref",
-    "security_policy_ref",
-    "resource_binding_refs"
-  ],
-  "properties": {
-    "binding_id": {
-      "type": "string",
-      "minLength": 1
+  "allOf": [
+    {
+      "$ref": "urn:upos:schema:11:project-adapter:binding:0.1.0#/$defs/core"
     },
-    "binding_type": {
-      "const": "ENVIRONMENT_BINDING"
-    },
-    "abstract_environment_ref": {
-      "type": "string",
-      "minLength": 1
-    },
-    "project_environment_name": {
-      "type": "string",
-      "minLength": 1
-    },
-    "provider_environment_ref": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "security_policy_ref": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "resource_binding_refs": {
-      "type": "array",
-      "uniqueItems": true,
-      "items": {
-        "type": "string",
-        "minLength": 1
+    {
+      "type": "object",
+      "required": [
+        "binding_type",
+        "abstract_environment_ref",
+        "project_environment_name",
+        "provider_environment_ref",
+        "security_policy_ref",
+        "resource_binding_refs"
+      ],
+      "properties": {
+        "binding_type": {
+          "const": "ENVIRONMENT_BINDING"
+        },
+        "abstract_environment_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "project_environment_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provider_environment_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "security_policy_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "resource_binding_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
       }
     }
-  }
+  ],
+  "unevaluatedProperties": false
 }

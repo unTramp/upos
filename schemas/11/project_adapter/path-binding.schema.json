@@ -2,61 +2,63 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:upos:schema:11:project-adapter:path-binding:0.1.0",
   "title": "U-POS Path Binding",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "binding_id",
-    "binding_type",
-    "abstract_path_ref",
-    "repository_ref",
-    "environment_ref",
-    "concrete_path",
-    "path_kind",
-    "requiredness",
-    "validation_rule_ref"
-  ],
-  "properties": {
-    "binding_id": {
-      "type": "string",
-      "minLength": 1
+  "allOf": [
+    {
+      "$ref": "urn:upos:schema:11:project-adapter:binding:0.1.0#/$defs/core"
     },
-    "binding_type": {
-      "const": "PATH_BINDING"
-    },
-    "abstract_path_ref": {
-      "type": "string",
-      "minLength": 1
-    },
-    "repository_ref": {
-      "type": "string",
-      "minLength": 1
-    },
-    "environment_ref": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "concrete_path": {
-      "type": "string",
-      "minLength": 1
-    },
-    "path_kind": {
-      "type": "string",
-      "minLength": 1
-    },
-    "requiredness": {
-      "enum": [
-        "REQUIRED",
-        "OPTIONAL",
-        "CONDITIONAL"
-      ]
-    },
-    "validation_rule_ref": {
-      "type": [
-        "string",
-        "null"
-      ]
+    {
+      "type": "object",
+      "required": [
+        "binding_type",
+        "abstract_path_ref",
+        "repository_ref",
+        "environment_ref",
+        "concrete_path",
+        "path_kind",
+        "requiredness",
+        "validation_rule_ref"
+      ],
+      "properties": {
+        "binding_type": {
+          "const": "PATH_BINDING"
+        },
+        "abstract_path_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "repository_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "environment_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "concrete_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path_kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requiredness": {
+          "enum": [
+            "REQUIRED",
+            "OPTIONAL",
+            "CONDITIONAL"
+          ]
+        },
+        "validation_rule_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
     }
-  }
+  ],
+  "unevaluatedProperties": false
 }

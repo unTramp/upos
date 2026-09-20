@@ -1,170 +1,197 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:upos:schema:11:project-adapter:binding:0.1.0",
-  "title": "U-POS Project Adapter Binding",
-  "description": "Generic UPOS-011 binding representation for classes without a dedicated Phase 2C specialized schema. Repository, Path, Environment and Command bindings use dedicated schemas.",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "binding_id",
-    "binding_type",
-    "version",
-    "status",
-    "abstract_requirement_ref",
-    "scope",
-    "concrete_target_ref",
-    "requiredness",
-    "validation_state",
-    "compatibility_state",
-    "health_state"
-  ],
-  "properties": {
-    "binding_id": {
-      "type": "string",
-      "minLength": 1
+  "title": "U-POS Generic Binding",
+  "description": "Generic Binding core plus directly representable binding classes that have no stricter Phase 2C field contract.",
+  "allOf": [
+    {
+      "$ref": "#/$defs/core"
     },
-    "binding_type": {
-      "enum": [
-        "TOOL_BINDING",
-        "PROVIDER_BINDING",
-        "IDENTITY_BINDING",
-        "RESOURCE_BINDING",
-        "CAPABILITY_BINDING",
-        "SECRET_BINDING",
-        "QUALITY_BINDING",
-        "OBSERVABILITY_BINDING",
-        "LEARNING_BINDING",
-        "APPROVAL_BINDING"
-      ]
-    },
-    "version": {
-      "type": "string",
-      "minLength": 1
-    },
-    "status": {
-      "enum": [
-        "DRAFT",
-        "ACTIVE",
-        "DEPRECATED",
-        "RETIRED",
-        "SUPERSEDED"
-      ]
-    },
-    "abstract_requirement_ref": {
-      "type": "string",
-      "minLength": 1
-    },
-    "scope": {
+    {
       "type": "object",
-      "additionalProperties": false,
+      "properties": {
+        "binding_type": {
+          "enum": [
+            "TOOL_BINDING",
+            "PROVIDER_BINDING",
+            "QUALITY_BINDING",
+            "OBSERVABILITY_BINDING",
+            "LEARNING_BINDING",
+            "APPROVAL_BINDING"
+          ]
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false,
+  "$defs": {
+    "core": {
+      "type": "object",
       "required": [
-        "project_id"
+        "binding_id",
+        "binding_type",
+        "version",
+        "status",
+        "abstract_requirement_ref",
+        "scope",
+        "concrete_target_ref",
+        "requiredness",
+        "validation_state",
+        "compatibility_state",
+        "health_state"
       ],
       "properties": {
-        "project_id": {
+        "binding_id": {
           "type": "string",
           "minLength": 1
         },
-        "repository_ref": {
+        "binding_type": {
+          "enum": [
+            "REPOSITORY_BINDING",
+            "PATH_BINDING",
+            "TOOL_BINDING",
+            "PROVIDER_BINDING",
+            "IDENTITY_BINDING",
+            "RESOURCE_BINDING",
+            "CAPABILITY_BINDING",
+            "ENVIRONMENT_BINDING",
+            "SECRET_BINDING",
+            "QUALITY_BINDING",
+            "OBSERVABILITY_BINDING",
+            "LEARNING_BINDING",
+            "APPROVAL_BINDING"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "DRAFT",
+            "ACTIVE",
+            "DEPRECATED",
+            "RETIRED",
+            "SUPERSEDED"
+          ]
+        },
+        "abstract_requirement_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "project_id"
+          ],
+          "properties": {
+            "project_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "repository_ref": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "environment_ref": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "operation_ref": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "concrete_target_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provider_adapter_ref": {
           "type": [
             "string",
             "null"
           ]
         },
-        "environment_ref": {
+        "provider_adapter_version": {
           "type": [
             "string",
             "null"
           ]
         },
-        "operation_ref": {
+        "configuration_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "canonical_policy_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "security_policy_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "requiredness": {
+          "enum": [
+            "REQUIRED",
+            "OPTIONAL",
+            "CONDITIONAL"
+          ]
+        },
+        "effective_from": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "expires_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "validation_state": {
+          "enum": [
+            "VALID",
+            "VALID_WITH_WARNINGS",
+            "INCOMPLETE",
+            "INVALID"
+          ]
+        },
+        "compatibility_state": {
+          "type": "string",
+          "minLength": 1
+        },
+        "health_state": {
+          "type": "string",
+          "minLength": 1
+        },
+        "supersedes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "replacement": {
           "type": [
             "string",
             "null"
           ]
         }
       }
-    },
-    "concrete_target_ref": {
-      "type": "string",
-      "minLength": 1
-    },
-    "provider_adapter_ref": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "provider_adapter_version": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "configuration_ref": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "canonical_policy_ref": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "security_policy_ref": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "requiredness": {
-      "enum": [
-        "REQUIRED",
-        "OPTIONAL",
-        "CONDITIONAL"
-      ]
-    },
-    "effective_from": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "expires_at": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "validation_state": {
-      "enum": [
-        "VALID",
-        "VALID_WITH_WARNINGS",
-        "INCOMPLETE",
-        "INVALID"
-      ]
-    },
-    "compatibility_state": {
-      "type": "string",
-      "minLength": 1
-    },
-    "health_state": {
-      "type": "string",
-      "minLength": 1
-    },
-    "supersedes": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "replacement": {
-      "type": [
-        "string",
-        "null"
-      ]
     }
   }
 }
