@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": {
+    "id": "artist-os",
+    "name": "Artist OS",
+    "docsRoot": "docs",
+    "sourceOfTruthPath": "docs/SOURCE_OF_TRUTH.md",
+    "docsIndexPath": "docs/README.md"
+  },
+  "documents": [
+    {
+      "id": "MASTER-v1.4",
+      "title": "Artist OS MASTER v1.4",
+      "path": "docs/MASTER_v1.4.md",
+      "type": "MASTER",
+      "status": "ACTIVE",
+      "normativity": "NORMATIVE",
+      "owner": "Product",
+      "version": "1.4",
+      "lifetime": "LIVING",
+      "canonicalScope": "product-wide",
+      "freshness": "CURRENT",
+      "supersedes": ["MASTER-v1.3"],
+      "related": [],
+      "implementationRefs": [],
+      "testRefs": [],
+      "evidenceRefs": []
+    },
+    {
+      "id": "MASTER-v1.3",
+      "title": "Artist OS MASTER v1.3",
+      "path": "docs/archive/MASTER_v1.3.md",
+      "type": "MASTER",
+      "status": "SUPERSEDED",
+      "normativity": "INFORMATIVE",
+      "owner": "Product",
+      "version": "1.3",
+      "lifetime": "HISTORICAL",
+      "canonicalScope": null,
+      "freshness": "NOT_APPLICABLE",
+      "supersedes": [],
+      "supersededBy": "MASTER-v1.4",
+      "related": [],
+      "implementationRefs": [],
+      "testRefs": [],
+      "evidenceRefs": []
+    }
+  ]
+}

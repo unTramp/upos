@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:01:documentation:document-manifest:0.1.0",
+  "title": "U-POS Project Document Manifest",
+  "description": "Normalized schema-layer representation of the existing UPOS-01 DOCUMENT_MANIFEST_SCHEMA_v1.0 contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "project", "documents"],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+        "name": {"type": "string", "minLength": 1},
+        "docsRoot": {"type": ["string", "null"]},
+        "sourceOfTruthPath": {"type": ["string", "null"]},
+        "docsIndexPath": {"type": ["string", "null"]}
+      }
+    },
+    "documents": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/document"}
+    }
+  },
+  "$defs": {
+    "docType": {
+      "enum": [
+        "CONSTITUTION", "MASTER", "CONTRACT", "SPECIFICATION", "STANDARD",
+        "PLAN", "RFC", "DECISION_RECORD", "RUNBOOK", "GUIDE", "REFERENCE",
+        "REPORT", "EVIDENCE", "GENERATED", "ARCHIVE"
+      ]
+    },
+    "status": {
+      "enum": [
+        "DRAFT", "REVIEW", "APPROVED", "ACTIVE",
+        "DEPRECATED", "SUPERSEDED", "ARCHIVED"
+      ]
+    },
+    "normativity": {
+      "enum": ["NORMATIVE", "INFORMATIVE", "EVIDENCE", "GENERATED"]
+    },
+    "lifetime": {
+      "enum": ["STABLE", "LIVING", "TEMPORARY", "HISTORICAL"]
+    },
+    "freshness": {
+      "enum": ["CURRENT", "REVIEW_DUE", "STALE_REVIEW_REQUIRED", "NOT_APPLICABLE"]
+    },
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "path", "type", "status", "normativity", "owner", "lifetime"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "title": {"type": ["string", "null"]},
+        "path": {"type": "string", "minLength": 1},
+        "type": {"$ref": "#/$defs/docType"},
+        "status": {"$ref": "#/$defs/status"},
+        "normativity": {"$ref": "#/$defs/normativity"},
+        "owner": {"type": "string", "minLength": 1},
+        "version": {"type": ["string", "null"]},
+        "lifetime": {"$ref": "#/$defs/lifetime"},
+        "canonicalScope": {"type": ["string", "null"]},
+        "created": {"type": ["string", "null"], "format": "date"},
+        "lastReviewed": {"type": ["string", "null"], "format": "date"},
+        "reviewTrigger": {"type": ["string", "null"]},
+        "freshness": {"$ref": "#/$defs/freshness"},
+        "supersedes": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "supersededBy": {"type": ["string", "null"]},
+        "related": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "implementationRefs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "testRefs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "generated": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "isGenerated": {"type": "boolean"},
+            "source": {"type": ["string", "null"]},
+            "command": {"type": ["string", "null"]}
+          }
+        }
+      }
+    }
+  }
+}

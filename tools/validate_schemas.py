@@ -16,6 +16,19 @@ REGISTRY = SCHEMAS / "registry" / "schema-registry.json"
 VALID_FIXTURE = SCHEMAS / "fixtures" / "registry.valid.json"
 INVALID_FIXTURE = SCHEMAS / "fixtures" / "registry.invalid.json"
 
+DOCUMENTATION_FIXTURES = [
+    (
+        SCHEMAS / "01" / "documentation" / "document-manifest.schema.json",
+        SCHEMAS / "fixtures" / "documentation" / "document-manifest.valid.json",
+        SCHEMAS / "fixtures" / "documentation" / "document-manifest.invalid.json",
+    ),
+    (
+        SCHEMAS / "01" / "documentation" / "source-of-truth-entry.schema.json",
+        SCHEMAS / "fixtures" / "documentation" / "source-of-truth-entry.valid.json",
+        SCHEMAS / "fixtures" / "documentation" / "source-of-truth-entry.invalid.json",
+    ),
+]
+
 OWNER_BY_PREFIX = {
     "upos.common.": "NONE_INFRASTRUCTURE",
     "upos.01.documentation.": "UPOS-01",
@@ -173,20 +186,47 @@ def validate_registry(schema_ids: dict[str, Path]) -> None:
                 fail(f"unresolved registry dependency for {entry['schema_key']}: {dep}")
 
 
+def validate_pair(schema_path: Path, valid_path: Path, invalid_path: Path) -> None:
+    validator = Draft202012Validator(
+        load_json(schema_path),
+        format_checker=Draft202012Validator.FORMAT_CHECKER,
+    )
+
+    try:
+        validator.validate(load_json(valid_path))
+    except ValidationError as exc:
+        fail(
+            f"positive fixture unexpectedly failed for {schema_path.relative_to(ROOT)}: "
+            f"{exc.message}"
+        )
+
+    try:
+        validator.validate(load_json(invalid_path))
+    except ValidationError:
+        pass
+    else:
+        fail(
+            f"negative fixture unexpectedly passed for {schema_path.relative_to(ROOT)}"
+        )
+
+
 def validate_fixtures() -> None:
     validator = Draft202012Validator(load_json(REGISTRY_SCHEMA))
 
     try:
         validator.validate(load_json(VALID_FIXTURE))
     except ValidationError as exc:
-        fail(f"positive fixture unexpectedly failed: {exc.message}")
+        fail(f"positive registry fixture unexpectedly failed: {exc.message}")
 
     try:
         validator.validate(load_json(INVALID_FIXTURE))
     except ValidationError:
         pass
     else:
-        fail("negative fixture unexpectedly passed")
+        fail("negative registry fixture unexpectedly passed")
+
+    for schema_path, valid_path, invalid_path in DOCUMENTATION_FIXTURES:
+        validate_pair(schema_path, valid_path, invalid_path)
 
 
 def main() -> int:
@@ -197,6 +237,7 @@ def main() -> int:
     print("Dialect: JSON Schema Draft 2020-12")
     print("Registry: schemas/registry/schema-registry.json")
     print(f"Schema documents: {len(schema_ids)}")
+    print(f"Domain fixture pairs: {len(DOCUMENTATION_FIXTURES)}")
     return 0
 
 

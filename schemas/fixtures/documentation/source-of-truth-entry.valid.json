@@ -1,0 +1,9 @@
+{
+  "scope": "Product / business truth",
+  "owner": "Product",
+  "canonicalSource": "docs/MASTER_v1.4.md",
+  "status": "ACTIVE",
+  "normativity": "NORMATIVE",
+  "relatedDecisions": ["MASTER_v1.4_FREEZE_DECISION"],
+  "lastReviewed": "2026-09-20"
+}
