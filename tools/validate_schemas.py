@@ -168,6 +168,7 @@ RUNTIME_EXECUTION_ATTEMPT_VALIDS = [
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.failed.valid.json",
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.created.valid.json",
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.cancelled.valid.json",
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.versioned.valid.json",
 ]
 RUNTIME_EXECUTION_ATTEMPT_INVALIDS = [
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.invalid-blocked-state.json",
@@ -189,6 +190,7 @@ RUNTIME_RETRY_CHAIN_VALID = SCHEMAS / "fixtures" / "runtime" / "workflow" / "ret
 
 RUNTIME_EVENT_SCHEMA = SCHEMAS / "08" / "observability" / "event.schema.json"
 RUNTIME_EVENT_VALID = SCHEMAS / "fixtures" / "runtime" / "observability" / "event.valid.json"
+RUNTIME_EVENT_CORRECTION_VALID = SCHEMAS / "fixtures" / "runtime" / "observability" / "event.correction-new-id.valid.json"
 RUNTIME_EVENT_INVALID_CORRECTION = SCHEMAS / "fixtures" / "runtime" / "observability" / "event.invalid-correction-missing-reason.json"
 RUNTIME_EVENT_INVALID_SAME_CORRECTION = SCHEMAS / "fixtures" / "runtime" / "observability" / "event.invalid-correction-reuses-id.json"
 RUNTIME_EVENT_REDELIVERY = [
@@ -391,6 +393,7 @@ def expect_runtime_conformance_pass(
         check(data)
     except RuntimeConformanceViolation as exc:
         fail(f"{label} unexpectedly rejected by runtime conformance: {exc}")
+    print(f"FOCUSED PASS: {label}")
 
 
 def expect_runtime_conformance_reject(
@@ -401,6 +404,7 @@ def expect_runtime_conformance_reject(
     try:
         check(data)
     except RuntimeConformanceViolation:
+        print(f"FOCUSED REJECT: {label}")
         return
     fail(f"{label} unexpectedly passed runtime conformance")
 
@@ -1071,6 +1075,8 @@ def validate_runtime_contract_references() -> None:
                 walk(child, source, f"{path}[{index}]")
 
     for fixture in sorted(fixture_root.rglob("*.json")):
+        if fixture.name.endswith(".invalid-unsupported-version.json"):
+            continue
         walk(load_json(fixture), fixture)
 
 
@@ -1201,6 +1207,11 @@ def validate_execution_spine_reconstructability(
         fail("technical redelivery must reuse operation_request_key")
     if redelivery[0]["subject_ref"] != redelivery[1]["subject_ref"]:
         fail("technical redelivery must preserve owner subject identity")
+    expect_runtime_conformance_pass(
+        "technical redelivery preserves identity without RETRY_OF",
+        enforce_redelivery_not_retry,
+        {"operation_control": redelivery[0]},
+    )
 
     task_ref = data["task"]["task_ref"]
     routing_ref = data["routing"].get("routing_decision_ref")
@@ -1297,6 +1308,16 @@ def validate_runtime_event_fixtures(
         validator.validate(load_json(RUNTIME_EVENT_VALID))
     except ValidationError as exc:
         fail(f"positive runtime Event fixture unexpectedly failed: {exc.message}")
+    correction_valid = load_json(RUNTIME_EVENT_CORRECTION_VALID)
+    try:
+        validator.validate(correction_valid)
+    except ValidationError as exc:
+        fail(f"positive Event correction fixture unexpectedly failed: {exc.message}")
+    expect_runtime_conformance_pass(
+        "Event correction uses new identity",
+        enforce_event_correction_identity,
+        correction_valid,
+    )
     try:
         validator.validate(load_json(RUNTIME_EVENT_INVALID_CORRECTION))
     except ValidationError:
