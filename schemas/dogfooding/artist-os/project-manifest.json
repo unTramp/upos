@@ -11,7 +11,10 @@
   "manifest_version": "candidate-0.1",
   "project_adapter_version": "candidate-0.1",
   "repositories": [
-    "artist-os-primary"
+    {
+      "repository_ref": "artist-os-primary",
+      "binding_id": "artist-os-repository-binding"
+    }
   ],
   "paths": [
     "artist-os-path-architecture",

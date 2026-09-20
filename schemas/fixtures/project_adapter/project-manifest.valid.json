@@ -11,7 +11,10 @@
   "manifest_version": "1.0.0",
   "project_adapter_version": "1.0.0",
   "repositories": [
-    "repo-primary"
+    {
+      "repository_ref": "repo-primary",
+      "binding_id": "repo-binding-primary"
+    }
   ],
   "paths": [
     "path-architecture"
