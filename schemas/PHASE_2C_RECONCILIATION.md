@@ -1,9 +1,10 @@
 # Phase 2C Reconciliation — Project Manifest & Project Adapter
 
 **ID:** UPOS-SCHEMA-P2C-REC-001  
-**Status:** RESOLVED — PENDING FINAL CI  
+**Status:** PASS  
 **Baseline:** U-POS v1.0.0  
-**Date:** 2026-09-20
+**Date:** 2026-09-20  
+**Verified implementation HEAD:** 0170fe413bbbea0e23884fad809362629ff40976
 
 ## Scope
 
@@ -17,22 +18,20 @@ Frozen UPOS-011 files were not modified.
 
 The initial candidate schema accepted any non-empty `upos_baseline.version`.
 
-That contradicted the schema registry binding to U-POS v1.0.0 and UPOS-011's requirement to reject incompatible baselines rather than silently reinterpret them.
-
-Resolution:
+Resolution for the v1.0.0-bound schema:
 
 ~~~text
 project-manifest.schema.json@0.1.0
 → upos_baseline.version = v1.0.0
 ~~~
 
-A dedicated unsupported-baseline negative fixture was added.
+A dedicated unsupported-baseline negative fixture now proves fail-closed behavior.
 
-### P1-02 — Artist OS dogfood pointed canonical_project_source_ref at an audit overlay
+### P1-02 — Artist OS dogfood used an audit overlay as canonical_project_source_ref
 
-The first machine translation used `.upos/SOURCE_OF_TRUTH_MAP.md`.
+The initial translation pointed at `.upos/SOURCE_OF_TRUTH_MAP.md`.
 
-That file is an adoption/audit authority overlay and is not yet itself Artist OS canonical product truth.
+That file is an adoption/audit authority overlay, not canonical Artist OS product truth.
 
 Resolution:
 
@@ -40,40 +39,32 @@ Resolution:
 canonical_project_source_ref
 → docs/artist-os/00_governance/MASTER_ARCHITECTURE_v1.4.md
 
-authority_overlay_ref
+extensions.artist_os.authority_overlay_ref
 → .upos/SOURCE_OF_TRUTH_MAP.md
 ~~~
 
-The latter remains project extension metadata, not Product Source of Truth.
-
 ### P2-01 — Dogfooding reference graph validation was incomplete
 
-Initial checks resolved Manifest refs but did not fully verify:
+Added checks for:
 
-- duplicate binding identities;
-- repository → path binding refs;
-- Command Binding → repository refs;
-- Command Binding → environment binding refs.
+- duplicate Binding identities;
+- repository → path binding references;
+- Command Binding → repository references;
+- Command Binding → environment references;
+- Manifest → binding references;
+- Adapter → binding references.
 
-Resolution: all are now checked by the dogfooding validator.
+### P2-02 — Artist OS namespace labels predate Phase 2A
 
-### P2-02 — Artist OS human adapter namespace labels predate Phase 2A
+The human-readable project candidate still contains conceptual labels such as `upos.execution.AgentRun`.
 
-The project candidate still uses conceptual examples such as `upos.execution.AgentRun`.
+The machine dogfooding instance uses current owner-qualified Phase 2A conventions.
 
-Phase 2A now defines owner-qualified schema namespaces.
-
-Resolution in U-POS Core:
-
-- machine dogfooding instance uses the current owner-qualified convention;
-- no project file is silently rewritten;
-- project-side adoption drift remains explicit until Artist OS reviews/finalizes its Manifest/Adapter.
+U-POS Core does not silently mutate Artist OS project documentation; this remains explicit project-side adoption drift.
 
 ### P2-03 — Formal Provider Adapter identity/version is unresolved
 
-Artist OS knows GitHub as provider, but no project U-POS Provider Adapter identity/version has been frozen.
-
-Resolution:
+No fictitious provider adapter was created.
 
 ~~~text
 provider_adapter_ref = UNRESOLVED
@@ -82,7 +73,13 @@ validation_state = INCOMPLETE
 configuration_completeness = PARTIALLY_CONFIGURED
 ~~~
 
-No fictitious `github@1.0` was introduced.
+This is the correct fail-closed state for the audited adoption phase.
+
+### TOOLING-01 — validator source-generation newline defect
+
+CI caught a literal escaped newline inserted into `tools/validate_schemas.py` during reconciliation patching.
+
+Resolution: corrected as a tooling-only micro-fix. No domain/schema semantics changed.
 
 ## Contract boundaries preserved
 
@@ -109,18 +106,35 @@ project_adapter_id:  NOT INTRODUCED
 
 Core Manifest/Binding schemas expose references only; they contain no raw-secret value field.
 
-Opaque project extensions remain subject to the frozen invariant that raw secret values are forbidden and to project/security scanning. Phase 2C does not weaken that invariant or claim that JSON Schema can identify arbitrary secret material by value.
+Opaque project extensions remain subject to the frozen invariant that raw secret values are forbidden and to project/security scanning. Phase 2C does not claim that JSON Schema can identify arbitrary secret material by value.
 
-## Current unresolved findings
+## Final evidence
+
+~~~text
+0170fe413bbbea0e23884fad809362629ff40976
+
+Baseline Integrity   PASS
+Schema Validation   PASS
+~~~
+
+Final unresolved findings:
 
 ~~~text
 P0: 0
 P1: 0
 P2: 0
+
+Frozen files modified: 0
+Semantic ownership moved: 0
+Synthetic Manifest/Adapter IDs introduced: 0
+Fabricated production/provider bindings: 0
 ~~~
 
-Status:
+## Result
 
 ~~~text
-READY FOR FINAL CI REVALIDATION
+PHASE 2C RECONCILIATION:
+PASS
 ~~~
+
+Phase 2D may now define the execution backbone schemas (Task → Routing → Workflow → Stage → Agent Run → Context Bundle), using the Manifest/Adapter composite identities as project configuration references rather than redefining project truth.

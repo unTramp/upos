@@ -1,9 +1,9 @@
 # Phase 2C Acceptance — Project Manifest & Project Adapter
 
 **ID:** UPOS-SCHEMA-P2C-ACCEPT-001  
-**Status:** PENDING FINAL CI  
+**Status:** COMPLETE  
 **Baseline:** U-POS v1.0.0  
-**Date:** 2026-09-20
+**Completed:** 2026-09-20
 
 ## Machine contracts
 
@@ -27,6 +27,9 @@
 - [x] positive/negative Project Adapter fixtures.
 - [x] cross-project Manifest/Adapter mismatch check.
 - [x] binding/reference graph checks.
+- [x] duplicate binding identity checks.
+- [x] Repository Binding → Path Binding resolution.
+- [x] Command Binding → Repository/Environment resolution.
 
 ## Artist OS dogfooding
 
@@ -39,6 +42,7 @@
 - [x] production/security/quality/observability gaps are not fabricated.
 - [x] expected INCOMPLETE / PARTIALLY_CONFIGURED state asserted.
 - [x] pre-Phase-2A namespace drift recorded for project-side reconciliation.
+- [x] audit authority overlay kept distinct from canonical project source.
 
 ## Ownership
 
@@ -53,9 +57,31 @@ Learning semantics                      → UPOS-009
 Permission decision                     → UPOS-010
 ~~~
 
-- [ ] final Baseline Integrity PASS on reconciliation HEAD.
-- [ ] final Schema Validation PASS on reconciliation HEAD.
+No ownership moved.
 
-## Exit
+## Verified implementation evidence
 
-Phase 2C is COMPLETE only after both final checks pass on the exact reconciliation HEAD.
+Exact implementation HEAD:
+
+~~~text
+0170fe413bbbea0e23884fad809362629ff40976
+~~~
+
+Results:
+
+~~~text
+Baseline Integrity   PASS
+Schema Validation   PASS
+~~~
+
+During reconciliation, CI also caught a validator source-generation newline defect before merge. It was fixed as tooling only; no schema contract was weakened.
+
+## Exit decision
+
+~~~text
+PHASE 2C
+Project Manifest + Project Adapter
+COMPLETE
+~~~
+
+The project-specific Artist OS candidates remain CANDIDATE until Artist OS performs its own governance review/freeze. U-POS Core proving representability does not canonize project-side configuration.
