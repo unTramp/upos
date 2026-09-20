@@ -459,6 +459,26 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Identity/reference-only representation. No evidence collection, criterion evaluation, verdict computation, gate execution, readiness evaluation, or runtime persistence."
+    },
+    {
+      "schema_key": "upos.08.observability.identity_references",
+      "schema_uri": "urn:upos:schema:08:observability:identity-references:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/08/observability/identity-references.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-08",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "00_system/GLOBAL_IDENTITY_REFERENCE_REGISTRY.md",
+        "08_observability/OBSERVABILITY_ONTOLOGY.md",
+        "08_observability/CROSS_MODULE_INTERFACES.md"
+      ],
+      "identity_model": "Serializes event_id, trace_id, span_id, and metric_definition_id. Metric Observation remains a derived/value record with no global metric_observation_id.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Identity/reference-only representation. No event emission, ingestion, Event Store, trace propagation, metric derivation runtime, retention, or projection execution."
     }
   ]
 }

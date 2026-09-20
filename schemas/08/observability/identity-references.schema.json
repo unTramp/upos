@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:08:observability:identity-references:0.1.0",
+  "title": "UPOS-08 Observability Identity References",
+  "description": "Canonical serialization of frozen UPOS-08 identity/reference semantics only.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "event_ref": { "$ref": "#/$defs/eventRef" },
+    "trace_ref": { "$ref": "#/$defs/traceRef" },
+    "span_ref": { "$ref": "#/$defs/spanRef" },
+    "metric_definition_ref": { "$ref": "#/$defs/metricDefinitionRef" }
+  },
+  "$defs": {
+    "eventRef": { "type": "string", "minLength": 1, "description": "Reference to event_id." },
+    "traceRef": { "type": "string", "minLength": 1, "description": "Reference to trace_id." },
+    "spanRef": { "type": "string", "minLength": 1, "description": "Reference to span_id." },
+    "metricDefinitionRef": { "type": "string", "minLength": 1, "description": "Reference to metric_definition_id." }
+  }
+}
