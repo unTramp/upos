@@ -1,0 +1,27 @@
+{
+  "project_id": "artist-os",
+  "project_adapter_version": "candidate-0.1",
+  "manifest_ref": {
+    "project_id": "artist-os",
+    "manifest_version": "candidate-0.1"
+  },
+  "binding_refs": [
+    "repo.artist-os-primary"
+  ],
+  "command_binding_refs": [],
+  "provider_adapters": [
+    {
+      "provider_adapter_ref": "github",
+      "provider_adapter_version": "candidate"
+    }
+  ],
+  "resolution_rules_ref": "UPOS-11-BRS-001",
+  "validation_rules_ref": "UPOS-11-BVS-001",
+  "validation_state": "INCOMPLETE",
+  "configuration_completeness": "PARTIALLY_CONFIGURED",
+  "extensions": {
+    "artist_os": {
+      "namespace_collision_review": "REQUIRED"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "binding_id": "",
+  "binding_type": "MADE_UP_BINDING",
+  "version": "",
+  "status": "ENABLED",
+  "abstract_requirement_ref": "",
+  "scope": {
+    "project_id": "",
+    "repository_ref": "N/A",
+    "environment_ref": "N/A",
+    "operation_ref": "N/A"
+  },
+  "concrete_target_ref": "",
+  "provider_adapter_ref": "N/A",
+  "provider_adapter_version": "N/A",
+  "configuration_ref": "N/A",
+  "canonical_policy_ref": "N/A",
+  "security_policy_ref": "N/A",
+  "requiredness": "MAYBE",
+  "effective_from": "",
+  "expires_at": "N/A",
+  "validation_state": "GOOD",
+  "compatibility_state": "",
+  "health_state": "",
+  "supersedes": "N/A",
+  "replacement": "N/A"
+}

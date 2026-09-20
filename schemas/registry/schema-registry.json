@@ -82,6 +82,69 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Operational larger-project profile. Requires minimum authority-resolution fields while preserving optional upstream metadata."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.binding",
+      "schema_uri": "urn:upos:schema:11:project-adapter:binding:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project-adapter/binding.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "11_project_adapter/BINDING_STANDARD.md",
+        "11_project_adapter/templates/BINDING_TEMPLATE.md"
+      ],
+      "identity_model": "Preserves frozen binding_id identity. The schema does not redefine the abstract requirement or concrete resource semantics.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Generic UPOS-011 Binding representation."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.project_manifest",
+      "schema_uri": "urn:upos:schema:11:project-adapter:project-manifest:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project-adapter/project-manifest.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "11_project_adapter/PROJECT_MANIFEST_STANDARD.md",
+        "11_project_adapter/templates/PROJECT_MANIFEST_TEMPLATE.md"
+      ],
+      "identity_model": "Project Manifest identity remains project_id + manifest_version; no project_manifest_id exists.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Declarative Project Manifest representation; project facts remain owned by UPOS-01/project canonical sources."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.project_adapter",
+      "schema_uri": "urn:upos:schema:11:project-adapter:project-adapter:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project-adapter/project-adapter.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "11_project_adapter/PROJECT_ADAPTER_ONTOLOGY.md",
+        "11_project_adapter/PROJECT_ADAPTER_LIFECYCLE_AND_VERSIONING.md",
+        "11_project_adapter/BINDING_RESOLUTION_STANDARD.md",
+        "11_project_adapter/BINDING_VALIDATION_STANDARD.md",
+        "schemas/PHASE_2C_TRACEABILITY.md"
+      ],
+      "identity_model": "Project Adapter identity remains project_id + project_adapter_version; no project_adapter_id exists.",
+      "reference_dependencies": [
+        "upos.11.project_adapter.binding",
+        "upos.11.project_adapter.project_manifest"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Schema-layer aggregate/index for the frozen Project Adapter ontology."
     }
   ]
 }

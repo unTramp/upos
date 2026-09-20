@@ -39,6 +39,32 @@ SOT_REGISTRY_INVALID_DUPLICATE = SCHEMAS / "fixtures" / "documentation" / "sourc
 SOT_REGISTRY_INVALID_OWNER = SCHEMAS / "fixtures" / "documentation" / "source-of-truth-registry.invalid-owner-ambiguity.json"
 SOT_REGISTRY_INVALID_ACTIVE_INFORMATIVE = SCHEMAS / "fixtures" / "documentation" / "source-of-truth-registry.invalid-active-informative.json"
 
+BINDING_SCHEMA = SCHEMAS / "11" / "project-adapter" / "binding.schema.json"
+PROJECT_MANIFEST_SCHEMA = SCHEMAS / "11" / "project-adapter" / "project-manifest.schema.json"
+PROJECT_ADAPTER_SCHEMA = SCHEMAS / "11" / "project-adapter" / "project-adapter.schema.json"
+
+PROJECT_ADAPTER_SIMPLE_FIXTURES = [
+    (
+        BINDING_SCHEMA,
+        SCHEMAS / "fixtures" / "project-adapter" / "binding.valid.json",
+        SCHEMAS / "fixtures" / "project-adapter" / "binding.invalid.json",
+    ),
+    (
+        PROJECT_MANIFEST_SCHEMA,
+        SCHEMAS / "fixtures" / "project-adapter" / "project-manifest.valid.json",
+        SCHEMAS / "fixtures" / "project-adapter" / "project-manifest.invalid.json",
+    ),
+    (
+        PROJECT_ADAPTER_SCHEMA,
+        SCHEMAS / "fixtures" / "project-adapter" / "project-adapter.valid.json",
+        SCHEMAS / "fixtures" / "project-adapter" / "project-adapter.invalid.json",
+    ),
+]
+
+PROJECT_ADAPTER_VALID = SCHEMAS / "fixtures" / "project-adapter" / "project-adapter.valid.json"
+PROJECT_ADAPTER_INVALID_MISMATCH = SCHEMAS / "fixtures" / "project-adapter" / "project-adapter.invalid-project-mismatch.json"
+PROJECT_MANIFEST_VALID = SCHEMAS / "fixtures" / "project-adapter" / "project-manifest.valid.json"
+
 OWNER_BY_PREFIX = {
     "upos.common.": "NONE_INFRASTRUCTURE",
     "upos.01.documentation.": "UPOS-01",
@@ -334,6 +360,40 @@ def validate_sot_registry_fixtures(
         fail("ACTIVE informative Source-of-Truth registry fixture unexpectedly passed")
 
 
+
+def validate_project_adapter_cross_object(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    manifest_validator = validator_for(PROJECT_MANIFEST_SCHEMA, docs, resource_registry)
+    adapter_validator = validator_for(PROJECT_ADAPTER_SCHEMA, docs, resource_registry)
+
+    manifest = load_json(PROJECT_MANIFEST_VALID)
+    adapter = load_json(PROJECT_ADAPTER_VALID)
+
+    manifest_validator.validate(manifest)
+    adapter_validator.validate(adapter)
+
+    errors: list[str] = []
+    if adapter["project_id"] != adapter["manifest_ref"]["project_id"]:
+        errors.append("adapter project_id != adapter manifest_ref.project_id")
+    if adapter["project_id"] != manifest["project"]["project_id"]:
+        errors.append("adapter project_id != manifest project.project_id")
+    if adapter["project_adapter_version"] != manifest["project_adapter_version"]:
+        errors.append("adapter project_adapter_version != manifest project_adapter_version")
+    if adapter["manifest_ref"]["manifest_version"] != manifest["manifest_version"]:
+        errors.append("adapter manifest_ref.manifest_version != manifest manifest_version")
+    if errors:
+        fail("Project Adapter/Manifest composite identity validation failed: " + "; ".join(errors))
+
+    mismatch = load_json(PROJECT_ADAPTER_INVALID_MISMATCH)
+    adapter_validator.validate(mismatch)
+    mismatch_errors = []
+    if mismatch["project_id"] != mismatch["manifest_ref"]["project_id"]:
+        mismatch_errors.append("adapter project_id != adapter manifest_ref.project_id")
+    if not mismatch_errors:
+        fail("negative Project Adapter project mismatch fixture unexpectedly passed")
+
 def validate_fixtures(
     docs: dict[str, dict[str, Any]],
     resource_registry: Registry,
@@ -363,6 +423,17 @@ def validate_fixtures(
 
     validate_sot_registry_fixtures(docs, resource_registry)
 
+    for schema_path, valid_path, invalid_path in PROJECT_ADAPTER_SIMPLE_FIXTURES:
+        validate_pair(
+            schema_path,
+            valid_path,
+            invalid_path,
+            docs,
+            resource_registry,
+        )
+
+    validate_project_adapter_cross_object(docs, resource_registry)
+
 
 def main() -> int:
     schema_ids, docs = load_schema_documents()
@@ -375,6 +446,7 @@ def main() -> int:
     print("Registry: schemas/registry/schema-registry.json")
     print(f"Schema documents: {len(schema_ids)}")
     print("Documentation Authority fixtures: PASS")
+    print("Project Manifest / Adapter fixtures: PASS")
     return 0
 
 

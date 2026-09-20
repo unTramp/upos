@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:11:project-adapter:project-adapter:0.1.0",
+  "title": "U-POS Project Adapter Aggregate",
+  "description": "Candidate machine-readable aggregate/index for the frozen UPOS-011 Project Adapter ontology. Identity is project_id + project_adapter_version; no project_adapter_id is introduced.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "project_id",
+    "project_adapter_version",
+    "manifest_ref",
+    "binding_refs",
+    "command_binding_refs",
+    "provider_adapters",
+    "resolution_rules_ref",
+    "validation_rules_ref",
+    "validation_state",
+    "configuration_completeness",
+    "extensions"
+  ],
+  "properties": {
+    "project_id": {"type": "string", "minLength": 1},
+    "project_adapter_version": {"type": "string", "minLength": 1},
+    "manifest_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["project_id", "manifest_version"],
+      "properties": {
+        "project_id": {"type": "string", "minLength": 1},
+        "manifest_version": {"type": "string", "minLength": 1}
+      }
+    },
+    "binding_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "command_binding_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "provider_adapters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["provider_adapter_ref", "provider_adapter_version"],
+        "properties": {
+          "provider_adapter_ref": {"type": "string", "minLength": 1},
+          "provider_adapter_version": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "resolution_rules_ref": {"type": "string", "minLength": 1},
+    "validation_rules_ref": {"type": "string", "minLength": 1},
+    "validation_state": {
+      "enum": ["VALID", "VALID_WITH_WARNINGS", "INCOMPLETE", "INVALID"]
+    },
+    "configuration_completeness": {
+      "enum": ["COMPLETE", "PARTIALLY_CONFIGURED", "UNRESOLVED", "INVALID"]
+    },
+    "extensions": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+      },
+      "additionalProperties": true
+    }
+  }
+}
