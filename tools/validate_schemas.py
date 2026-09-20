@@ -115,6 +115,16 @@ RUNTIME_COMMON_FIXTURES = [
     ),
 ]
 
+RUNTIME_OWNER_RESULT_OUTCOME_VALIDS = [
+    SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-operation-outcome.security-deny.valid.json",
+    SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-operation-outcome.quality-fail.valid.json",
+]
+RUNTIME_OWNER_RESULT_OUTCOME_INVALID = SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-operation-outcome.invalid-quality-pass-state.json"
+RUNTIME_OWNER_RESULT_FAILURE_INVALIDS = [
+    SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-failure-envelope.invalid-security-deny.json",
+    SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-failure-envelope.invalid-quality-fail.json",
+]
+
 RUNTIME_ATTRIBUTION_FIXTURES = [
     (
         SCHEMAS / "02" / "agent_organization" / "agent-run-attribution.schema.json",
@@ -889,6 +899,34 @@ def validate_artist_os_identity_namespace() -> None:
             fail(f"Artist OS product concept collides with U-POS namespace: {concept!r}")
 
 
+def validate_owner_result_runtime_boundaries(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    outcome_schema = SCHEMAS / "common" / "runtime-operation-outcome.schema.json"
+    outcome_validator = validator_for(outcome_schema, docs, resource_registry)
+    for valid_path in RUNTIME_OWNER_RESULT_OUTCOME_VALIDS:
+        try:
+            outcome_validator.validate(load_json(valid_path))
+        except ValidationError as exc:
+            fail(f"owner-result/technical-outcome positive fixture failed: {valid_path.name}: {exc.message}")
+    try:
+        outcome_validator.validate(load_json(RUNTIME_OWNER_RESULT_OUTCOME_INVALID))
+    except ValidationError:
+        pass
+    else:
+        fail("Quality PASS used as technical execution state unexpectedly passed")
+
+    failure_schema = SCHEMAS / "common" / "runtime-failure-envelope.schema.json"
+    failure_validator = validator_for(failure_schema, docs, resource_registry)
+    for invalid_path in RUNTIME_OWNER_RESULT_FAILURE_INVALIDS:
+        try:
+            failure_validator.validate(load_json(invalid_path))
+        except ValidationError:
+            continue
+        fail(f"owner result used as technical runtime failure unexpectedly passed: {invalid_path.name}")
+
+
 def validate_runtime_event_fixtures(
     docs: dict[str, dict[str, Any]],
     resource_registry: Registry,
@@ -1026,6 +1064,7 @@ def validate_fixtures(
 
     for schema_path, valid_path, invalid_path in RUNTIME_COMMON_FIXTURES:
         validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
+    validate_owner_result_runtime_boundaries(docs, resource_registry)
 
     for schema_path, valid_path, invalid_path in RUNTIME_ATTRIBUTION_FIXTURES:
         validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
@@ -1065,6 +1104,7 @@ def main() -> int:
     print("Identity anti-duplication validation: PASS")
     print("Artist OS namespace compatibility: PASS")
     print("Phase-3 common runtime primitive fixtures: PASS")
+    print("Owner-result/runtime-outcome separation: PASS")
     print("Phase-3 attribution fixtures: PASS")
     print("Phase-3 Task runtime fixtures: PASS")
     print("Phase-3 Routing runtime fixtures: PASS")

@@ -1,0 +1,7 @@
+{
+  "failure_owner_module": "UPOS-10",
+  "operation_kind": "PERMISSION_EVALUATION",
+  "subject_ref": "permission-request:P-1",
+  "failure_code": "DENY",
+  "retryability_hint": "NOT_RETRYABLE"
+}

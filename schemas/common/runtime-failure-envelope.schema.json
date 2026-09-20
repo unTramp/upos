@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:upos:schema:common:runtime-failure-envelope:0.1.0",
   "title": "U-POS Runtime Failure Envelope",
-  "description": "Infrastructure-only technical failure envelope. It does not create a universal error identity or owner-domain failure taxonomy.",
+  "description": "Infrastructure-only technical failure envelope. It does not create a universal error identity or reinterpret Quality verdicts/Security decisions as runtime failures.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -73,5 +73,60 @@
         "minLength": 1
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "failure_owner_module": {
+            "const": "UPOS-10"
+          }
+        },
+        "required": [
+          "failure_owner_module"
+        ]
+      },
+      "then": {
+        "properties": {
+          "failure_code": {
+            "not": {
+              "enum": [
+                "ALLOW",
+                "DENY",
+                "CONDITIONAL",
+                "BLOCKED",
+                "UNKNOWN"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "failure_owner_module": {
+            "const": "UPOS-07"
+          }
+        },
+        "required": [
+          "failure_owner_module"
+        ]
+      },
+      "then": {
+        "properties": {
+          "failure_code": {
+            "not": {
+              "enum": [
+                "PASS",
+                "FAIL",
+                "BLOCKED",
+                "INCONCLUSIVE"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
 }
