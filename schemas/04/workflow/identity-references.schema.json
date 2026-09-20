@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:04:workflow:identity-references:0.1.0",
+  "title": "UPOS-04 Workflow Identity References",
+  "description": "Canonical serialization of frozen UPOS-04 work identity/reference semantics only.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "task_ref": { "$ref": "#/$defs/taskRef" },
+    "routing_decision_ref": { "$ref": "#/$defs/routingDecisionRef" },
+    "workflow_instance_ref": { "$ref": "#/$defs/workflowInstanceRef" },
+    "stage_ref": { "$ref": "#/$defs/stageRef" },
+    "transition_ref": { "$ref": "#/$defs/transitionRef" }
+  },
+  "$defs": {
+    "taskRef": { "type": "string", "minLength": 1, "description": "Reference to task_id." },
+    "routingDecisionRef": { "type": "string", "minLength": 1, "description": "Reference to routing_decision_id." },
+    "workflowInstanceRef": { "type": "string", "minLength": 1, "description": "Reference to workflow_instance_id." },
+    "stageRef": { "type": "string", "minLength": 1, "description": "Reference to stage_id." },
+    "transitionRef": { "type": "string", "minLength": 1, "description": "Reference to transition_id." }
+  }
+}
