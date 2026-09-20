@@ -1,0 +1,265 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:08:observability:event:0.1.0",
+  "title": "UPOS-08 Phase-3 Event",
+  "description": "Phase-3 machine representation of frozen UPOS-08 Event semantics for Slice 1. Defines emission payload only; no Event Store, collection, trace propagation or projection runtime.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "event_type",
+    "event_class",
+    "event_schema_version",
+    "event_contract_ref",
+    "event_contract_version",
+    "occurred_at",
+    "recorded_at",
+    "producer_module",
+    "producer_component_ref",
+    "producer_contract_ref",
+    "producer_contract_version",
+    "domain_owner_module",
+    "initiator_type",
+    "primary_domain_entity_type",
+    "primary_domain_entity_ref",
+    "event_payload",
+    "telemetry_importance"
+  ],
+  "properties": {
+    "event_id": {
+      "$ref": "urn:upos:schema:08:observability:identity-references:0.1.0#/$defs/eventRef"
+    },
+    "event_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_class": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "event_contract_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_contract_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "recorded_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "timestamp_quality": {
+      "enum": [
+        "EXACT",
+        "APPROXIMATE",
+        "UNKNOWN"
+      ]
+    },
+    "producer_module": {
+      "type": "string",
+      "minLength": 1
+    },
+    "producer_component_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "producer_contract_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "producer_contract_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domain_owner_module": {
+      "enum": [
+        "UPOS-01",
+        "UPOS-02",
+        "UPOS-03",
+        "UPOS-04",
+        "UPOS-05",
+        "UPOS-06",
+        "UPOS-07",
+        "UPOS-08",
+        "UPOS-09",
+        "UPOS-10",
+        "UPOS-11"
+      ]
+    },
+    "initiator_type": {
+      "enum": [
+        "AGENT_RUN",
+        "HUMAN",
+        "SYSTEM_COMPONENT",
+        "EXTERNAL_PROVIDER",
+        "SCHEDULED_SYSTEM",
+        "UNKNOWN",
+        "N/A"
+      ]
+    },
+    "initiator_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "producer_role_ref": {
+      "$ref": "urn:upos:schema:02:agent-organization:identity-references:0.1.0#/$defs/roleRef"
+    },
+    "producer_agent_run_ref": {
+      "$ref": "urn:upos:schema:02:agent-organization:identity-references:0.1.0#/$defs/agentRunRef"
+    },
+    "agent_instance_ref": {
+      "$ref": "urn:upos:schema:02:agent-organization:identity-references:0.1.0#/$defs/agentInstanceRef"
+    },
+    "trace_id": {
+      "$ref": "urn:upos:schema:08:observability:identity-references:0.1.0#/$defs/traceRef"
+    },
+    "span_id": {
+      "$ref": "urn:upos:schema:08:observability:identity-references:0.1.0#/$defs/spanRef"
+    },
+    "parent_span_id": {
+      "$ref": "urn:upos:schema:08:observability:identity-references:0.1.0#/$defs/spanRef"
+    },
+    "correlation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "causation_event_id": {
+      "$ref": "urn:upos:schema:08:observability:identity-references:0.1.0#/$defs/eventRef"
+    },
+    "task_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/taskRef"
+    },
+    "routing_decision_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/routingDecisionRef"
+    },
+    "workflow_instance_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/workflowInstanceRef"
+    },
+    "stage_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/stageRef"
+    },
+    "transition_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/transitionRef"
+    },
+    "skill_ref": {
+      "$ref": "urn:upos:schema:03:skills:identity-references:0.1.0#/$defs/skillRef"
+    },
+    "skill_invocation_ref": {
+      "$ref": "urn:upos:schema:03:skills:identity-references:0.1.0#/$defs/skillInvocationRef"
+    },
+    "context_request_ref": {
+      "$ref": "urn:upos:schema:05:context-memory:identity-references:0.1.0#/$defs/contextRequestRef"
+    },
+    "context_bundle_ref": {
+      "$ref": "urn:upos:schema:05:context-memory:identity-references:0.1.0#/$defs/contextBundleRef"
+    },
+    "primary_domain_entity_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "primary_domain_entity_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "primary_domain_state_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "related_domain_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "event_payload": {
+      "type": "object"
+    },
+    "owner_reason_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner_result_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner_status_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "failure_owner_module": {
+      "type": "string",
+      "minLength": 1
+    },
+    "failure_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "failure_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_provenance_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "telemetry_importance": {
+      "type": "string",
+      "minLength": 1
+    },
+    "security_policy": {
+      "$ref": "urn:upos:schema:10:security:identity-references:0.1.0#/$defs/securityPolicyRef"
+    },
+    "sensitivity_class_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "redaction_directive_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "access_constraint_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "retention_constraint_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "correction_of_event_id": {
+      "$ref": "urn:upos:schema:08:observability:identity-references:0.1.0#/$defs/eventRef"
+    },
+    "correction_reason": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "correction_of_event_id"
+        ]
+      },
+      "then": {
+        "required": [
+          "correction_reason"
+        ]
+      }
+    }
+  ]
+}

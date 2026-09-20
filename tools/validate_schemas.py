@@ -169,6 +169,15 @@ RUNTIME_RETRY_INVALIDS = [
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-provenance.invalid-missing-trigger.json",
 ]
 RUNTIME_RETRY_INVALID_SAME_REF = SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-provenance.invalid-reused-identity.json"
+
+RUNTIME_EVENT_SCHEMA = SCHEMAS / "08" / "observability" / "event.schema.json"
+RUNTIME_EVENT_VALID = SCHEMAS / "fixtures" / "runtime" / "observability" / "event.valid.json"
+RUNTIME_EVENT_INVALID_CORRECTION = SCHEMAS / "fixtures" / "runtime" / "observability" / "event.invalid-correction-missing-reason.json"
+RUNTIME_EVENT_INVALID_SAME_CORRECTION = SCHEMAS / "fixtures" / "runtime" / "observability" / "event.invalid-correction-reuses-id.json"
+RUNTIME_EVENT_REDELIVERY = [
+    SCHEMAS / "fixtures" / "runtime" / "observability" / "event.redelivery-a.json",
+    SCHEMAS / "fixtures" / "runtime" / "observability" / "event.redelivery-b.json",
+]
 RUNTIME_ROUTING_INVALID_SAME_KEY = (
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "routing-runtime.invalid-request-key-equals-decision.json"
 )
@@ -880,6 +889,40 @@ def validate_artist_os_identity_namespace() -> None:
             fail(f"Artist OS product concept collides with U-POS namespace: {concept!r}")
 
 
+def validate_runtime_event_fixtures(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    validator = validator_for(RUNTIME_EVENT_SCHEMA, docs, resource_registry)
+    try:
+        validator.validate(load_json(RUNTIME_EVENT_VALID))
+    except ValidationError as exc:
+        fail(f"positive runtime Event fixture unexpectedly failed: {exc.message}")
+    try:
+        validator.validate(load_json(RUNTIME_EVENT_INVALID_CORRECTION))
+    except ValidationError:
+        pass
+    else:
+        fail("Event correction without correction_reason unexpectedly passed")
+
+    correction = load_json(RUNTIME_EVENT_INVALID_SAME_CORRECTION)
+    try:
+        validator.validate(correction)
+    except ValidationError as exc:
+        fail(f"same-id Event correction fixture must be structurally valid: {exc.message}")
+    if correction["event_id"] != correction["correction_of_event_id"]:
+        fail("same-id Event correction fixture does not exercise identity reuse")
+
+    redelivery = [load_json(path) for path in RUNTIME_EVENT_REDELIVERY]
+    for data in redelivery:
+        try:
+            validator.validate(data)
+        except ValidationError as exc:
+            fail(f"Event redelivery fixture unexpectedly failed: {exc.message}")
+    if redelivery[0]["event_id"] != redelivery[1]["event_id"]:
+        fail("same logical Event redelivery must preserve event_id in fixture")
+
+
 def validate_retry_provenance_fixtures(
     docs: dict[str, dict[str, Any]],
     resource_registry: Registry,
@@ -998,6 +1041,7 @@ def validate_fixtures(
         validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
     validate_execution_attempt_fixtures(docs, resource_registry)
     validate_retry_provenance_fixtures(docs, resource_registry)
+    validate_runtime_event_fixtures(docs, resource_registry)
 
 
 def main() -> int:
@@ -1027,6 +1071,7 @@ def main() -> int:
     print("Phase-3 Workflow runtime fixtures: PASS")
     print("Phase-3 Execution Attempt fixtures: PASS")
     print("Phase-3 Retry provenance fixtures: PASS")
+    print("Phase-3 Event fixtures: PASS")
     return 0
 
 
