@@ -399,6 +399,27 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Identity/reference-only representation. No Task/Workflow lifecycle, routing operation, transition execution, retry/rework/recovery, persistence, or orchestration semantics."
+    },
+    {
+      "schema_key": "upos.05.context_memory.identity_references",
+      "schema_uri": "urn:upos:schema:05:context-memory:identity-references:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/05/context_memory/identity-references.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-05",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "00_system/GLOBAL_IDENTITY_REFERENCE_REGISTRY.md",
+        "05_context_memory/CROSS_MODULE_INTERFACES.md",
+        "05_context_memory/CONTEXT_REQUIREMENT_AND_REQUEST_STANDARD.md",
+        "05_context_memory/CONTEXT_BUNDLE_STANDARD.md"
+      ],
+      "identity_model": "Serializes context_request_id, context_bundle_id, and memory_item_id only. Context View remains a bounded projection with no separate global context_view_id.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Identity/reference-only representation. Retrieval, ranking, assembly, freshness evaluation, invalidation, reassembly, cache, and persistence remain outside Phase 2."
     }
   ]
 }
