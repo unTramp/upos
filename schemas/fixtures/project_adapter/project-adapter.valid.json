@@ -5,58 +5,37 @@
   "upos_baseline": "v1.0.0",
   "bindings": [
     {
-      "binding_id": "repo-primary",
+      "binding_id": "repo-binding-primary",
       "binding_type": "REPOSITORY_BINDING",
-      "version": "1.0.0",
-      "status": "ACTIVE",
-      "abstract_requirement_ref": "engineering.repository.primary",
-      "scope": {
-        "project_id": "example-project",
-        "repository_ref": null,
-        "environment_ref": null,
-        "operation_ref": null
-      },
-      "concrete_target_ref": "provider:example/repository",
+      "repository_ref": "repo-primary",
+      "repository_role": "PRIMARY",
       "provider_adapter_ref": null,
       "provider_adapter_version": null,
-      "configuration_ref": null,
-      "canonical_policy_ref": null,
-      "security_policy_ref": null,
-      "requiredness": "REQUIRED",
-      "effective_from": null,
-      "expires_at": null,
+      "provider_repository_ref": "example/repo",
+      "remote_ref": null,
+      "workspace_strategy_ref": null,
+      "path_binding_refs": [
+        "path-architecture"
+      ],
+      "integration_target_binding": "main",
+      "protected_target_refs": [
+        "main"
+      ],
+      "ci_binding_refs": [],
+      "security_resource_refs": [],
       "validation_state": "VALID",
-      "compatibility_state": "COMPATIBLE",
-      "health_state": "HEALTHY",
-      "supersedes": null,
-      "replacement": null
+      "health_state": "HEALTHY"
     },
     {
       "binding_id": "path-architecture",
       "binding_type": "PATH_BINDING",
-      "version": "1.0.0",
-      "status": "ACTIVE",
-      "abstract_requirement_ref": "project.source.architecture",
-      "scope": {
-        "project_id": "example-project",
-        "repository_ref": "repo-primary",
-        "environment_ref": null,
-        "operation_ref": null
-      },
-      "concrete_target_ref": "docs/MASTER.md",
-      "provider_adapter_ref": null,
-      "provider_adapter_version": null,
-      "configuration_ref": null,
-      "canonical_policy_ref": "docs/00_governance/SOURCE_OF_TRUTH.md",
-      "security_policy_ref": null,
+      "abstract_path_ref": "project.source.architecture",
+      "repository_ref": "repo-primary",
+      "environment_ref": null,
+      "concrete_path": "docs/MASTER.md",
+      "path_kind": "FILE",
       "requiredness": "REQUIRED",
-      "effective_from": null,
-      "expires_at": null,
-      "validation_state": "VALID",
-      "compatibility_state": "COMPATIBLE",
-      "health_state": "HEALTHY",
-      "supersedes": null,
-      "replacement": null
+      "validation_rule_ref": "docs/00_governance/SOURCE_OF_TRUTH.md"
     }
   ],
   "command_bindings": [
