@@ -145,6 +145,44 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Schema-layer aggregate/index for the frozen Project Adapter ontology."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.repository_binding",
+      "schema_uri": "urn:upos:schema:11:project-adapter:repository-binding:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project-adapter/repository-binding.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "11_project_adapter/REPOSITORY_BINDING_STANDARD.md",
+        "11_project_adapter/templates/REPOSITORY_BINDING_TEMPLATE.md"
+      ],
+      "identity_model": "Preserves frozen binding_id and repository_ref semantics; provider repository identity remains provider-native.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Specific repository-binding representation for UPOS-011."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.command_binding",
+      "schema_uri": "urn:upos:schema:11:project-adapter:command-binding:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project-adapter/command-binding.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "11_project_adapter/COMMAND_BINDING_STANDARD.md",
+        "11_project_adapter/templates/COMMAND_BINDING_TEMPLATE.md"
+      ],
+      "identity_model": "Preserves frozen command_binding_id identity. Command availability does not imply Policy, Quality Verdict, Authority or Permission.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Specific command-binding representation for UPOS-011."
     }
   ]
 }

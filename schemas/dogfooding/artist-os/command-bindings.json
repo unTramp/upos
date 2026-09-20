@@ -1,10 +1,218 @@
 [
-  ["arch-check", "engineering.architecture-check", ["arch:check"]],
-  ["lint", "engineering.lint", ["lint"]],
-  ["typecheck", "engineering.typecheck", ["typecheck"]],
-  ["test", "engineering.unit-test", ["test"]],
-  ["test-integration", "engineering.integration-test", ["test:integration"]],
-  ["build", "engineering.build", ["build"]],
-  ["test-e2e", "engineering.e2e-test", ["test:e2e"]],
-  ["db-migrate", "engineering.database-migrate", ["db:migrate"]]
+  {
+    "command_binding_id": "cmd.artist-os.arch-check",
+    "version": "candidate-0.1",
+    "abstract_operation_ref": "engineering.architecture-check",
+    "repository_ref": "artist-os-primary",
+    "working_directory_ref": ".",
+    "executable": "pnpm",
+    "arguments": [
+      "arch:check"
+    ],
+    "environment_binding_refs": [
+      "env.artist-os.local",
+      "env.artist-os.ci"
+    ],
+    "secret_binding_refs": [],
+    "timeout_policy_ref": "UNRESOLVED",
+    "expected_result_interface_ref": "process.exit-code",
+    "produced_artifact_or_check_type": "ENGINEERING_CHECK_EVIDENCE",
+    "required_capability_refs": [],
+    "provider_or_runtime_binding_ref": "UNRESOLVED",
+    "platform_constraints": [
+      "node>=22.16.0",
+      "pnpm=12.4.1"
+    ],
+    "requiredness": "REQUIRED",
+    "validation_state": "INCOMPLETE"
+  },
+  {
+    "command_binding_id": "cmd.artist-os.lint",
+    "version": "candidate-0.1",
+    "abstract_operation_ref": "engineering.lint",
+    "repository_ref": "artist-os-primary",
+    "working_directory_ref": ".",
+    "executable": "pnpm",
+    "arguments": [
+      "lint"
+    ],
+    "environment_binding_refs": [
+      "env.artist-os.local",
+      "env.artist-os.ci"
+    ],
+    "secret_binding_refs": [],
+    "timeout_policy_ref": "UNRESOLVED",
+    "expected_result_interface_ref": "process.exit-code",
+    "produced_artifact_or_check_type": "ENGINEERING_CHECK_EVIDENCE",
+    "required_capability_refs": [],
+    "provider_or_runtime_binding_ref": "UNRESOLVED",
+    "platform_constraints": [
+      "node>=22.16.0",
+      "pnpm=12.4.1"
+    ],
+    "requiredness": "REQUIRED",
+    "validation_state": "INCOMPLETE"
+  },
+  {
+    "command_binding_id": "cmd.artist-os.typecheck",
+    "version": "candidate-0.1",
+    "abstract_operation_ref": "engineering.typecheck",
+    "repository_ref": "artist-os-primary",
+    "working_directory_ref": ".",
+    "executable": "pnpm",
+    "arguments": [
+      "typecheck"
+    ],
+    "environment_binding_refs": [
+      "env.artist-os.local",
+      "env.artist-os.ci"
+    ],
+    "secret_binding_refs": [],
+    "timeout_policy_ref": "UNRESOLVED",
+    "expected_result_interface_ref": "process.exit-code",
+    "produced_artifact_or_check_type": "ENGINEERING_CHECK_EVIDENCE",
+    "required_capability_refs": [],
+    "provider_or_runtime_binding_ref": "UNRESOLVED",
+    "platform_constraints": [
+      "node>=22.16.0",
+      "pnpm=12.4.1"
+    ],
+    "requiredness": "REQUIRED",
+    "validation_state": "INCOMPLETE"
+  },
+  {
+    "command_binding_id": "cmd.artist-os.test",
+    "version": "candidate-0.1",
+    "abstract_operation_ref": "engineering.unit-test",
+    "repository_ref": "artist-os-primary",
+    "working_directory_ref": ".",
+    "executable": "pnpm",
+    "arguments": [
+      "test"
+    ],
+    "environment_binding_refs": [
+      "env.artist-os.local",
+      "env.artist-os.ci"
+    ],
+    "secret_binding_refs": [],
+    "timeout_policy_ref": "UNRESOLVED",
+    "expected_result_interface_ref": "process.exit-code",
+    "produced_artifact_or_check_type": "TEST_EVIDENCE",
+    "required_capability_refs": [],
+    "provider_or_runtime_binding_ref": "UNRESOLVED",
+    "platform_constraints": [
+      "node>=22.16.0",
+      "pnpm=12.4.1"
+    ],
+    "requiredness": "REQUIRED",
+    "validation_state": "INCOMPLETE"
+  },
+  {
+    "command_binding_id": "cmd.artist-os.test-integration",
+    "version": "candidate-0.1",
+    "abstract_operation_ref": "engineering.integration-test",
+    "repository_ref": "artist-os-primary",
+    "working_directory_ref": ".",
+    "executable": "pnpm",
+    "arguments": [
+      "test:integration"
+    ],
+    "environment_binding_refs": [
+      "env.artist-os.local",
+      "env.artist-os.ci"
+    ],
+    "secret_binding_refs": [],
+    "timeout_policy_ref": "UNRESOLVED",
+    "expected_result_interface_ref": "process.exit-code",
+    "produced_artifact_or_check_type": "TEST_EVIDENCE",
+    "required_capability_refs": [],
+    "provider_or_runtime_binding_ref": "UNRESOLVED",
+    "platform_constraints": [
+      "node>=22.16.0",
+      "pnpm=12.4.1"
+    ],
+    "requiredness": "REQUIRED",
+    "validation_state": "INCOMPLETE"
+  },
+  {
+    "command_binding_id": "cmd.artist-os.build",
+    "version": "candidate-0.1",
+    "abstract_operation_ref": "engineering.build",
+    "repository_ref": "artist-os-primary",
+    "working_directory_ref": ".",
+    "executable": "pnpm",
+    "arguments": [
+      "build"
+    ],
+    "environment_binding_refs": [
+      "env.artist-os.local",
+      "env.artist-os.ci"
+    ],
+    "secret_binding_refs": [],
+    "timeout_policy_ref": "UNRESOLVED",
+    "expected_result_interface_ref": "process.exit-code",
+    "produced_artifact_or_check_type": "BUILD_EVIDENCE",
+    "required_capability_refs": [],
+    "provider_or_runtime_binding_ref": "UNRESOLVED",
+    "platform_constraints": [
+      "node>=22.16.0",
+      "pnpm=12.4.1"
+    ],
+    "requiredness": "REQUIRED",
+    "validation_state": "INCOMPLETE"
+  },
+  {
+    "command_binding_id": "cmd.artist-os.test-e2e",
+    "version": "candidate-0.1",
+    "abstract_operation_ref": "engineering.e2e-test",
+    "repository_ref": "artist-os-primary",
+    "working_directory_ref": ".",
+    "executable": "pnpm",
+    "arguments": [
+      "test:e2e"
+    ],
+    "environment_binding_refs": [
+      "env.artist-os.local",
+      "env.artist-os.ci"
+    ],
+    "secret_binding_refs": [],
+    "timeout_policy_ref": "UNRESOLVED",
+    "expected_result_interface_ref": "process.exit-code",
+    "produced_artifact_or_check_type": "TEST_EVIDENCE",
+    "required_capability_refs": [],
+    "provider_or_runtime_binding_ref": "UNRESOLVED",
+    "platform_constraints": [
+      "node>=22.16.0",
+      "pnpm=12.4.1"
+    ],
+    "requiredness": "REQUIRED",
+    "validation_state": "INCOMPLETE"
+  },
+  {
+    "command_binding_id": "cmd.artist-os.db-migrate",
+    "version": "candidate-0.1",
+    "abstract_operation_ref": "engineering.database-migrate",
+    "repository_ref": "artist-os-primary",
+    "working_directory_ref": ".",
+    "executable": "pnpm",
+    "arguments": [
+      "db:migrate"
+    ],
+    "environment_binding_refs": [
+      "env.artist-os.local",
+      "env.artist-os.ci"
+    ],
+    "secret_binding_refs": [],
+    "timeout_policy_ref": "UNRESOLVED",
+    "expected_result_interface_ref": "process.exit-code",
+    "produced_artifact_or_check_type": "MIGRATION_EVIDENCE",
+    "required_capability_refs": [],
+    "provider_or_runtime_binding_ref": "UNRESOLVED",
+    "platform_constraints": [
+      "node>=22.16.0",
+      "pnpm=12.4.1"
+    ],
+    "requiredness": "REQUIRED",
+    "validation_state": "INCOMPLETE"
+  }
 ]

@@ -65,6 +65,19 @@ PROJECT_ADAPTER_VALID = SCHEMAS / "fixtures" / "project-adapter" / "project-adap
 PROJECT_ADAPTER_INVALID_MISMATCH = SCHEMAS / "fixtures" / "project-adapter" / "project-adapter.invalid-project-mismatch.json"
 PROJECT_MANIFEST_VALID = SCHEMAS / "fixtures" / "project-adapter" / "project-manifest.valid.json"
 
+REPOSITORY_BINDING_SCHEMA = SCHEMAS / "11" / "project-adapter" / "repository-binding.schema.json"
+COMMAND_BINDING_SCHEMA = SCHEMAS / "11" / "project-adapter" / "command-binding.schema.json"
+REPOSITORY_BINDING_VALID = SCHEMAS / "fixtures" / "project-adapter" / "repository-binding.valid.json"
+REPOSITORY_BINDING_INVALID = SCHEMAS / "fixtures" / "project-adapter" / "repository-binding.invalid.json"
+COMMAND_BINDING_VALID = SCHEMAS / "fixtures" / "project-adapter" / "command-binding.valid.json"
+COMMAND_BINDING_INVALID = SCHEMAS / "fixtures" / "project-adapter" / "command-binding.invalid.json"
+
+ARTIST_OS_PROJECT_MANIFEST = SCHEMAS / "dogfooding" / "artist-os" / "project-manifest.json"
+ARTIST_OS_PROJECT_ADAPTER = SCHEMAS / "dogfooding" / "artist-os" / "project-adapter.json"
+ARTIST_OS_REPOSITORY_BINDINGS = SCHEMAS / "dogfooding" / "artist-os" / "repository-bindings.json"
+ARTIST_OS_GENERIC_BINDINGS = SCHEMAS / "dogfooding" / "artist-os" / "generic-bindings.json"
+ARTIST_OS_COMMAND_BINDINGS = SCHEMAS / "dogfooding" / "artist-os" / "command-bindings.json"
+
 OWNER_BY_PREFIX = {
     "upos.common.": "NONE_INFRASTRUCTURE",
     "upos.01.documentation.": "UPOS-01",
@@ -394,6 +407,92 @@ def validate_project_adapter_cross_object(
     if not mismatch_errors:
         fail("negative Project Adapter project mismatch fixture unexpectedly passed")
 
+
+def validate_artist_os_project_adapter_dogfooding(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    manifest_validator = validator_for(PROJECT_MANIFEST_SCHEMA, docs, resource_registry)
+    adapter_validator = validator_for(PROJECT_ADAPTER_SCHEMA, docs, resource_registry)
+    binding_validator = validator_for(BINDING_SCHEMA, docs, resource_registry)
+    repository_validator = validator_for(REPOSITORY_BINDING_SCHEMA, docs, resource_registry)
+    command_validator = validator_for(COMMAND_BINDING_SCHEMA, docs, resource_registry)
+
+    manifest = load_json(ARTIST_OS_PROJECT_MANIFEST)
+    adapter = load_json(ARTIST_OS_PROJECT_ADAPTER)
+    repository_bindings = load_json(ARTIST_OS_REPOSITORY_BINDINGS)
+    generic_bindings = load_json(ARTIST_OS_GENERIC_BINDINGS)
+    command_bindings = load_json(ARTIST_OS_COMMAND_BINDINGS)
+
+    manifest_validator.validate(manifest)
+    adapter_validator.validate(adapter)
+
+    repo_by_id: dict[str, dict[str, Any]] = {}
+    generic_by_id: dict[str, dict[str, Any]] = {}
+    command_by_id: dict[str, dict[str, Any]] = {}
+
+    for item in repository_bindings:
+        repository_validator.validate(item)
+        repo_by_id[item["binding_id"]] = item
+    for item in generic_bindings:
+        binding_validator.validate(item)
+        generic_by_id[item["binding_id"]] = item
+    for item in command_bindings:
+        command_validator.validate(item)
+        command_by_id[item["command_binding_id"]] = item
+
+    errors: list[str] = []
+    project_id = manifest["project"]["project_id"]
+
+    if adapter["project_id"] != project_id:
+        errors.append("adapter project_id != manifest project_id")
+    if adapter["manifest_ref"]["project_id"] != project_id:
+        errors.append("adapter manifest_ref.project_id != manifest project_id")
+    if adapter["manifest_ref"]["manifest_version"] != manifest["manifest_version"]:
+        errors.append("adapter manifest_ref.manifest_version != manifest manifest_version")
+    if adapter["project_adapter_version"] != manifest["project_adapter_version"]:
+        errors.append("adapter project_adapter_version != manifest project_adapter_version")
+
+    for decl in manifest["repositories"]:
+        item = repo_by_id.get(decl["binding_id"])
+        if item is None:
+            errors.append(f"unresolved repository binding: {decl['binding_id']}")
+        elif item["repository_ref"] != decl["repository_ref"]:
+            errors.append(f"repository_ref mismatch for {decl['binding_id']}")
+
+    for ref in manifest["paths"]:
+        if ref not in generic_by_id:
+            errors.append(f"unresolved path binding: {ref}")
+    for ref in manifest["environments"]:
+        if ref not in generic_by_id:
+            errors.append(f"unresolved environment binding: {ref}")
+    for ref in manifest["commands"]:
+        if ref not in command_by_id:
+            errors.append(f"unresolved command binding: {ref}")
+
+    all_binding_ids = set(repo_by_id) | set(generic_by_id)
+    for ref in adapter["binding_refs"]:
+        if ref not in all_binding_ids:
+            errors.append(f"unresolved adapter binding_ref: {ref}")
+    for ref in adapter["command_binding_refs"]:
+        if ref not in command_by_id:
+            errors.append(f"unresolved adapter command_binding_ref: {ref}")
+
+    for item in generic_bindings:
+        if item["scope"]["project_id"] != project_id:
+            errors.append(f"binding crosses project boundary: {item['binding_id']}")
+
+    if errors:
+        fail("Artist OS Project Adapter dogfooding failed: " + "; ".join(errors))
+
+    if adapter["validation_state"] != "INCOMPLETE":
+        fail("Artist OS adapter must remain INCOMPLETE while formal required bindings are unresolved")
+    if adapter["configuration_completeness"] != "PARTIALLY_CONFIGURED":
+        fail("Artist OS adapter must remain PARTIALLY_CONFIGURED at this adoption stage")
+
+    print("Artist OS Project Manifest / Adapter dogfooding: PASS (expected INCOMPLETE/PARTIALLY_CONFIGURED)")
+
+
 def validate_fixtures(
     docs: dict[str, dict[str, Any]],
     resource_registry: Registry,
@@ -432,7 +531,23 @@ def validate_fixtures(
             resource_registry,
         )
 
+    validate_pair(
+        REPOSITORY_BINDING_SCHEMA,
+        REPOSITORY_BINDING_VALID,
+        REPOSITORY_BINDING_INVALID,
+        docs,
+        resource_registry,
+    )
+    validate_pair(
+        COMMAND_BINDING_SCHEMA,
+        COMMAND_BINDING_VALID,
+        COMMAND_BINDING_INVALID,
+        docs,
+        resource_registry,
+    )
+
     validate_project_adapter_cross_object(docs, resource_registry)
+    validate_artist_os_project_adapter_dogfooding(docs, resource_registry)
 
 
 def main() -> int:
