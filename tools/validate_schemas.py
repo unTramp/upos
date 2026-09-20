@@ -8,6 +8,7 @@ from typing import Any
 
 from jsonschema import Draft202012Validator
 from jsonschema.exceptions import SchemaError, ValidationError
+from referencing import Registry, Resource
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMAS = ROOT / "schemas"
@@ -16,18 +17,26 @@ REGISTRY = SCHEMAS / "registry" / "schema-registry.json"
 VALID_FIXTURE = SCHEMAS / "fixtures" / "registry.valid.json"
 INVALID_FIXTURE = SCHEMAS / "fixtures" / "registry.invalid.json"
 
-DOCUMENTATION_FIXTURES = [
+DOCUMENT_MANIFEST_SCHEMA = SCHEMAS / "01" / "documentation" / "document-manifest.schema.json"
+SOT_ENTRY_SCHEMA = SCHEMAS / "01" / "documentation" / "source-of-truth-entry.schema.json"
+SOT_REGISTRY_SCHEMA = SCHEMAS / "01" / "documentation" / "source-of-truth-registry.schema.json"
+
+DOCUMENTATION_SIMPLE_FIXTURES = [
     (
-        SCHEMAS / "01" / "documentation" / "document-manifest.schema.json",
+        DOCUMENT_MANIFEST_SCHEMA,
         SCHEMAS / "fixtures" / "documentation" / "document-manifest.valid.json",
         SCHEMAS / "fixtures" / "documentation" / "document-manifest.invalid.json",
     ),
     (
-        SCHEMAS / "01" / "documentation" / "source-of-truth-entry.schema.json",
+        SOT_ENTRY_SCHEMA,
         SCHEMAS / "fixtures" / "documentation" / "source-of-truth-entry.valid.json",
         SCHEMAS / "fixtures" / "documentation" / "source-of-truth-entry.invalid.json",
     ),
 ]
+
+SOT_REGISTRY_VALID = SCHEMAS / "fixtures" / "documentation" / "source-of-truth-registry.valid.json"
+SOT_REGISTRY_INVALID_DUPLICATE = SCHEMAS / "fixtures" / "documentation" / "source-of-truth-registry.invalid-duplicate.json"
+SOT_REGISTRY_INVALID_OWNER = SCHEMAS / "fixtures" / "documentation" / "source-of-truth-registry.invalid-owner-ambiguity.json"
 
 OWNER_BY_PREFIX = {
     "upos.common.": "NONE_INFRASTRUCTURE",
@@ -73,13 +82,13 @@ def expected_owner(schema_key: str) -> str | None:
     return None
 
 
-def validate_schema_documents() -> dict[str, Path]:
+def load_schema_documents() -> tuple[dict[str, Path], dict[str, dict[str, Any]]]:
     schema_files = sorted(SCHEMAS.rglob("*.schema.json"))
     if not schema_files:
         fail("no JSON Schema documents found")
 
     ids: dict[str, Path] = {}
-    loaded: list[tuple[Path, dict[str, Any]]] = []
+    docs: dict[str, dict[str, Any]] = {}
 
     for path in schema_files:
         schema = load_json(path)
@@ -103,9 +112,10 @@ def validate_schema_documents() -> dict[str, Path]:
             fail(f"invalid JSON Schema {path.relative_to(ROOT)}: {exc.message}")
 
         ids[schema_id] = path
-        loaded.append((path, schema))
+        docs[schema_id] = schema
 
-    for path, schema in loaded:
+    for schema_id, schema in docs.items():
+        path = ids[schema_id]
         for ref in iter_refs(schema):
             if ref.startswith("#"):
                 continue
@@ -118,7 +128,27 @@ def validate_schema_documents() -> dict[str, Path]:
             if base not in ids:
                 fail(f"unresolved canonical $ref in {path.relative_to(ROOT)}: {ref}")
 
-    return ids
+    return ids, docs
+
+
+def build_resource_registry(docs: dict[str, dict[str, Any]]) -> Registry:
+    registry = Registry()
+    for schema_id, schema in docs.items():
+        registry = registry.with_resource(schema_id, Resource.from_contents(schema))
+    return registry
+
+
+def validator_for(
+    schema_path: Path,
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> Draft202012Validator:
+    schema = load_json(schema_path)
+    return Draft202012Validator(
+        schema,
+        registry=resource_registry,
+        format_checker=Draft202012Validator.FORMAT_CHECKER,
+    )
 
 
 def validate_registry(schema_ids: dict[str, Path]) -> None:
@@ -186,11 +216,14 @@ def validate_registry(schema_ids: dict[str, Path]) -> None:
                 fail(f"unresolved registry dependency for {entry['schema_key']}: {dep}")
 
 
-def validate_pair(schema_path: Path, valid_path: Path, invalid_path: Path) -> None:
-    validator = Draft202012Validator(
-        load_json(schema_path),
-        format_checker=Draft202012Validator.FORMAT_CHECKER,
-    )
+def validate_pair(
+    schema_path: Path,
+    valid_path: Path,
+    invalid_path: Path,
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    validator = validator_for(schema_path, docs, resource_registry)
 
     try:
         validator.validate(load_json(valid_path))
@@ -205,39 +238,134 @@ def validate_pair(schema_path: Path, valid_path: Path, invalid_path: Path) -> No
     except ValidationError:
         pass
     else:
+        fail(f"negative fixture unexpectedly passed for {schema_path.relative_to(ROOT)}")
+
+
+def validate_sot_registry_semantics(data: dict[str, Any], *, expect_valid: bool) -> list[str]:
+    errors: list[str] = []
+    warnings: list[str] = []
+    authority_keys: set[tuple[str, str, str]] = set()
+    active_owners: dict[str, set[str]] = {}
+    active_sources: dict[tuple[str, str], set[str]] = {}
+
+    for entry in data.get("entries", []):
+        scope = entry.get("scope")
+        owner = entry.get("owner")
+        source = entry.get("canonicalSource")
+        status = entry.get("status")
+
+        if scope and owner and source:
+            key = (scope, owner, source)
+            if key in authority_keys:
+                errors.append(
+                    f"duplicate authority record for scope={scope!r}, owner={owner!r}, source={source!r}"
+                )
+            authority_keys.add(key)
+
+        if scope and owner and status == "ACTIVE":
+            active_owners.setdefault(scope, set()).add(owner)
+            if source:
+                active_sources.setdefault((scope, owner), set()).add(source)
+
+    for scope, owners in active_owners.items():
+        if len(owners) > 1:
+            errors.append(
+                f"multiple ACTIVE canonical owners for exact scope {scope!r}: {sorted(owners)}"
+            )
+
+    for (scope, owner), sources in active_sources.items():
+        if len(sources) > 1:
+            warnings.append(
+                "multiple ACTIVE canonical sources under the same owner "
+                f"for scope={scope!r}, owner={owner!r}; content-level SOT-C4 review may be required"
+            )
+
+    if expect_valid and errors:
+        fail("Source-of-Truth registry semantic validation failed: " + "; ".join(errors))
+
+    if not expect_valid and not errors:
+        fail("negative Source-of-Truth registry semantic fixture unexpectedly passed")
+
+    return warnings
+
+
+def validate_sot_registry_fixtures(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    validator = validator_for(SOT_REGISTRY_SCHEMA, docs, resource_registry)
+
+    valid = load_json(SOT_REGISTRY_VALID)
+    try:
+        validator.validate(valid)
+    except ValidationError as exc:
+        fail(f"positive Source-of-Truth registry fixture unexpectedly failed: {exc.message}")
+    warnings = validate_sot_registry_semantics(valid, expect_valid=True)
+    for warning in warnings:
+        print(f"WARNING: {warning}")
+
+    duplicate = load_json(SOT_REGISTRY_INVALID_DUPLICATE)
+    try:
+        validator.validate(duplicate)
+    except ValidationError as exc:
         fail(
-            f"negative fixture unexpectedly passed for {schema_path.relative_to(ROOT)}"
+            "duplicate authority fixture should be structurally valid before custom semantic "
+            f"validation, but failed schema validation: {exc.message}"
         )
+    validate_sot_registry_semantics(duplicate, expect_valid=False)
+
+    owner_ambiguity = load_json(SOT_REGISTRY_INVALID_OWNER)
+    try:
+        validator.validate(owner_ambiguity)
+    except ValidationError as exc:
+        fail(
+            "owner ambiguity fixture should be structurally valid before custom semantic "
+            f"validation, but failed schema validation: {exc.message}"
+        )
+    validate_sot_registry_semantics(owner_ambiguity, expect_valid=False)
 
 
-def validate_fixtures() -> None:
-    validator = Draft202012Validator(load_json(REGISTRY_SCHEMA))
+def validate_fixtures(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    registry_validator = Draft202012Validator(load_json(REGISTRY_SCHEMA))
 
     try:
-        validator.validate(load_json(VALID_FIXTURE))
+        registry_validator.validate(load_json(VALID_FIXTURE))
     except ValidationError as exc:
         fail(f"positive registry fixture unexpectedly failed: {exc.message}")
 
     try:
-        validator.validate(load_json(INVALID_FIXTURE))
+        registry_validator.validate(load_json(INVALID_FIXTURE))
     except ValidationError:
         pass
     else:
         fail("negative registry fixture unexpectedly passed")
 
-    for schema_path, valid_path, invalid_path in DOCUMENTATION_FIXTURES:
-        validate_pair(schema_path, valid_path, invalid_path)
+    for schema_path, valid_path, invalid_path in DOCUMENTATION_SIMPLE_FIXTURES:
+        validate_pair(
+            schema_path,
+            valid_path,
+            invalid_path,
+            docs,
+            resource_registry,
+        )
+
+    validate_sot_registry_fixtures(docs, resource_registry)
 
 
 def main() -> int:
-    schema_ids = validate_schema_documents()
+    schema_ids, docs = load_schema_documents()
+    resource_registry = build_resource_registry(docs)
     validate_registry(schema_ids)
-    validate_fixtures()
+    validate_fixtures(docs, resource_registry)
+
     print("U-POS schema validation: PASS")
     print("Dialect: JSON Schema Draft 2020-12")
     print("Registry: schemas/registry/schema-registry.json")
     print(f"Schema documents: {len(schema_ids)}")
-    print(f"Domain fixture pairs: {len(DOCUMENTATION_FIXTURES)}")
+    print("Documentation Authority fixtures: PASS")
     return 0
 
 

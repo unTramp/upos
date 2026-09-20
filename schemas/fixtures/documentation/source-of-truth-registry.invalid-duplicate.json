@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "0.1.0",
+  "entries": [
+    {
+      "scope": "product.master",
+      "owner": "Product",
+      "canonicalSource": "docs/MASTER_v1.4.md",
+      "status": "ACTIVE"
+    },
+    {
+      "scope": "product.master",
+      "owner": "Product",
+      "canonicalSource": "docs/MASTER_v1.4.md",
+      "status": "APPROVED"
+    }
+  ]
+}

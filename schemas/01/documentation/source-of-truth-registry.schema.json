@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:01:documentation:source-of-truth-registry:0.1.0",
+  "title": "U-POS Source-of-Truth Registry",
+  "description": "Operational registry profile for larger projects. It composes the permissive UPOS-01 Source-of-Truth Entry representation and requires only the minimum fields needed to resolve scoped authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "entries"],
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1.0"
+    },
+    "entries": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "allOf": [
+          {
+            "$ref": "urn:upos:schema:01:documentation:source-of-truth-entry:0.1.0"
+          },
+          {
+            "required": ["scope", "owner", "canonicalSource", "status"]
+          }
+        ]
+      }
+    }
+  }
+}
