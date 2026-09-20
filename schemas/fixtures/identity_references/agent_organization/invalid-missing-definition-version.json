@@ -1,0 +1,8 @@
+{
+  "role_ref": "ROLE-IMPLEMENTER",
+  "agent_definition_ref": {
+    "agent_definition_id": "AGENT-IMPLEMENTER"
+  },
+  "agent_instance_ref": "runtime-instance:local:implementer-01",
+  "agent_run_ref": "agent-run-0001"
+}

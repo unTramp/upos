@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:02:agent-organization:identity-references:0.1.0",
+  "title": "UPOS-02 Agent Organization Identity References",
+  "description": "Canonical serialization of frozen UPOS-02 identity/reference semantics only. This schema does not define Agent runtime behavior.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "role_ref": { "$ref": "#/$defs/roleRef" },
+    "agent_definition_ref": { "$ref": "#/$defs/agentDefinitionRef" },
+    "agent_instance_ref": { "$ref": "#/$defs/agentInstanceRef" },
+    "agent_run_ref": { "$ref": "#/$defs/agentRunRef" }
+  },
+  "$defs": {
+    "nonEmptyReference": { "type": "string", "minLength": 1 },
+    "roleRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to frozen UPOS-02 role_id."
+    },
+    "agentDefinitionRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["agent_definition_id", "agent_definition_version"],
+      "properties": {
+        "agent_definition_id": { "$ref": "#/$defs/nonEmptyReference" },
+        "agent_definition_version": { "$ref": "#/$defs/nonEmptyReference" }
+      },
+      "description": "Versioned Agent Definition identity. ID without version is incomplete."
+    },
+    "agentInstanceRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Configured/runtime Agent Instance reference. No universal agent_instance_id is introduced."
+    },
+    "agentRunRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to frozen UPOS-02 Agent Run identity (agent_run_id)."
+    }
+  }
+}

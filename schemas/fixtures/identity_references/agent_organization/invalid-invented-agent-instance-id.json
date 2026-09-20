@@ -1,0 +1,9 @@
+{
+  "role_ref": "ROLE-IMPLEMENTER",
+  "agent_definition_ref": {
+    "agent_definition_id": "AGENT-IMPLEMENTER",
+    "agent_definition_version": "1.0.0"
+  },
+  "agent_instance_id": "invented-global-instance-id",
+  "agent_run_ref": "agent-run-0001"
+}

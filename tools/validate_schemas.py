@@ -52,6 +52,7 @@ PROJECT_ADAPTER_FIXTURES = [
 
 ARTIST_OS_PROJECT_MANIFEST = SCHEMAS / "dogfooding" / "artist-os" / "project-manifest.json"
 ARTIST_OS_PROJECT_ADAPTER = SCHEMAS / "dogfooding" / "artist-os" / "project-adapter.json"
+IDENTITY_FIXTURE_ROOT = SCHEMAS / "fixtures" / "identity_references"
 
 OWNER_BY_PREFIX = {
     "upos.common.": "NONE_INFRASTRUCTURE",
@@ -643,6 +644,41 @@ def validate_project_adapter_fixtures(
     )
 
 
+def validate_identity_reference_fixtures(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    schema_paths = sorted(SCHEMAS.glob("[0-9][0-9]/*/identity-references.schema.json"))
+    for schema_path in schema_paths:
+        fixture_dir = IDENTITY_FIXTURE_ROOT / schema_path.parent.name
+        valid_path = fixture_dir / "valid.json"
+        invalid_paths = sorted(fixture_dir.glob("invalid-*.json"))
+
+        if not valid_path.is_file():
+            fail(f"missing positive identity fixture for {schema_path.relative_to(ROOT)}")
+        if not invalid_paths:
+            fail(f"missing negative identity fixture for {schema_path.relative_to(ROOT)}")
+
+        validator = validator_for(schema_path, docs, resource_registry)
+        try:
+            validator.validate(load_json(valid_path))
+        except ValidationError as exc:
+            fail(
+                f"positive identity fixture unexpectedly failed for "
+                f"{schema_path.relative_to(ROOT)}: {exc.message}"
+            )
+
+        for invalid_path in invalid_paths:
+            try:
+                validator.validate(load_json(invalid_path))
+            except ValidationError:
+                continue
+            fail(
+                f"negative identity fixture unexpectedly passed for "
+                f"{schema_path.relative_to(ROOT)}: {invalid_path.name}"
+            )
+
+
 def validate_fixtures(
     docs: dict[str, dict[str, Any]],
     resource_registry: Registry,
@@ -672,6 +708,7 @@ def validate_fixtures(
 
     validate_sot_registry_fixtures(docs, resource_registry)
     validate_project_adapter_fixtures(docs, resource_registry)
+    validate_identity_reference_fixtures(docs, resource_registry)
 
 
 def main() -> int:
@@ -687,6 +724,7 @@ def main() -> int:
     print("Documentation Authority fixtures: PASS")
     print("Project Manifest / Adapter fixtures: PASS")
     print("Artist OS Phase 2C dogfooding: PASS")
+    print("Cross-module identity/reference fixtures: PASS")
     return 0
 
 
