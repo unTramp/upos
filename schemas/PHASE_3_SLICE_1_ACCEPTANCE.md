@@ -5,6 +5,7 @@
 **Baseline:** U-POS v1.0.0  
 **Canonical baseline:** `338692cb3677bf395e9c5f17dc3e2a3ff9793960`  
 **Audited candidate:** `2a291aa5d8e76198205efbfec075bb0755dd4bfc`
+**F-03 validated checkpoint:** `ac887a16848a5c34d9af5caec29214fe9e3ff89c`
 
 This artifact records implementation evidence after remediation of blind-audit findings F-01 through F-05. It does **not** perform the independent acceptance, stability decision, merge decision, or CANDIDATE→STABLE promotion.
 
@@ -114,3 +115,15 @@ STOP
 ```
 
 No merge or STABLE promotion is authorized here.
+
+## 5. Recovery checkpoint chain
+
+```text
+F-01 core enforcement       e3fd4543c2c92eb2288d7b0cbb92d0d6a44d3df0  PASS
+F-02 lifecycle/retry        e6346115a3a196ee575207fd97b1772a57d1fae7  PASS
+F-04 contract artifacts     bf3a65d83a1c5faddc223caac1fef1d93d7eb5fb  PASS
+F-04 fail-closed resolver   253a3a2c4bf3a79b6cc8804543977c4d06a20db6  PASS
+F-03 carriage proof         ac887a16848a5c34d9af5caec29214fe9e3ff89c  PASS
+```
+
+The F-05 commit that updates this evidence must itself pass the same exact-HEAD gates before handoff.
