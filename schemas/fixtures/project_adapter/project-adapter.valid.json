@@ -88,5 +88,6 @@
   ],
   "validation_result": "VALID",
   "configuration_completeness": "PARTIALLY_CONFIGURED",
-  "extensions": {}
+  "extensions": {},
+  "provider_adapters": []
 }
