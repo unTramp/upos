@@ -198,6 +198,36 @@
       "then": {
         "not": {}
       }
+    },
+    {
+      "if": {
+        "required": [
+          "validation_result"
+        ],
+        "properties": {
+          "validation_result": {
+            "required": [
+              "validation_state"
+            ],
+            "properties": {
+              "validation_state": {
+                "const": "INCOMPLETE"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "validation_result": {
+            "properties": {
+              "missing_required_binding_refs": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      }
     }
   ]
 }

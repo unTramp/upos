@@ -241,6 +241,7 @@ ADAPTER_COMPOSITE_FIXTURES = [
     "adapter-resolution.precedence.valid.json",
     "adapter-resolution.incomplete-optional.valid.json",
     "adapter-resolution.failed-binding-conflict.valid.json",
+    "adapter-resolution.failed-missing-required.valid.json",
 ]
 ADAPTER_COMPOSITE_REQUEST_KEY_MISMATCH = "adapter-resolution.failed-request-key-mismatch.invalid.json"
 ADAPTER_EVENT_FIXTURES = [
@@ -268,6 +269,7 @@ ADAPTER_NEGATIVE_FIXTURES = [
     ("adapter-resolution-request.invalid-unknown-contract-ref.json", "request", "const", "UPOS-11-ADAPTER-RESOLUTION"),
     ("resolved-adapter-view.invalid-fabricated-scope.json", "view", "required", "project_id"),
     ("adapter-validation-result.invalid-warnings-hide-required.json", "validation", "maxItems", "empty"),
+    ("resolved-adapter-view.invalid-incomplete-missing-required.json", "view", "maxItems", "empty"),
     ("resolved-adapter-view.invalid-generic-adapter-id.json", "view", "additionalProperties", "adapter_id"),
     ("adapter-resolution-request.invalid-generic-resolution-id.json", "request", "additionalProperties", "resolution_id"),
     ("adapter-failure.invalid-noncanonical-code.json", "failure", "enum", "FALLBACK_EXHAUSTED"),
