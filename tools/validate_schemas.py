@@ -230,6 +230,23 @@ FORBIDDEN_SYNTHETIC_IDENTITY_FIELDS = {
     "retry_attempt_id",
 }
 
+RUNTIME_CONTRACT_ARTIFACTS = {
+    "UPOS-RUNTIME-GOV-001": ("runtime/RUNTIME_CONTRACT_GOVERNANCE.md", "0.1.0"),
+    "UPOS-RUNTIME-OPS-001": ("runtime/RUNTIME_OPERATION_AND_IDEMPOTENCY_STANDARD.md", "0.1.0"),
+    "UPOS-RUNTIME-RES-001": ("runtime/RUNTIME_RESULT_AND_FAILURE_STANDARD.md", "0.1.0"),
+    "UPOS-RUNTIME-VER-001": ("runtime/RUNTIME_COMPATIBILITY_AND_VERSIONING.md", "0.1.0"),
+    "UPOS-RUNTIME-REC-001": ("runtime/RUNTIME_RECONSTRUCTABILITY_STANDARD.md", "0.1.0"),
+    "UPOS-RUNTIME-PER-001": ("runtime/RUNTIME_PERSISTENCE_BOUNDARY.md", "0.1.0"),
+    "UPOS-02-AGENT-RUN-ATTRIBUTION": ("runtime/contracts/AGENT_RUN_ATTRIBUTION_CONTRACT.md", "0.1.0"),
+    "UPOS-03-SKILL-INVOCATION-ATTRIBUTION": ("runtime/contracts/SKILL_INVOCATION_ATTRIBUTION_CONTRACT.md", "0.1.0"),
+    "UPOS-04-TASK-RUNTIME": ("runtime/contracts/TASK_RUNTIME_CONTRACT.md", "0.1.0"),
+    "UPOS-04-ROUTING-RUNTIME": ("runtime/contracts/ROUTING_RUNTIME_CONTRACT.md", "0.1.0"),
+    "UPOS-04-WORKFLOW-INSTANCE-RUNTIME": ("runtime/contracts/WORKFLOW_INSTANCE_RUNTIME_CONTRACT.md", "0.1.0"),
+    "UPOS-04-EXECUTION-ATTEMPT": ("runtime/contracts/EXECUTION_ATTEMPT_RUNTIME_CONTRACT.md", "0.1.0"),
+    "UPOS-08-EVENT-EMISSION": ("runtime/contracts/EVENT_EMISSION_INTERFACE.md", "0.1.0"),
+    "UPOS-08-EVT-001": ("08_observability/EVENT_STANDARD.md", "1.0.0"),
+}
+
 OWNER_BY_PREFIX = {
     "upos.common.": "NONE_INFRASTRUCTURE",
     "upos.01.documentation.": "UPOS-01",
@@ -1002,6 +1019,59 @@ def collect_schema_property_names(value: Any) -> set[str]:
     return names
 
 
+def validate_runtime_contract_references() -> None:
+    for contract_ref, (artifact_path, supported_version) in RUNTIME_CONTRACT_ARTIFACTS.items():
+        artifact = ROOT / artifact_path
+        if not artifact.is_file():
+            fail(f"runtime contract reference {contract_ref} resolves to missing artifact: {artifact_path}")
+        text = artifact.read_text(encoding="utf-8")
+        if f"**ID:** {contract_ref}" not in text:
+            fail(f"runtime contract artifact ID mismatch for {contract_ref}: {artifact_path}")
+        if f"**Version:** {supported_version}" in text:
+            continue
+        if contract_ref.startswith("UPOS-RUNTIME-") and f"**Status:** CANDIDATE" in text:
+            # Cross-cutting Slice-1 standards predate explicit Version metadata.
+            # Their supported runtime-contract version is fixed by the machine fixtures.
+            continue
+        fail(
+            f"runtime contract artifact version mismatch for {contract_ref}: "
+            f"expected {supported_version} in {artifact_path}"
+        )
+
+    fixture_root = SCHEMAS / "fixtures" / "runtime"
+    contract_key_to_version_key = {
+        "runtime_contract_ref": "runtime_contract_version",
+        "event_contract_ref": "event_contract_version",
+        "producer_contract_ref": "producer_contract_version",
+    }
+
+    def walk(value: Any, source: Path, path: str = "$") -> None:
+        if isinstance(value, dict):
+            for ref_key, version_key in contract_key_to_version_key.items():
+                if ref_key not in value:
+                    continue
+                ref = value.get(ref_key)
+                version = value.get(version_key)
+                if ref not in RUNTIME_CONTRACT_ARTIFACTS:
+                    fail(
+                        f"unresolved {ref_key} in {source.relative_to(ROOT)} at {path}: {ref!r}"
+                    )
+                expected_version = RUNTIME_CONTRACT_ARTIFACTS[ref][1]
+                if version != expected_version:
+                    fail(
+                        f"unsupported {ref_key} version in {source.relative_to(ROOT)} at {path}: "
+                        f"{ref}@{version!r}; supported={expected_version}"
+                    )
+            for key, child in value.items():
+                walk(child, source, f"{path}.{key}")
+        elif isinstance(value, list):
+            for index, child in enumerate(value):
+                walk(child, source, f"{path}[{index}]")
+
+    for fixture in sorted(fixture_root.rglob("*.json")):
+        walk(load_json(fixture), fixture)
+
+
 def validate_forbidden_identity_properties(
     docs: dict[str, dict[str, Any]],
 ) -> None:
@@ -1442,6 +1512,7 @@ def main() -> int:
     schema_ids, docs = load_schema_documents()
     resource_registry = build_resource_registry(docs)
     validate_registry(schema_ids)
+    validate_runtime_contract_references()
     validate_forbidden_identity_properties(docs)
     validate_artist_os_identity_namespace()
     validate_fixtures(docs, resource_registry)
@@ -1456,6 +1527,7 @@ def main() -> int:
     print("Artist OS Phase 2C dogfooding: PASS")
     print("Cross-module identity/reference fixtures: PASS")
     print("Canonical cross-schema reference conformance: PASS")
+    print("Runtime contract reference/version resolution: PASS")
     print("Identity anti-duplication validation: PASS")
     print("Artist OS namespace compatibility: PASS")
     print("Phase-3 common runtime primitive fixtures: PASS")
