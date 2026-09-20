@@ -6,6 +6,8 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
+    "runtime_contract_ref",
+    "runtime_contract_version",
     "failure_owner_module",
     "operation_kind",
     "subject_ref",
@@ -13,6 +15,14 @@
     "retryability_hint"
   ],
   "properties": {
+    "runtime_contract_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runtime_contract_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
     "failure_owner_module": {
       "enum": [
         "NONE_INFRASTRUCTURE",

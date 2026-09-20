@@ -1378,6 +1378,115 @@ def validate_execution_spine_reconstructability(
     )
 
 
+def validate_failure_envelope_version_carriage(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    schema_path = SCHEMAS / "common" / "runtime-failure-envelope.schema.json"
+    valid_path = (
+        SCHEMAS / "fixtures" / "runtime" / "common"
+        / "runtime-failure-envelope.valid.json"
+    )
+    validator = validator_for(schema_path, docs, resource_registry)
+    stored = load_json(valid_path)
+
+    try:
+        validator.validate(stored)
+    except ValidationError as exc:
+        fail(f"stored runtime failure envelope unexpectedly failed: {exc.message}")
+
+    ref = stored.get("runtime_contract_ref")
+    version = stored.get("runtime_contract_version")
+    if ref not in RUNTIME_CONTRACT_ARTIFACTS:
+        fail(f"stored runtime failure envelope has unresolved runtime contract: {ref!r}")
+    expected = RUNTIME_CONTRACT_ARTIFACTS[ref][1]
+    if version != expected:
+        fail(
+            "stored runtime failure envelope has unsupported runtime contract "
+            f"version: {ref}@{version!r}; supported={expected}"
+        )
+    print("FOCUSED PASS: stored runtime failure envelope with supported contract metadata")
+
+    for field in ("runtime_contract_ref", "runtime_contract_version"):
+        missing = json.loads(json.dumps(stored))
+        del missing[field]
+        try:
+            validator.validate(missing)
+        except ValidationError as exc:
+            if exc.validator != "required":
+                fail(
+                    f"runtime failure envelope missing {field} rejected for "
+                    f"unexpected reason: {exc.validator}: {exc.message}"
+                )
+            print(f"FOCUSED REJECT: runtime failure envelope missing {field}")
+        else:
+            fail(f"runtime failure envelope missing {field} unexpectedly passed")
+
+    unsupported = json.loads(json.dumps(stored))
+    unsupported["runtime_contract_version"] = "99.0.0"
+    try:
+        validator.validate(unsupported)
+    except ValidationError as exc:
+        fail(
+            "unsupported runtime failure envelope contract version should remain "
+            f"structurally valid before fail-closed contract resolution: {exc.message}"
+        )
+    unsupported_ref = unsupported["runtime_contract_ref"]
+    expected = RUNTIME_CONTRACT_ARTIFACTS[unsupported_ref][1]
+    if unsupported["runtime_contract_version"] == expected:
+        fail("unsupported runtime failure envelope contract mutation did not change version")
+    print("FOCUSED REJECT: unsupported runtime failure envelope contract version")
+
+    negative_expectations = (
+        (
+            SCHEMAS / "fixtures" / "runtime" / "common"
+            / "runtime-failure-envelope.invalid-security-deny.json",
+            "not",
+            "failure_code",
+            "Security verdict contamination",
+        ),
+        (
+            SCHEMAS / "fixtures" / "runtime" / "common"
+            / "runtime-failure-envelope.invalid-quality-fail.json",
+            "not",
+            "failure_code",
+            "Quality verdict contamination",
+        ),
+        (
+            SCHEMAS / "fixtures" / "runtime" / "common"
+            / "runtime-failure-envelope.invalid-runtime-error-id.json",
+            "additionalProperties",
+            None,
+            "synthetic runtime error identity",
+        ),
+    )
+    for path, expected_validator, expected_path, label in negative_expectations:
+        errors = list(validator.iter_errors(load_json(path)))
+        if len(errors) != 1:
+            fail(
+                f"{label} fixture must reject for exactly one original invariant; "
+                f"got {len(errors)} errors"
+            )
+        exc = errors[0]
+        actual_path = "/".join(str(x) for x in exc.absolute_path)
+        if exc.validator != expected_validator:
+            fail(
+                f"{label} fixture rejected for unexpected validator "
+                f"{exc.validator!r}: {exc.message}"
+            )
+        if expected_path is not None and actual_path != expected_path:
+            fail(
+                f"{label} fixture rejected at unexpected path "
+                f"{actual_path!r}: {exc.message}"
+            )
+        if label == "synthetic runtime error identity" and "runtime_error_id" not in exc.message:
+            fail(
+                "synthetic runtime error identity fixture did not reject "
+                f"runtime_error_id specifically: {exc.message}"
+            )
+        print(f"FOCUSED REJECT: {label} preserved")
+
+
 def validate_owner_result_runtime_boundaries(
     docs: dict[str, dict[str, Any]],
     resource_registry: Registry,
@@ -1617,6 +1726,7 @@ def validate_fixtures(
 
     for schema_path, valid_path, invalid_path in RUNTIME_COMMON_FIXTURES:
         validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
+    validate_failure_envelope_version_carriage(docs, resource_registry)
     validate_owner_result_runtime_boundaries(docs, resource_registry)
     validate_operation_request_key_boundaries(docs, resource_registry)
     validate_execution_spine_reconstructability(docs, resource_registry)
@@ -1663,6 +1773,7 @@ def main() -> int:
     print("Identity anti-duplication validation: PASS")
     print("Artist OS namespace compatibility: PASS")
     print("Phase-3 common runtime primitive fixtures: PASS")
+    print("Runtime failure envelope version carriage: PASS")
     print("Owner-result/runtime-outcome separation: PASS")
     print("Operation request key / owner result separation: PASS")
     print("Phase-3 execution-spine reconstructability: PASS")
