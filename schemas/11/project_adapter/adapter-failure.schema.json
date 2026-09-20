@@ -2,13 +2,14 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:upos:schema:11:project-adapter:adapter-failure:0.1.0",
   "title": "UPOS-11 Adapter Failure",
-  "description": "Owner failure for one Adapter Resolution, using only canonical UPOS-11 failure classes. It introduces no identity and never carries an adapter_resolution_id, because a failed resolution produces no Resolved Adapter View.",
+  "description": "Owner failure for one Adapter Resolution. It retains the originating infrastructure-only operation_request_key for durable request correlation, introduces no identity, and never carries an adapter_resolution_id because a failed resolution produces no Resolved Adapter View.",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "runtime_contract_ref",
     "runtime_contract_version",
     "runtime_schema_version",
+    "operation_request_key",
     "failure_code",
     "abstract_requirement_ref",
     "scope"
@@ -22,6 +23,9 @@
     },
     "runtime_schema_version": {
       "const": "0.1.0"
+    },
+    "operation_request_key": {
+      "$ref": "urn:upos:schema:common:runtime-operation-control:0.1.0#/properties/operation_request_key"
     },
     "failure_code": {
       "enum": [

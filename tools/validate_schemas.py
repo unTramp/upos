@@ -242,6 +242,7 @@ ADAPTER_COMPOSITE_FIXTURES = [
     "adapter-resolution.incomplete-optional.valid.json",
     "adapter-resolution.failed-binding-conflict.valid.json",
 ]
+ADAPTER_COMPOSITE_REQUEST_KEY_MISMATCH = "adapter-resolution.failed-request-key-mismatch.invalid.json"
 ADAPTER_EVENT_FIXTURES = [
     "event.adapter-resolution-requested.valid.json",
     "event.adapter-binding-evaluated.valid.json",
@@ -256,6 +257,7 @@ ADAPTER_NEGATIVE_FIXTURES = [
     ("adapter-resolution-request.invalid-attempt-id.json", "request", "additionalProperties", "adapter_resolution_attempt_id"),
     ("resolved-adapter-view.invalid-binding-attempt-id.json", "view", "additionalProperties", "binding_attempt_id"),
     ("adapter-resolution-request.invalid-missing-request-key.json", "request", "required", "operation_request_key"),
+    ("adapter-failure.invalid-missing-request-key.json", "failure", "required", "operation_request_key"),
     ("resolved-adapter-view.invalid-fallback-id.json", "view", "additionalProperties", "fallback_id"),
     ("resolved-adapter-view.invalid-provider-execution.json", "view", "additionalProperties", "api_endpoint"),
     ("adapter-validation-result.invalid-security-verdict.json", "validation", "enum", "DENY"),
@@ -1789,6 +1791,26 @@ def validate_routing_runtime_semantics(
     )
 
 
+def enforce_adapter_failure_request_correlation(data: dict[str, Any]) -> None:
+    """A material Adapter Failure must retain its originating request correlation."""
+    request = data.get("request")
+    failure = data.get("adapter_failure")
+    if not isinstance(request, dict) or not isinstance(failure, dict):
+        return
+    control = request.get("operation_control")
+    if not isinstance(control, dict):
+        return
+    request_key = control.get("operation_request_key")
+    failure_key = failure.get("operation_request_key")
+    if request_key is None or failure_key is None:
+        return
+    if request_key != failure_key:
+        raise RuntimeConformanceViolation(
+            "adapter_failure.operation_request_key must equal "
+            "request.operation_control.operation_request_key"
+        )
+
+
 def enforce_resolution_result_separation(data: dict[str, Any]) -> None:
     """A failed Adapter Resolution must not carry a Resolved Adapter View identity."""
     if "adapter_failure" not in data and "failure_code" not in data:
@@ -1900,6 +1922,26 @@ def validate_adapter_resolution_contracts(
             enforce_resolution_result_separation,
             data,
         )
+        expect_runtime_conformance_pass(
+            f"Slice-2 composite failure/request correlation {name}",
+            enforce_adapter_failure_request_correlation,
+            data,
+        )
+
+    mismatch = load_json(ADAPTER_FIXTURES / ADAPTER_COMPOSITE_REQUEST_KEY_MISMATCH)
+    for member, key in (("request", "request"), ("adapter_failure", "failure")):
+        try:
+            validators[key].validate(mismatch[member])
+        except ValidationError as exc:
+            fail(
+                f"Slice-2 request/failure mismatch fixture must be structurally valid "
+                f"before correlation validation: {member}: {exc.message}"
+            )
+    expect_runtime_conformance_reject(
+        "Slice-2 failed-resolution request/failure correlation mismatch",
+        enforce_adapter_failure_request_correlation,
+        mismatch,
+    )
 
     event_validator = validator_for(RUNTIME_EVENT_SCHEMA, docs, resource_registry)
     for name in ADAPTER_EVENT_FIXTURES:

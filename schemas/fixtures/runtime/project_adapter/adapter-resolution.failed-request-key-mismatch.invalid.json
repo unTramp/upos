@@ -26,7 +26,7 @@
     "runtime_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
     "runtime_contract_version": "0.1.0",
     "runtime_schema_version": "0.1.0",
-    "operation_request_key": "adapter-resolution-request:project:upos:repository-write:conflict-1",
+    "operation_request_key": "adapter-resolution-request:project:upos:repository-write:conflict-1:mismatch",
     "failure_code": "BINDING_CONFLICT",
     "abstract_requirement_ref": "abstract-requirement:repository-write",
     "scope": {

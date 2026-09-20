@@ -887,16 +887,18 @@
         "11_project_adapter/ADAPTER_FAILURE_MODEL.md",
         "11_project_adapter/BINDING_RESOLUTION_STANDARD.md",
         "runtime/RUNTIME_RESULT_AND_FAILURE_STANDARD.md",
-        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md"
+        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md",
+        "runtime/RUNTIME_OPERATION_AND_IDEMPOTENCY_STANDARD.md"
       ],
-      "identity_model": "Introduces no identity. Carries no adapter_resolution_id, because a failed resolution produces no Resolved Adapter View. Referenced through owner_failure_ref.",
+      "identity_model": "Introduces no identity. Retains the originating infrastructure-only operation_request_key for durable request correlation and carries no adapter_resolution_id, because a failed resolution produces no Resolved Adapter View. Referenced through owner_failure_ref.",
       "reference_dependencies": [
         "upos.11.project_adapter.binding",
-        "upos.11.project_adapter.adapter_validation_result"
+        "upos.11.project_adapter.adapter_validation_result",
+        "upos.common.runtime_operation_control"
       ],
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
-      "notes": "Only the 17 canonical UPOS-11 failure classes. retryability_hint is technical metadata; UPOS-04 decides retry/reroute/wait/abort. An exhausted fallback chain terminates in an existing canonical class plus fallback provenance."
+      "notes": "Only the 17 canonical UPOS-11 failure classes. operation_request_key is reused from the common runtime operation-control fragment and is correlation, not domain identity. retryability_hint is technical metadata; UPOS-04 decides retry/reroute/wait/abort. An exhausted fallback chain terminates in an existing canonical class plus fallback provenance."
     },
     {
       "schema_key": "upos.11.project_adapter.resolved_adapter_view",
