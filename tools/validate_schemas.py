@@ -179,6 +179,10 @@ def validate_registry(schema_ids: dict[str, Path]) -> None:
     key_versions = set()
     uris = set()
     keys = {entry["schema_key"] for entry in registry["entries"]}
+    uri_to_key = {
+        entry["schema_uri"]: entry["schema_key"]
+        for entry in registry["entries"]
+    }
 
     for entry in registry["entries"]:
         key_version = (entry["schema_key"], entry["schema_version"])
@@ -224,11 +228,39 @@ def validate_registry(schema_ids: dict[str, Path]) -> None:
             if not (ROOT / ref).is_file():
                 fail(f"normative source ref missing for {entry['schema_key']}: {ref}")
 
-        for dep in entry["reference_dependencies"]:
+        declared_dependencies = set(entry["reference_dependencies"])
+        for dep in declared_dependencies:
             if dep == entry["schema_key"]:
                 fail(f"schema cannot depend on itself: {entry['schema_key']}")
             if dep not in keys:
                 fail(f"unresolved registry dependency for {entry['schema_key']}: {dep}")
+
+        actual_dependencies: set[str] = set()
+        for ref in iter_refs(artifact_schema):
+            if ref.startswith("#"):
+                continue
+            ref_uri = ref.split("#", 1)[0]
+            ref_key = uri_to_key.get(ref_uri)
+            if ref_key is None:
+                fail(
+                    f"registered schema {entry['schema_key']} references unregistered "
+                    f"schema URI: {ref_uri}"
+                )
+            if ref_key != entry["schema_key"]:
+                actual_dependencies.add(ref_key)
+
+        missing_declared = actual_dependencies - declared_dependencies
+        stale_declared = declared_dependencies - actual_dependencies
+        if missing_declared:
+            fail(
+                f"registry dependency metadata missing actual $ref dependencies for "
+                f"{entry['schema_key']}: {sorted(missing_declared)}"
+            )
+        if stale_declared:
+            fail(
+                f"registry dependency metadata has stale/non-$ref dependencies for "
+                f"{entry['schema_key']}: {sorted(stale_declared)}"
+            )
 
 
 def validate_pair(
