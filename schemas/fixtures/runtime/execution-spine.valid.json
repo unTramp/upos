@@ -1,0 +1,162 @@
+{
+  "fixture_level": "FIXTURE",
+  "task": {
+    "task_ref": "task:T-1",
+    "current_state": "ROUTED"
+  },
+  "routing": {
+    "operation_control": {
+      "runtime_contract_ref": "UPOS-04-ROUTING-RUNTIME",
+      "runtime_contract_version": "0.1.0",
+      "operation_kind": "ROUTING_EVALUATION",
+      "subject_ref": "task:T-1",
+      "operation_request_key": "route-request:T-1:success-1"
+    },
+    "task_ref": "task:T-1",
+    "routing_basis_refs": [
+      "classification:C2",
+      "context-bundle:CB-1"
+    ],
+    "routing_decision_ref": "routing:R-1",
+    "runtime_outcome": {
+      "runtime_contract_ref": "UPOS-04-ROUTING-RUNTIME",
+      "runtime_contract_version": "0.1.0",
+      "operation_kind": "ROUTING_EVALUATION",
+      "subject_ref": "task:T-1",
+      "execution_outcome": "COMPLETED",
+      "owner_result_ref": "routing:R-1",
+      "started_at": "2026-09-20T10:00:00Z",
+      "ended_at": "2026-09-20T10:00:01Z"
+    }
+  },
+  "workflow": {
+    "workflow_instance_ref": "workflow:W-1",
+    "task_ref": "task:T-1",
+    "routing_decision_ref": "routing:R-1",
+    "workflow_definition_id": "WFL-FEATURE",
+    "workflow_version": "1.0.0",
+    "current_state": "RUNNING",
+    "stages": [
+      {
+        "stage_ref": "WFL-FEATURE:IMPLEMENT",
+        "current_state": "RUNNING"
+      }
+    ]
+  },
+  "agent_run_attribution": {
+    "agent_run_ref": "agent-run:AR-1",
+    "role_ref": "ROLE-IMPLEMENTER",
+    "agent_definition_ref": {
+      "agent_definition_id": "agent-def:implementer",
+      "agent_definition_version": "1.0.0"
+    },
+    "agent_instance_ref": "agent-instance:configured-1",
+    "task_ref": "task:T-1",
+    "workflow_instance_ref": "workflow:W-1",
+    "stage_ref": "WFL-FEATURE:IMPLEMENT",
+    "responsibility_ref": "implement approved change"
+  },
+  "agent_run_attempt": {
+    "subject_type": "AGENT_RUN",
+    "subject_ref": "agent-run:AR-1",
+    "execution_state": "COMPLETED",
+    "started_at": "2026-09-20T10:00:02Z",
+    "terminal_at": "2026-09-20T10:00:05Z"
+  },
+  "skill_invocation_attribution": {
+    "skill_ref": {
+      "skill_id": "implement-change",
+      "skill_version": "1.0.0"
+    },
+    "skill_invocation_ref": "skill-invocation:SI-1",
+    "agent_run_ref": "agent-run:AR-1",
+    "task_ref": "task:T-1",
+    "workflow_instance_ref": "workflow:W-1",
+    "stage_ref": "WFL-FEATURE:IMPLEMENT",
+    "input_refs": [
+      "plan:IP-1"
+    ],
+    "context_bundle_refs": [
+      "context-bundle:CB-1"
+    ],
+    "skill_result_ref": "skill-result:SR-1"
+  },
+  "skill_invocation_attempt": {
+    "subject_type": "SKILL_INVOCATION",
+    "subject_ref": "skill-invocation:SI-1",
+    "execution_state": "COMPLETED",
+    "started_at": "2026-09-20T10:00:02Z",
+    "terminal_at": "2026-09-20T10:00:04Z"
+  },
+  "context_bundle_ref": "context-bundle:CB-1",
+  "skill_result_ref": "skill-result:SR-1",
+  "runtime_outcome": {
+    "runtime_contract_ref": "UPOS-RUNTIME-RES-001",
+    "runtime_contract_version": "0.1.0",
+    "operation_kind": "SKILL_INVOCATION",
+    "subject_ref": "skill-invocation:SI-1",
+    "execution_outcome": "COMPLETED",
+    "owner_result_ref": "skill-result:SR-1",
+    "event_refs": [
+      "event:E-1"
+    ],
+    "started_at": "2026-09-20T10:00:02Z",
+    "ended_at": "2026-09-20T10:00:04Z"
+  },
+  "event": {
+    "event_id": "event:E-1",
+    "event_type": "upos.skill.invocation.completed",
+    "event_class": "DOMAIN_RUNTIME",
+    "event_schema_version": "0.1.0",
+    "event_contract_ref": "UPOS-08-EVT-001",
+    "event_contract_version": "1.0.0",
+    "occurred_at": "2026-09-20T10:00:04Z",
+    "recorded_at": "2026-09-20T10:00:04Z",
+    "producer_module": "UPOS-04",
+    "producer_component_ref": "runtime:execution-spine",
+    "producer_contract_ref": "UPOS-04-EXECUTION-ATTEMPT",
+    "producer_contract_version": "0.1.0",
+    "domain_owner_module": "UPOS-03",
+    "initiator_type": "AGENT_RUN",
+    "initiator_ref": "agent-run:AR-1",
+    "producer_agent_run_ref": "agent-run:AR-1",
+    "task_ref": "task:T-1",
+    "routing_decision_ref": "routing:R-1",
+    "workflow_instance_ref": "workflow:W-1",
+    "stage_ref": "WFL-FEATURE:IMPLEMENT",
+    "skill_ref": {
+      "skill_id": "implement-change",
+      "skill_version": "1.0.0"
+    },
+    "skill_invocation_ref": "skill-invocation:SI-1",
+    "context_bundle_ref": "context-bundle:CB-1",
+    "primary_domain_entity_type": "SKILL_INVOCATION",
+    "primary_domain_entity_ref": "skill-invocation:SI-1",
+    "primary_domain_state_ref": "COMPLETED",
+    "event_payload": {
+      "execution_outcome": "COMPLETED"
+    },
+    "owner_result_ref": "skill-result:SR-1",
+    "owner_status_ref": "COMPLETED",
+    "source_provenance_refs": [
+      "context-bundle:CB-1"
+    ],
+    "telemetry_importance": "REQUIRED_AUDIT"
+  },
+  "technical_redelivery": [
+    {
+      "runtime_contract_ref": "UPOS-RUNTIME-OPS-001",
+      "runtime_contract_version": "0.1.0",
+      "operation_kind": "SIDE_EFFECT_REQUEST",
+      "subject_ref": "agent-run:AR-1",
+      "operation_request_key": "delivery:AR-1:1"
+    },
+    {
+      "runtime_contract_ref": "UPOS-RUNTIME-OPS-001",
+      "runtime_contract_version": "0.1.0",
+      "operation_kind": "SIDE_EFFECT_REQUEST",
+      "subject_ref": "agent-run:AR-1",
+      "operation_request_key": "delivery:AR-1:1"
+    }
+  ]
+}

@@ -188,6 +188,14 @@ RUNTIME_EVENT_REDELIVERY = [
     SCHEMAS / "fixtures" / "runtime" / "observability" / "event.redelivery-a.json",
     SCHEMAS / "fixtures" / "runtime" / "observability" / "event.redelivery-b.json",
 ]
+
+RUNTIME_EXECUTION_SPINE_VALID = SCHEMAS / "fixtures" / "runtime" / "execution-spine.valid.json"
+RUNTIME_OPERATION_KEY_COLLISION_INVALIDS = [
+    SCHEMAS / "fixtures" / "runtime" / "common" / "operation-request-key.invalid-permission-decision.json",
+    SCHEMAS / "fixtures" / "runtime" / "common" / "operation-request-key.invalid-adapter-resolution.json",
+]
+RUNTIME_REDELIVERY_AS_RETRY_INVALID = SCHEMAS / "fixtures" / "runtime" / "workflow" / "technical-redelivery.invalid-as-retry.json"
+RUNTIME_PRIVATE_REASONING_INVALID = SCHEMAS / "fixtures" / "runtime" / "execution-spine.invalid-private-reasoning.json"
 RUNTIME_ROUTING_INVALID_SAME_KEY = (
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "routing-runtime.invalid-request-key-equals-decision.json"
 )
@@ -899,6 +907,122 @@ def validate_artist_os_identity_namespace() -> None:
             fail(f"Artist OS product concept collides with U-POS namespace: {concept!r}")
 
 
+def validate_operation_request_key_boundaries(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    control_validator = validator_for(
+        SCHEMAS / "common" / "runtime-operation-control.schema.json",
+        docs,
+        resource_registry,
+    )
+    for invalid_path in RUNTIME_OPERATION_KEY_COLLISION_INVALIDS:
+        data = load_json(invalid_path)
+        try:
+            control_validator.validate(data["operation_control"])
+        except ValidationError as exc:
+            fail(f"operation-key collision fixture must have a valid operation_control: {invalid_path.name}: {exc.message}")
+        if data["operation_control"].get("operation_request_key") != data.get("owner_result_ref"):
+            fail(f"operation-key collision fixture does not exercise owner-result collision: {invalid_path.name}")
+
+
+def validate_execution_spine_reconstructability(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    data = load_json(RUNTIME_EXECUTION_SPINE_VALID)
+    if data.get("fixture_level") != "FIXTURE":
+        fail("execution-spine conformance data must be explicitly labeled FIXTURE")
+
+    component_schemas = {
+        "task": SCHEMAS / "04" / "workflow" / "task-runtime.schema.json",
+        "routing": SCHEMAS / "04" / "workflow" / "routing-runtime.schema.json",
+        "workflow": SCHEMAS / "04" / "workflow" / "workflow-instance-runtime.schema.json",
+        "agent_run_attribution": SCHEMAS / "02" / "agent_organization" / "agent-run-attribution.schema.json",
+        "agent_run_attempt": SCHEMAS / "04" / "workflow" / "execution-attempt.schema.json",
+        "skill_invocation_attribution": SCHEMAS / "03" / "skills" / "skill-invocation-attribution.schema.json",
+        "skill_invocation_attempt": SCHEMAS / "04" / "workflow" / "execution-attempt.schema.json",
+        "runtime_outcome": SCHEMAS / "common" / "runtime-operation-outcome.schema.json",
+        "event": SCHEMAS / "08" / "observability" / "event.schema.json",
+    }
+    for key, schema_path in component_schemas.items():
+        try:
+            validator_for(schema_path, docs, resource_registry).validate(data[key])
+        except ValidationError as exc:
+            fail(f"execution-spine component {key} failed validation: {exc.message}")
+
+    control_validator = validator_for(
+        SCHEMAS / "common" / "runtime-operation-control.schema.json",
+        docs,
+        resource_registry,
+    )
+    redelivery = data.get("technical_redelivery", [])
+    if len(redelivery) != 2:
+        fail("execution-spine fixture must contain two technical redelivery records")
+    for control in redelivery:
+        try:
+            control_validator.validate(control)
+        except ValidationError as exc:
+            fail(f"technical redelivery operation_control failed validation: {exc.message}")
+    if redelivery[0]["operation_request_key"] != redelivery[1]["operation_request_key"]:
+        fail("technical redelivery must reuse operation_request_key")
+    if redelivery[0]["subject_ref"] != redelivery[1]["subject_ref"]:
+        fail("technical redelivery must preserve owner subject identity")
+
+    task_ref = data["task"]["task_ref"]
+    routing_ref = data["routing"].get("routing_decision_ref")
+    workflow_ref = data["workflow"]["workflow_instance_ref"]
+    stage_ref = data["workflow"]["stages"][0]["stage_ref"]
+    agent_run_ref = data["agent_run_attribution"]["agent_run_ref"]
+    skill_invocation_ref = data["skill_invocation_attribution"]["skill_invocation_ref"]
+
+    consistency_checks = [
+        (data["routing"]["task_ref"], task_ref, "routing task"),
+        (data["workflow"]["task_ref"], task_ref, "workflow task"),
+        (data["workflow"]["routing_decision_ref"], routing_ref, "workflow routing decision"),
+        (data["agent_run_attribution"]["task_ref"], task_ref, "Agent Run task"),
+        (data["agent_run_attribution"].get("workflow_instance_ref"), workflow_ref, "Agent Run workflow"),
+        (data["agent_run_attribution"].get("stage_ref"), stage_ref, "Agent Run stage"),
+        (data["agent_run_attempt"]["subject_ref"], agent_run_ref, "Agent Run attempt subject"),
+        (data["skill_invocation_attribution"]["agent_run_ref"], agent_run_ref, "Skill Invocation Agent Run"),
+        (data["skill_invocation_attribution"]["task_ref"], task_ref, "Skill Invocation task"),
+        (data["skill_invocation_attribution"].get("workflow_instance_ref"), workflow_ref, "Skill Invocation workflow"),
+        (data["skill_invocation_attribution"].get("stage_ref"), stage_ref, "Skill Invocation stage"),
+        (data["skill_invocation_attempt"]["subject_ref"], skill_invocation_ref, "Skill Invocation attempt subject"),
+        (data["skill_invocation_attribution"]["context_bundle_refs"][0], data["context_bundle_ref"], "Context Bundle"),
+        (data["skill_invocation_attribution"]["skill_result_ref"], data["skill_result_ref"], "Skill Result"),
+        (data["runtime_outcome"]["subject_ref"], skill_invocation_ref, "runtime outcome subject"),
+        (data["runtime_outcome"]["owner_result_ref"], data["skill_result_ref"], "runtime owner result"),
+        (data["event"]["event_id"], data["runtime_outcome"]["event_refs"][0], "Event reference"),
+        (data["event"]["task_ref"], task_ref, "Event task"),
+        (data["event"]["routing_decision_ref"], routing_ref, "Event routing decision"),
+        (data["event"]["workflow_instance_ref"], workflow_ref, "Event workflow"),
+        (data["event"]["stage_ref"], stage_ref, "Event stage"),
+        (data["event"]["producer_agent_run_ref"], agent_run_ref, "Event Agent Run"),
+        (data["event"]["skill_invocation_ref"], skill_invocation_ref, "Event Skill Invocation"),
+        (data["event"]["context_bundle_ref"], data["context_bundle_ref"], "Event Context Bundle"),
+        (data["event"]["owner_result_ref"], data["skill_result_ref"], "Event owner result"),
+    ]
+    for actual, expected, label in consistency_checks:
+        if actual != expected:
+            fail(f"execution-spine reconstructability mismatch for {label}: {actual!r} != {expected!r}")
+
+    redelivery_retry = load_json(RUNTIME_REDELIVERY_AS_RETRY_INVALID)
+    try:
+        control_validator.validate(redelivery_retry["operation_control"])
+        validator_for(RUNTIME_RETRY_SCHEMA, docs, resource_registry).validate(redelivery_retry["retry_provenance"])
+    except ValidationError as exc:
+        fail(f"redelivery-as-retry negative fixture must be structurally valid: {exc.message}")
+    retry = redelivery_retry["retry_provenance"]
+    if retry["successor_ref"] != retry["predecessor_ref"]:
+        fail("redelivery-as-retry negative fixture must reuse the same execution identity")
+
+    private = load_json(RUNTIME_PRIVATE_REASONING_INVALID)
+    prohibited = {"private_chain_of_thought", "chain_of_thought", "private_reasoning", "reasoning_trace"}
+    if not prohibited.intersection(private):
+        fail("private-reasoning negative fixture does not contain a prohibited private reasoning field")
+
+
 def validate_owner_result_runtime_boundaries(
     docs: dict[str, dict[str, Any]],
     resource_registry: Registry,
@@ -1065,6 +1189,8 @@ def validate_fixtures(
     for schema_path, valid_path, invalid_path in RUNTIME_COMMON_FIXTURES:
         validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
     validate_owner_result_runtime_boundaries(docs, resource_registry)
+    validate_operation_request_key_boundaries(docs, resource_registry)
+    validate_execution_spine_reconstructability(docs, resource_registry)
 
     for schema_path, valid_path, invalid_path in RUNTIME_ATTRIBUTION_FIXTURES:
         validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
@@ -1105,6 +1231,8 @@ def main() -> int:
     print("Artist OS namespace compatibility: PASS")
     print("Phase-3 common runtime primitive fixtures: PASS")
     print("Owner-result/runtime-outcome separation: PASS")
+    print("Operation request key / owner result separation: PASS")
+    print("Phase-3 execution-spine reconstructability: PASS")
     print("Phase-3 attribution fixtures: PASS")
     print("Phase-3 Task runtime fixtures: PASS")
     print("Phase-3 Routing runtime fixtures: PASS")
