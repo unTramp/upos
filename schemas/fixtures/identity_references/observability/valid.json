@@ -1,0 +1,6 @@
+{
+  "event_ref": "event-0001",
+  "trace_ref": "trace-0001",
+  "span_ref": "span-0001",
+  "metric_definition_ref": "metric-definition-0001"
+}

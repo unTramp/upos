@@ -1,0 +1,18 @@
+{
+  "provider_adapter_ref": "provider:github",
+  "provider_class": "SOURCE_CONTROL",
+  "provider_identity_ref": "github.com",
+  "supported_capabilities": [
+    "pull_requests:read"
+  ],
+  "support_constraints": [],
+  "configuration_contract_ref": "config:github",
+  "authentication_binding_ref": "github-app:installation",
+  "resource_resolution_interface": "github.resource.resolve",
+  "operation_execution_interface": "github.operation.execute",
+  "event_translation_interface": "github.event.translate",
+  "health_interface": "github.health",
+  "error_normalization_interface": "github.error.normalize",
+  "raw_provider_error_ref_support": true,
+  "compatibility_requirements": []
+}

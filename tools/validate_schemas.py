@@ -41,6 +41,7 @@ SOT_REGISTRY_INVALID_ACTIVE_INFORMATIVE = SCHEMAS / "fixtures" / "documentation"
 
 PROJECT_MANIFEST_SCHEMA = SCHEMAS / "11" / "project_adapter" / "project-manifest.schema.json"
 PROJECT_ADAPTER_SCHEMA = SCHEMAS / "11" / "project_adapter" / "project-adapter.schema.json"
+ADAPTER_RESOLUTION_REF_SCHEMA = SCHEMAS / "11" / "project_adapter" / "adapter-resolution-reference.schema.json"
 
 PROJECT_ADAPTER_FIXTURES = [
     (
@@ -48,10 +49,71 @@ PROJECT_ADAPTER_FIXTURES = [
         SCHEMAS / "fixtures" / "project_adapter" / "project-manifest.valid.json",
         SCHEMAS / "fixtures" / "project_adapter" / "project-manifest.invalid.json",
     ),
+    (
+        ADAPTER_RESOLUTION_REF_SCHEMA,
+        SCHEMAS / "fixtures" / "project_adapter" / "adapter-resolution-reference.valid.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "adapter-resolution-reference.invalid.json",
+    ),
+]
+
+PROJECT_ADAPTER_DIRECT_FIXTURES = [
+    (
+        SCHEMAS / "11" / "project_adapter" / "binding.schema.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "binding.valid.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "binding.invalid-specialized-type.json",
+    ),
+    (
+        SCHEMAS / "11" / "project_adapter" / "identity-binding.schema.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "identity-binding.valid.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "identity-binding.invalid-missing-provider-version.json",
+    ),
+    (
+        SCHEMAS / "11" / "project_adapter" / "resource-binding.schema.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "resource-binding.valid.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "resource-binding.invalid-missing-resource-type.json",
+    ),
+    (
+        SCHEMAS / "11" / "project_adapter" / "secret-binding.schema.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "secret-binding.valid.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "secret-binding.invalid-missing-use-mode.json",
+    ),
+    (
+        SCHEMAS / "11" / "project_adapter" / "capability-binding.schema.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "capability-binding.valid.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "capability-binding.invalid-missing-support-state.json",
+    ),
+    (
+        SCHEMAS / "11" / "project_adapter" / "provider-adapter.schema.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "provider-adapter.valid.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "provider-adapter.invalid-missing-version.json",
+    ),
 ]
 
 ARTIST_OS_PROJECT_MANIFEST = SCHEMAS / "dogfooding" / "artist-os" / "project-manifest.json"
 ARTIST_OS_PROJECT_ADAPTER = SCHEMAS / "dogfooding" / "artist-os" / "project-adapter.json"
+IDENTITY_FIXTURE_ROOT = SCHEMAS / "fixtures" / "identity_references"
+CROSS_MODULE_REFERENCE_SCHEMA = SCHEMAS / "meta" / "cross-module-reference-conformance.schema.json"
+CROSS_MODULE_REFERENCE_VALID = SCHEMAS / "fixtures" / "cross_module_references" / "valid.json"
+CROSS_MODULE_REFERENCE_INVALID = SCHEMAS / "fixtures" / "cross_module_references" / "invalid-imported-version-requirement.json"
+ARTIST_OS_IDENTITY_NAMESPACE = SCHEMAS / "dogfooding" / "artist-os" / "identity-namespace-compatibility.json"
+
+FORBIDDEN_SYNTHETIC_IDENTITY_FIELDS = {
+    "agent_instance_id",
+    "context_view_id",
+    "integration_request_id",
+    "quality_readiness_id",
+    "metric_observation_id",
+    "learning_signal_id",
+    "learning_evidence_set_id",
+    "confirmed_pattern_id",
+    "root_cause_hypothesis_id",
+    "improvement_opportunity_id",
+    "promotion_recommendation_id",
+    "learning_backlog_item_id",
+    "project_manifest_id",
+    "project_adapter_id",
+    "security_approval_id",
+}
 
 OWNER_BY_PREFIX = {
     "upos.common.": "NONE_INFRASTRUCTURE",
@@ -600,6 +662,9 @@ def validate_project_adapter_fixtures(
     for schema_path, valid_path, invalid_path in PROJECT_ADAPTER_FIXTURES:
         validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
 
+    for schema_path, valid_path, invalid_path in PROJECT_ADAPTER_DIRECT_FIXTURES:
+        validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
+
     adapter_validator = validator_for(PROJECT_ADAPTER_SCHEMA, docs, resource_registry)
 
     manifest = load_json(
@@ -643,6 +708,96 @@ def validate_project_adapter_fixtures(
     )
 
 
+def validate_identity_reference_fixtures(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    schema_paths = sorted(SCHEMAS.glob("[0-9][0-9]/*/identity-references.schema.json"))
+    for schema_path in schema_paths:
+        fixture_dir = IDENTITY_FIXTURE_ROOT / schema_path.parent.name
+        valid_path = fixture_dir / "valid.json"
+        invalid_paths = sorted(fixture_dir.glob("invalid-*.json"))
+
+        if not valid_path.is_file():
+            fail(f"missing positive identity fixture for {schema_path.relative_to(ROOT)}")
+        if not invalid_paths:
+            fail(f"missing negative identity fixture for {schema_path.relative_to(ROOT)}")
+
+        validator = validator_for(schema_path, docs, resource_registry)
+        try:
+            validator.validate(load_json(valid_path))
+        except ValidationError as exc:
+            fail(
+                f"positive identity fixture unexpectedly failed for "
+                f"{schema_path.relative_to(ROOT)}: {exc.message}"
+            )
+
+        for invalid_path in invalid_paths:
+            try:
+                validator.validate(load_json(invalid_path))
+            except ValidationError:
+                continue
+            fail(
+                f"negative identity fixture unexpectedly passed for "
+                f"{schema_path.relative_to(ROOT)}: {invalid_path.name}"
+            )
+
+
+def collect_schema_property_names(value: Any) -> set[str]:
+    names: set[str] = set()
+    if isinstance(value, dict):
+        properties = value.get("properties")
+        if isinstance(properties, dict):
+            names.update(properties.keys())
+        for child in value.values():
+            names.update(collect_schema_property_names(child))
+    elif isinstance(value, list):
+        for child in value:
+            names.update(collect_schema_property_names(child))
+    return names
+
+
+def validate_forbidden_identity_properties(
+    docs: dict[str, dict[str, Any]],
+) -> None:
+    for schema_id, schema in docs.items():
+        forbidden = (
+            collect_schema_property_names(schema)
+            & FORBIDDEN_SYNTHETIC_IDENTITY_FIELDS
+        )
+        if forbidden:
+            fail(
+                f"schema {schema_id} introduces frozen-rejected synthetic identity "
+                f"field(s): {sorted(forbidden)}"
+            )
+
+
+def validate_artist_os_identity_namespace() -> None:
+    data = load_json(ARTIST_OS_IDENTITY_NAMESPACE)
+    project_namespace = data.get("project_namespace")
+    reserved_prefix = data.get("reserved_framework_schema_prefix")
+    concepts = data.get("project_concepts")
+    automatic_mappings = data.get("automatic_mappings")
+
+    if not isinstance(project_namespace, str) or not project_namespace:
+        fail("Artist OS namespace fixture has missing project_namespace")
+    if not isinstance(reserved_prefix, str) or not reserved_prefix:
+        fail("Artist OS namespace fixture has missing reserved framework prefix")
+    if project_namespace == "upos" or project_namespace.startswith(reserved_prefix):
+        fail("Artist OS product namespace collides with reserved U-POS namespace")
+    if not isinstance(concepts, list) or not concepts:
+        fail("Artist OS namespace fixture has no product concepts")
+    if automatic_mappings != []:
+        fail("Artist OS namespace fixture authorizes automatic U-POS mappings")
+
+    expected_prefix = project_namespace + "."
+    for concept in concepts:
+        if not isinstance(concept, str) or not concept.startswith(expected_prefix):
+            fail(f"Artist OS product concept is outside project namespace: {concept!r}")
+        if concept.startswith(reserved_prefix):
+            fail(f"Artist OS product concept collides with U-POS namespace: {concept!r}")
+
+
 def validate_fixtures(
     docs: dict[str, dict[str, Any]],
     resource_registry: Registry,
@@ -672,12 +827,22 @@ def validate_fixtures(
 
     validate_sot_registry_fixtures(docs, resource_registry)
     validate_project_adapter_fixtures(docs, resource_registry)
+    validate_identity_reference_fixtures(docs, resource_registry)
+    validate_pair(
+        CROSS_MODULE_REFERENCE_SCHEMA,
+        CROSS_MODULE_REFERENCE_VALID,
+        CROSS_MODULE_REFERENCE_INVALID,
+        docs,
+        resource_registry,
+    )
 
 
 def main() -> int:
     schema_ids, docs = load_schema_documents()
     resource_registry = build_resource_registry(docs)
     validate_registry(schema_ids)
+    validate_forbidden_identity_properties(docs)
+    validate_artist_os_identity_namespace()
     validate_fixtures(docs, resource_registry)
 
     print("U-POS schema validation: PASS")
@@ -686,7 +851,12 @@ def main() -> int:
     print(f"Schema documents: {len(schema_ids)}")
     print("Documentation Authority fixtures: PASS")
     print("Project Manifest / Adapter fixtures: PASS")
+    print("Project Adapter direct branch fixtures: PASS")
     print("Artist OS Phase 2C dogfooding: PASS")
+    print("Cross-module identity/reference fixtures: PASS")
+    print("Canonical cross-schema reference conformance: PASS")
+    print("Identity anti-duplication validation: PASS")
+    print("Artist OS namespace compatibility: PASS")
     return 0
 
 

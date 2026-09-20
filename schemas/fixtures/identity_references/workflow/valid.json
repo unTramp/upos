@@ -1,0 +1,7 @@
+{
+  "task_ref": "task-0001",
+  "routing_decision_ref": "routing-0001",
+  "workflow_instance_ref": "workflow-instance-0001",
+  "stage_ref": "stage-implement",
+  "transition_ref": "transition-implement-review"
+}

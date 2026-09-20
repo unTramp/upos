@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:10:security:identity-references:0.1.0",
+  "title": "UPOS-10 Security & Permissions Identity References",
+  "description": "Canonical serialization of frozen UPOS-10 identity/reference semantics only.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "permission_request_ref": { "$ref": "#/$defs/permissionRequestRef" },
+    "permission_decision_ref": { "$ref": "#/$defs/permissionDecisionRef" },
+    "grant_ref": { "$ref": "#/$defs/grantRef" },
+    "protected_action_ref": { "$ref": "#/$defs/protectedActionRef" },
+    "security_exception_ref": { "$ref": "#/$defs/securityExceptionRef" },
+    "security_policy": { "$ref": "#/$defs/securityPolicyRef" }
+  },
+  "$defs": {
+    "permissionRequestRef": { "type": "string", "minLength": 1, "description": "Reference to permission_request_id." },
+    "permissionDecisionRef": { "type": "string", "minLength": 1, "description": "Reference to permission_decision_id." },
+    "grantRef": { "type": "string", "minLength": 1, "description": "Reference to grant_id." },
+    "protectedActionRef": { "type": "string", "minLength": 1, "description": "Reference to protected_action_id." },
+    "securityExceptionRef": { "type": "string", "minLength": 1, "description": "Reference to security_exception_id." },
+    "securityPolicyRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["security_policy_ref", "security_policy_version"],
+      "properties": {
+        "security_policy_ref": { "type": "string", "minLength": 1 },
+        "security_policy_version": { "type": "string", "minLength": 1 }
+      },
+      "description": "Versioned Security Policy reference. UPOS-010 does not mint a duplicate global security_policy_id."
+    }
+  }
+}

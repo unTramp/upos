@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:common:cross-module-reference-conformance:0.1.0",
+  "title": "U-POS Cross-Module Reference Conformance Harness",
+  "description": "Infrastructure-only proof that canonical owner-module identity/reference schemas resolve through versioned cross-schema $refs. This is not a runtime/domain contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "agent_definition_ref": {
+      "$ref": "urn:upos:schema:02:agent-organization:identity-references:0.1.0#/$defs/agentDefinitionRef"
+    },
+    "skill_ref": {
+      "$ref": "urn:upos:schema:03:skills:identity-references:0.1.0#/$defs/skillRef"
+    },
+    "task_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/taskRef"
+    },
+    "context_bundle_ref": {
+      "$ref": "urn:upos:schema:05:context-memory:identity-references:0.1.0#/$defs/contextBundleRef"
+    },
+    "engineering_change_ref": {
+      "$ref": "urn:upos:schema:06:engineering:identity-references:0.1.0#/$defs/engineeringChangeRef"
+    },
+    "quality_assessment_ref": {
+      "$ref": "urn:upos:schema:07:quality:identity-references:0.1.0#/$defs/qualityAssessmentRef"
+    },
+    "event_ref": {
+      "$ref": "urn:upos:schema:08:observability:identity-references:0.1.0#/$defs/eventRef"
+    },
+    "learning_candidate_ref": {
+      "$ref": "urn:upos:schema:09:learning:identity-references:0.1.0#/$defs/learningCandidateRef"
+    },
+    "permission_decision_ref": {
+      "$ref": "urn:upos:schema:10:security:identity-references:0.1.0#/$defs/permissionDecisionRef"
+    },
+    "adapter_resolution_ref": {
+      "$ref": "urn:upos:schema:11:project-adapter:adapter-resolution-reference:0.1.0"
+    }
+  }
+}

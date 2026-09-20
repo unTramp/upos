@@ -1,0 +1,10 @@
+{
+  "agent_definition_ref": {
+    "agent_definition_id": "AGENT-IMPLEMENTER"
+  },
+  "skill_ref": {
+    "skill_id": "SKL-IMPLEMENT-CHANGE",
+    "skill_version": "1.0.0"
+  },
+  "task_ref": "task-0001"
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:05:context-memory:identity-references:0.1.0",
+  "title": "UPOS-05 Context & Memory Identity References",
+  "description": "Canonical serialization of frozen UPOS-05 identity/reference semantics only.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "context_request_ref": { "$ref": "#/$defs/contextRequestRef" },
+    "context_bundle_ref": { "$ref": "#/$defs/contextBundleRef" },
+    "memory_item_ref": { "$ref": "#/$defs/memoryItemRef" }
+  },
+  "$defs": {
+    "contextRequestRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to context_request_id."
+    },
+    "contextBundleRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to context_bundle_id."
+    },
+    "memoryItemRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to memory_item_id."
+    }
+  }
+}

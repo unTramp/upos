@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:07:quality:identity-references:0.1.0",
+  "title": "UPOS-07 Quality Identity References",
+  "description": "Canonical serialization of frozen UPOS-07 identity/reference semantics only.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "quality_criteria_set_ref": { "$ref": "#/$defs/qualityCriteriaSetRef" },
+    "quality_assessment_ref": { "$ref": "#/$defs/qualityAssessmentRef" },
+    "evidence_record_ref": { "$ref": "#/$defs/evidenceRecordRef" },
+    "finding_ref": { "$ref": "#/$defs/findingRef" },
+    "quality_gate_ref": { "$ref": "#/$defs/qualityGateRef" },
+    "quality_gate_result_ref": { "$ref": "#/$defs/qualityGateResultRef" },
+    "quality_exception_ref": { "$ref": "#/$defs/qualityExceptionRef" }
+  },
+  "$defs": {
+    "qualityCriteriaSetRef": { "type": "string", "minLength": 1, "description": "Reference to quality_criteria_set_id." },
+    "qualityAssessmentRef": { "type": "string", "minLength": 1, "description": "Reference to quality_assessment_id." },
+    "evidenceRecordRef": { "type": "string", "minLength": 1, "description": "Reference to evidence_record_id." },
+    "findingRef": { "type": "string", "minLength": 1, "description": "Reference to finding_id." },
+    "qualityGateRef": { "type": "string", "minLength": 1, "description": "Reference to quality_gate_id." },
+    "qualityGateResultRef": { "type": "string", "minLength": 1, "description": "Reference to quality_gate_result_id." },
+    "qualityExceptionRef": { "type": "string", "minLength": 1, "description": "Reference to quality_exception_id." }
+  }
+}

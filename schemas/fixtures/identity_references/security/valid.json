@@ -1,0 +1,11 @@
+{
+  "permission_request_ref": "permission-request-0001",
+  "permission_decision_ref": "permission-decision-0001",
+  "grant_ref": "grant-0001",
+  "protected_action_ref": "protected-action-0001",
+  "security_exception_ref": "security-exception-0001",
+  "security_policy": {
+    "security_policy_ref": "security-policy:repository",
+    "security_policy_version": "1.0.0"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "binding_id": "identity-ci",
+  "binding_type": "IDENTITY_BINDING",
+  "version": "1.0.0",
+  "status": "ACTIVE",
+  "abstract_requirement_ref": "security.subject.ci",
+  "scope": {
+    "project_id": "example-project",
+    "repository_ref": null,
+    "environment_ref": "ci",
+    "operation_ref": null
+  },
+  "concrete_target_ref": "provider:ci-bot",
+  "requiredness": "REQUIRED",
+  "validation_state": "VALID",
+  "compatibility_state": "COMPATIBLE",
+  "health_state": "HEALTHY",
+  "upos_subject_ref": "subject:ci",
+  "role_or_agent_ref": "ROLE-IMPLEMENTER",
+  "provider_adapter_ref": "provider:github",
+  "provider_identity_ref": "github-app:ci",
+  "environment_ref": "ci"
+}

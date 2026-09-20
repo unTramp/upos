@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:11:project-adapter:adapter-resolution-reference:0.1.0",
+  "title": "UPOS-11 Adapter Resolution Reference",
+  "description": "Canonical serialization of frozen adapter_resolution_id only. This schema does not define Adapter resolution behavior.",
+  "type": "string",
+  "minLength": 1
+}

@@ -1,0 +1,18 @@
+{
+  "binding_id": "binding-quality",
+  "binding_type": "QUALITY_BINDING",
+  "version": "1.0.0",
+  "status": "ACTIVE",
+  "abstract_requirement_ref": "quality.check",
+  "scope": {
+    "project_id": "example-project",
+    "repository_ref": null,
+    "environment_ref": null,
+    "operation_ref": null
+  },
+  "concrete_target_ref": "quality:default",
+  "requiredness": "OPTIONAL",
+  "validation_state": "VALID",
+  "compatibility_state": "COMPATIBLE",
+  "health_state": "HEALTHY"
+}

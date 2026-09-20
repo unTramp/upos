@@ -1,0 +1,18 @@
+{
+  "binding_id": "binding-path",
+  "binding_type": "PATH_BINDING",
+  "version": "1.0.0",
+  "status": "ACTIVE",
+  "abstract_requirement_ref": "project.path",
+  "scope": {
+    "project_id": "example-project",
+    "repository_ref": "repo-primary",
+    "environment_ref": null,
+    "operation_ref": null
+  },
+  "concrete_target_ref": "docs",
+  "requiredness": "REQUIRED",
+  "validation_state": "VALID",
+  "compatibility_state": "COMPATIBLE",
+  "health_state": "HEALTHY"
+}

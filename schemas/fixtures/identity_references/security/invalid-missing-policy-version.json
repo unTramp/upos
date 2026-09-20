@@ -1,0 +1,6 @@
+{
+  "permission_request_ref": "permission-request-0001",
+  "security_policy": {
+    "security_policy_ref": "security-policy:repository"
+  }
+}
