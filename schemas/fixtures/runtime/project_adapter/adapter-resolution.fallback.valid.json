@@ -1,0 +1,99 @@
+{
+  "fixture_level": "FIXTURE",
+  "request": {
+    "runtime_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
+    "runtime_contract_version": "0.1.0",
+    "runtime_schema_version": "0.1.0",
+    "operation_control": {
+      "runtime_contract_ref": "UPOS-RUNTIME-OPS-001",
+      "runtime_contract_version": "0.1.0",
+      "operation_kind": "ADAPTER_RESOLUTION",
+      "subject_ref": "abstract-requirement:repository-write",
+      "operation_request_key": "adapter-resolution-request:project:upos:repository-write:fallback-1"
+    },
+    "project_id": "project:upos",
+    "project_adapter_version": "1.0.0",
+    "manifest_version": "1.0.0",
+    "abstract_requirement_ref": "abstract-requirement:repository-write",
+    "scope": {
+      "project_id": "project:upos",
+      "repository_ref": "repository:unTramp/upos",
+      "environment_ref": "environment:dev",
+      "operation_ref": "operation:repository-write"
+    }
+  },
+  "validation_result": {
+    "runtime_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
+    "runtime_contract_version": "0.1.0",
+    "runtime_schema_version": "0.1.0",
+    "validation_state": "VALID_WITH_WARNINGS",
+    "configuration_completeness": "COMPLETE",
+    "evaluated_binding_refs": [
+      "binding:B-REPO-WRITE-PREFERRED",
+      "binding:B-REPO-WRITE-FALLBACK"
+    ],
+    "missing_required_binding_refs": [],
+    "validation_basis_refs": [
+      "binding-validation:fallback-chain"
+    ],
+    "warning_refs": [
+      "binding-warning:preferred-provider-unavailable"
+    ]
+  },
+  "resolved_adapter_view": {
+    "runtime_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
+    "runtime_contract_version": "0.1.0",
+    "runtime_schema_version": "0.1.0",
+    "adapter_resolution_id": "adapter-resolution:AR-FB-1",
+    "operation_request_key": "adapter-resolution-request:project:upos:repository-write:fallback-1",
+    "project_id": "project:upos",
+    "project_adapter_version": "1.0.0",
+    "manifest_version": "1.0.0",
+    "abstract_requirement_ref": "abstract-requirement:repository-write",
+    "scope": {
+      "project_id": "project:upos",
+      "repository_ref": "repository:unTramp/upos",
+      "environment_ref": "environment:dev",
+      "operation_ref": "operation:repository-write"
+    },
+    "evaluated_binding_refs": [
+      "binding:B-REPO-WRITE-PREFERRED",
+      "binding:B-REPO-WRITE-FALLBACK"
+    ],
+    "applied_precedence_level": "REPOSITORY",
+    "selected_binding_ref": "binding:B-REPO-WRITE-FALLBACK",
+    "concrete_target_ref": "repository:unTramp/upos",
+    "provider_adapter_ref": "provider-adapter:gitlab",
+    "provider_adapter_version": "2.0.0",
+    "validation_result": {
+      "runtime_contract_ref": "UPOS-11-ADAPTER-RESOLUTION",
+      "runtime_contract_version": "0.1.0",
+      "runtime_schema_version": "0.1.0",
+      "validation_state": "VALID_WITH_WARNINGS",
+      "configuration_completeness": "COMPLETE",
+      "evaluated_binding_refs": [
+        "binding:B-REPO-WRITE-PREFERRED",
+        "binding:B-REPO-WRITE-FALLBACK"
+      ],
+      "missing_required_binding_refs": [],
+      "validation_basis_refs": [
+        "binding-validation:fallback-chain"
+      ],
+      "warning_refs": [
+        "binding-warning:preferred-provider-unavailable"
+      ]
+    },
+    "canonical_policy_ref": "policy:repository-write-equivalence",
+    "fallback": {
+      "requested_binding_ref": "binding:B-REPO-WRITE-PREFERRED",
+      "resolved_binding_ref": "binding:B-REPO-WRITE-FALLBACK",
+      "fallback_reason": "adapter-failure:PROVIDER_UNAVAILABLE",
+      "actual_provider_adapter_ref": "provider-adapter:gitlab",
+      "actual_provider_adapter_version": "2.0.0",
+      "rejected_candidate_refs": [
+        "binding:B-REPO-WRITE-PREFERRED"
+      ],
+      "fallback_chain_position": 2
+    }
+  }
+}
