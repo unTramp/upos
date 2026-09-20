@@ -1,0 +1,17 @@
+{
+  "binding_id": "",
+  "repository_ref": "",
+  "repository_role": "",
+  "provider_adapter_ref": "",
+  "provider_adapter_version": "",
+  "provider_repository_ref": "",
+  "remote_ref": "",
+  "workspace_strategy_ref": "",
+  "path_binding_refs": [],
+  "integration_target_binding": "",
+  "protected_target_refs": [],
+  "ci_binding_refs": [],
+  "security_resource_refs": [],
+  "validation_state": "GREEN",
+  "health_state": ""
+}

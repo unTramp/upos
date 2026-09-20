@@ -1,0 +1,17 @@
+{
+  "binding_id": "repo.artist-os-primary",
+  "repository_ref": "artist-os-primary",
+  "repository_role": "PRIMARY_PROJECT_REPOSITORY",
+  "provider_adapter_ref": "UNRESOLVED",
+  "provider_adapter_version": "UNRESOLVED",
+  "provider_repository_ref": "unTramp/artistos",
+  "remote_ref": "github.com/unTramp/artistos",
+  "workspace_strategy_ref": "UNRESOLVED",
+  "path_binding_refs": [],
+  "integration_target_binding": "main",
+  "protected_target_refs": ["main"],
+  "ci_binding_refs": [".github/workflows/ci.yml"],
+  "security_resource_refs": [],
+  "validation_state": "INCOMPLETE",
+  "health_state": "UNKNOWN"
+}

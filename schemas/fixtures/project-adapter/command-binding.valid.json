@@ -1,0 +1,19 @@
+{
+  "command_binding_id": "cmd.artist-os.lint",
+  "version": "candidate-0.1",
+  "abstract_operation_ref": "engineering.lint",
+  "repository_ref": "artist-os-primary",
+  "working_directory_ref": ".",
+  "executable": "pnpm",
+  "arguments": ["lint"],
+  "environment_binding_refs": ["env.artist-os.local","env.artist-os.ci"],
+  "secret_binding_refs": [],
+  "timeout_policy_ref": "UNRESOLVED",
+  "expected_result_interface_ref": "process.exit-code",
+  "produced_artifact_or_check_type": "ENGINEERING_CHECK_EVIDENCE",
+  "required_capability_refs": [],
+  "provider_or_runtime_binding_ref": "UNRESOLVED",
+  "platform_constraints": ["node>=22.16.0","pnpm=12.4.1"],
+  "requiredness": "REQUIRED",
+  "validation_state": "INCOMPLETE"
+}

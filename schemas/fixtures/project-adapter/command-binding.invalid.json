@@ -1,0 +1,19 @@
+{
+  "command_binding_id": "",
+  "version": "",
+  "abstract_operation_ref": "",
+  "repository_ref": "",
+  "working_directory_ref": "",
+  "executable": "",
+  "arguments": [],
+  "environment_binding_refs": [],
+  "secret_binding_refs": [],
+  "timeout_policy_ref": "",
+  "expected_result_interface_ref": "",
+  "produced_artifact_or_check_type": "",
+  "required_capability_refs": [],
+  "provider_or_runtime_binding_ref": "",
+  "platform_constraints": [],
+  "requiredness": "ALWAYS",
+  "validation_state": "PASS"
+}

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:11:project-adapter:command-binding:0.1.0",
+  "title": "U-POS Command Binding",
+  "description": "Machine-readable representation of the frozen UPOS-011 Command Binding contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "command_binding_id","version","abstract_operation_ref","repository_ref",
+    "working_directory_ref","executable","arguments","environment_binding_refs",
+    "secret_binding_refs","timeout_policy_ref","expected_result_interface_ref",
+    "produced_artifact_or_check_type","required_capability_refs",
+    "provider_or_runtime_binding_ref","platform_constraints","requiredness",
+    "validation_state"
+  ],
+  "properties": {
+    "command_binding_id": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "minLength": 1},
+    "abstract_operation_ref": {"type": "string", "minLength": 1},
+    "repository_ref": {"type": "string", "minLength": 1},
+    "working_directory_ref": {"type": "string", "minLength": 1},
+    "executable": {"type": "string", "minLength": 1},
+    "arguments": {"type": "array", "items": {"type": "string"}},
+    "environment_binding_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "secret_binding_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "timeout_policy_ref": {"type": "string", "minLength": 1},
+    "expected_result_interface_ref": {"type": "string", "minLength": 1},
+    "produced_artifact_or_check_type": {"type": "string", "minLength": 1},
+    "required_capability_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "provider_or_runtime_binding_ref": {"type": "string", "minLength": 1},
+    "platform_constraints": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "requiredness": {"enum": ["REQUIRED","OPTIONAL","CONDITIONAL"]},
+    "validation_state": {
+      "enum": ["VALID","VALID_WITH_WARNINGS","INCOMPLETE","INVALID"]
+    }
+  }
+}
