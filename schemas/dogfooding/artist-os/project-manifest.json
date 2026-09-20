@@ -1,0 +1,63 @@
+{
+  "project": {
+    "project_id": "artist-os",
+    "name": "Artist OS",
+    "canonical_project_source_ref": ".upos/SOURCE_OF_TRUTH_MAP.md"
+  },
+  "upos_baseline": {
+    "version": "v1.0.0",
+    "module_interface_requirements": {}
+  },
+  "manifest_version": "candidate-0.1",
+  "project_adapter_version": "candidate-0.1",
+  "repositories": [
+    {"repository_ref": "artist-os-primary", "binding_id": "repo.artist-os-primary"},
+    {"repository_ref": "upos-framework", "binding_id": "repo.upos-framework"}
+  ],
+  "paths": [
+    "path.artist-os.canonical-architecture",
+    "path.artist-os.documentation-index"
+  ],
+  "commands": [
+    "cmd.artist-os.arch-check",
+    "cmd.artist-os.lint",
+    "cmd.artist-os.typecheck",
+    "cmd.artist-os.test",
+    "cmd.artist-os.test-integration",
+    "cmd.artist-os.build",
+    "cmd.artist-os.test-e2e",
+    "cmd.artist-os.db-migrate"
+  ],
+  "providers": [],
+  "runtime": {
+    "web_ref": "apps/web",
+    "worker_ref": "apps/worker",
+    "database": "PostgreSQL 17 + pgvector",
+    "product_ai": "disabled/mock only",
+    "production_runtime": "UNRESOLVED"
+  },
+  "environments": ["env.artist-os.local", "env.artist-os.ci"],
+  "identity_bindings": [],
+  "resource_bindings": [],
+  "capability_bindings": [],
+  "security_bindings": [],
+  "secret_bindings": [],
+  "quality_bindings": [],
+  "observability_bindings": [],
+  "learning_bindings": [],
+  "extensions": {
+    "artist_os": {
+      "audited_revision": "94ff0e0219bd441b02044f419528b7243b9b318f",
+      "adoption_branch_head": "d8f5a4295952ec9f462649c366e451e7188fefd8",
+      "production_binding_state": "UNRESOLVED",
+      "namespace_contract": {
+        "product_agent_run": "artist.product.agent_run",
+        "upos_agent_run": "upos.02.agent_organization.agent_run",
+        "product_context": "artist.product.context",
+        "upos_context_bundle": "upos.05.context_memory.context_bundle",
+        "product_learning": "artist.product.learning",
+        "upos_learning": "upos.09.learning.*"
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+[
+  ["arch-check", "engineering.architecture-check", ["arch:check"]],
+  ["lint", "engineering.lint", ["lint"]],
+  ["typecheck", "engineering.typecheck", ["typecheck"]],
+  ["test", "engineering.unit-test", ["test"]],
+  ["test-integration", "engineering.integration-test", ["test:integration"]],
+  ["build", "engineering.build", ["build"]],
+  ["test-e2e", "engineering.e2e-test", ["test:e2e"]],
+  ["db-migrate", "engineering.database-migrate", ["db:migrate"]]
+]

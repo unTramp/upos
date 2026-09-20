@@ -1,0 +1,47 @@
+{
+  "project_id": "artist-os",
+  "project_adapter_version": "candidate-0.1",
+  "manifest_ref": {
+    "project_id": "artist-os",
+    "manifest_version": "candidate-0.1"
+  },
+  "binding_refs": [
+    "repo.artist-os-primary",
+    "repo.upos-framework",
+    "path.artist-os.canonical-architecture",
+    "path.artist-os.documentation-index",
+    "env.artist-os.local",
+    "env.artist-os.ci"
+  ],
+  "command_binding_refs": [
+    "cmd.artist-os.arch-check",
+    "cmd.artist-os.lint",
+    "cmd.artist-os.typecheck",
+    "cmd.artist-os.test",
+    "cmd.artist-os.test-integration",
+    "cmd.artist-os.build",
+    "cmd.artist-os.test-e2e",
+    "cmd.artist-os.db-migrate"
+  ],
+  "provider_adapters": [],
+  "resolution_rules_ref": "UPOS-11-BRS-001",
+  "validation_rules_ref": "UPOS-11-BVS-001",
+  "validation_state": "INCOMPLETE",
+  "configuration_completeness": "PARTIALLY_CONFIGURED",
+  "extensions": {
+    "artist_os": {
+      "unresolved": [
+        "formal GitHub Provider Adapter/version",
+        "production runtime/resources",
+        "production secret store",
+        "U-POS quality bindings",
+        "U-POS security/permission bindings",
+        "U-POS observability bindings",
+        "U-POS role/workflow/skill bindings"
+      ],
+      "adoption_drift": [
+        "human PROJECT_ADAPTER.md contains pre-Phase-2A conceptual namespace labels and requires project-side reconciliation before freeze"
+      ]
+    }
+  }
+}
