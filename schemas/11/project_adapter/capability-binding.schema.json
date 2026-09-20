@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:11:project-adapter:capability-binding:0.1.0",
+  "title": "U-POS Capability Binding",
+  "allOf": [
+    {
+      "$ref": "urn:upos:schema:11:project-adapter:binding:0.1.0#/$defs/core"
+    },
+    {
+      "type": "object",
+      "required": [
+        "binding_type",
+        "abstract_capability_ref",
+        "provider_adapter_ref",
+        "provider_adapter_version",
+        "support_state",
+        "provider_native_capability_ref",
+        "constraints",
+        "required_provider_auth_ref",
+        "known_limitations"
+      ],
+      "properties": {
+        "binding_type": {
+          "const": "CAPABILITY_BINDING"
+        },
+        "abstract_capability_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provider_adapter_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provider_adapter_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "support_state": {
+          "enum": [
+            "SUPPORTED",
+            "PARTIALLY_SUPPORTED",
+            "UNSUPPORTED",
+            "UNAVAILABLE",
+            "UNKNOWN"
+          ]
+        },
+        "provider_native_capability_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_provider_auth_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "known_limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

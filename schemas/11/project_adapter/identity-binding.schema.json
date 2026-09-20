@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:11:project-adapter:identity-binding:0.1.0",
+  "title": "U-POS Identity Binding",
+  "allOf": [
+    {
+      "$ref": "urn:upos:schema:11:project-adapter:binding:0.1.0#/$defs/core"
+    },
+    {
+      "type": "object",
+      "required": [
+        "binding_type",
+        "upos_subject_ref",
+        "role_or_agent_ref",
+        "provider_adapter_ref",
+        "provider_adapter_version",
+        "provider_identity_ref",
+        "environment_ref"
+      ],
+      "properties": {
+        "binding_type": {
+          "const": "IDENTITY_BINDING"
+        },
+        "upos_subject_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role_or_agent_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "provider_adapter_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provider_adapter_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provider_identity_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "environment_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}
