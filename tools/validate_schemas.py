@@ -250,6 +250,136 @@ def fail(message: str) -> None:
     raise SystemExit(1)
 
 
+class RuntimeConformanceViolation(ValueError):
+    """Deterministic cross-record/runtime-contract conformance rejection."""
+
+
+PROHIBITED_PRIVATE_REASONING_FIELDS = {
+    "private_chain_of_thought",
+    "chain_of_thought",
+    "private_reasoning",
+    "reasoning_trace",
+}
+
+
+def enforce_distinct_values(
+    left_name: str,
+    left_value: Any,
+    right_name: str,
+    right_value: Any,
+) -> None:
+    if left_value is not None and right_value is not None and left_value == right_value:
+        raise RuntimeConformanceViolation(
+            f"{left_name} must differ from {right_name}: {left_value!r}"
+        )
+
+
+def enforce_operation_request_key_separation(data: dict[str, Any]) -> None:
+    control = data.get("operation_control")
+    if not isinstance(control, dict):
+        return
+    request_key = control.get("operation_request_key")
+    enforce_distinct_values(
+        "operation_request_key",
+        request_key,
+        "owner_result_ref",
+        data.get("owner_result_ref"),
+    )
+    outcome = data.get("runtime_outcome")
+    if isinstance(outcome, dict):
+        enforce_distinct_values(
+            "operation_request_key",
+            request_key,
+            "runtime_outcome.owner_result_ref",
+            outcome.get("owner_result_ref"),
+        )
+
+
+def enforce_routing_request_result_separation(data: dict[str, Any]) -> None:
+    control = data.get("operation_control")
+    if not isinstance(control, dict):
+        return
+    enforce_distinct_values(
+        "operation_request_key",
+        control.get("operation_request_key"),
+        "routing_decision_ref",
+        data.get("routing_decision_ref"),
+    )
+
+
+def enforce_retry_identity_separation(data: dict[str, Any]) -> None:
+    enforce_distinct_values(
+        "successor_ref",
+        data.get("successor_ref"),
+        "predecessor_ref",
+        data.get("predecessor_ref"),
+    )
+
+
+def enforce_redelivery_not_retry(data: dict[str, Any]) -> None:
+    control = data.get("operation_control")
+    retry = data.get("retry_provenance")
+    if not isinstance(control, dict) or not isinstance(retry, dict):
+        return
+    same_subject = (
+        control.get("subject_ref") is not None
+        and control.get("subject_ref") == retry.get("predecessor_ref")
+        and retry.get("predecessor_ref") == retry.get("successor_ref")
+    )
+    if same_subject:
+        raise RuntimeConformanceViolation(
+            "technical redelivery of the same bounded execution identity "
+            "must not be represented as UPOS-04 RETRY_OF"
+        )
+
+
+def enforce_event_correction_identity(data: dict[str, Any]) -> None:
+    if data.get("correction_of_event_id") is None:
+        return
+    enforce_distinct_values(
+        "event_id",
+        data.get("event_id"),
+        "correction_of_event_id",
+        data.get("correction_of_event_id"),
+    )
+
+
+def enforce_no_private_reasoning(value: Any, *, path: str = "$") -> None:
+    if isinstance(value, dict):
+        for key, child in value.items():
+            if key in PROHIBITED_PRIVATE_REASONING_FIELDS:
+                raise RuntimeConformanceViolation(
+                    f"private reasoning field is forbidden in persisted runtime provenance: {path}.{key}"
+                )
+            enforce_no_private_reasoning(child, path=f"{path}.{key}")
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            enforce_no_private_reasoning(child, path=f"{path}[{index}]")
+
+
+def expect_runtime_conformance_pass(
+    label: str,
+    check,
+    data: dict[str, Any],
+) -> None:
+    try:
+        check(data)
+    except RuntimeConformanceViolation as exc:
+        fail(f"{label} unexpectedly rejected by runtime conformance: {exc}")
+
+
+def expect_runtime_conformance_reject(
+    label: str,
+    check,
+    data: dict[str, Any],
+) -> None:
+    try:
+        check(data)
+    except RuntimeConformanceViolation:
+        return
+    fail(f"{label} unexpectedly passed runtime conformance")
+
+
 def iter_refs(value: Any):
     if isinstance(value, dict):
         for key, child in value.items():
@@ -922,8 +1052,18 @@ def validate_operation_request_key_boundaries(
             control_validator.validate(data["operation_control"])
         except ValidationError as exc:
             fail(f"operation-key collision fixture must have a valid operation_control: {invalid_path.name}: {exc.message}")
-        if data["operation_control"].get("operation_request_key") != data.get("owner_result_ref"):
-            fail(f"operation-key collision fixture does not exercise owner-result collision: {invalid_path.name}")
+        expect_runtime_conformance_reject(
+            f"operation-key/owner-result collision fixture {invalid_path.name}",
+            enforce_operation_request_key_separation,
+            data,
+        )
+        distinct = json.loads(json.dumps(data))
+        distinct["owner_result_ref"] = str(distinct["owner_result_ref"]) + ":distinct"
+        expect_runtime_conformance_pass(
+            f"operation-key/owner-result distinct positive case {invalid_path.name}",
+            enforce_operation_request_key_separation,
+            distinct,
+        )
 
 
 def validate_execution_spine_reconstructability(
@@ -931,6 +1071,21 @@ def validate_execution_spine_reconstructability(
     resource_registry: Registry,
 ) -> None:
     data = load_json(RUNTIME_EXECUTION_SPINE_VALID)
+    expect_runtime_conformance_pass(
+        "execution-spine private-reasoning exclusion",
+        enforce_no_private_reasoning,
+        data,
+    )
+    expect_runtime_conformance_pass(
+        "execution-spine routing request/result separation",
+        enforce_routing_request_result_separation,
+        data["routing"],
+    )
+    expect_runtime_conformance_pass(
+        "execution-spine operation-key/owner-result separation",
+        enforce_operation_request_key_separation,
+        data["routing"],
+    )
     if data.get("fixture_level") != "FIXTURE":
         fail("execution-spine conformance data must be explicitly labeled FIXTURE")
 
@@ -1013,14 +1168,18 @@ def validate_execution_spine_reconstructability(
         validator_for(RUNTIME_RETRY_SCHEMA, docs, resource_registry).validate(redelivery_retry["retry_provenance"])
     except ValidationError as exc:
         fail(f"redelivery-as-retry negative fixture must be structurally valid: {exc.message}")
-    retry = redelivery_retry["retry_provenance"]
-    if retry["successor_ref"] != retry["predecessor_ref"]:
-        fail("redelivery-as-retry negative fixture must reuse the same execution identity")
+    expect_runtime_conformance_reject(
+        "technical redelivery represented as workflow retry",
+        enforce_redelivery_not_retry,
+        redelivery_retry,
+    )
 
     private = load_json(RUNTIME_PRIVATE_REASONING_INVALID)
-    prohibited = {"private_chain_of_thought", "chain_of_thought", "private_reasoning", "reasoning_trace"}
-    if not prohibited.intersection(private):
-        fail("private-reasoning negative fixture does not contain a prohibited private reasoning field")
+    expect_runtime_conformance_reject(
+        "persisted private reasoning fixture",
+        enforce_no_private_reasoning,
+        private,
+    )
 
 
 def validate_owner_result_runtime_boundaries(
@@ -1072,8 +1231,16 @@ def validate_runtime_event_fixtures(
         validator.validate(correction)
     except ValidationError as exc:
         fail(f"same-id Event correction fixture must be structurally valid: {exc.message}")
-    if correction["event_id"] != correction["correction_of_event_id"]:
-        fail("same-id Event correction fixture does not exercise identity reuse")
+    expect_runtime_conformance_reject(
+        "same-id Event correction fixture",
+        enforce_event_correction_identity,
+        correction,
+    )
+    expect_runtime_conformance_pass(
+        "ordinary Event without correction relation",
+        enforce_event_correction_identity,
+        load_json(RUNTIME_EVENT_VALID),
+    )
 
     redelivery = [load_json(path) for path in RUNTIME_EVENT_REDELIVERY]
     for data in redelivery:
@@ -1091,10 +1258,16 @@ def validate_retry_provenance_fixtures(
 ) -> None:
     validator = validator_for(RUNTIME_RETRY_SCHEMA, docs, resource_registry)
     for valid_path in RUNTIME_RETRY_VALIDS:
+        valid = load_json(valid_path)
         try:
-            validator.validate(load_json(valid_path))
+            validator.validate(valid)
         except ValidationError as exc:
             fail(f"positive retry provenance fixture unexpectedly failed: {valid_path.name}: {exc.message}")
+        expect_runtime_conformance_pass(
+            f"positive retry identity separation {valid_path.name}",
+            enforce_retry_identity_separation,
+            valid,
+        )
     for invalid_path in RUNTIME_RETRY_INVALIDS:
         try:
             validator.validate(load_json(invalid_path))
@@ -1107,8 +1280,11 @@ def validate_retry_provenance_fixtures(
         validator.validate(reused)
     except ValidationError as exc:
         fail(f"retry reused-identity fixture must be structurally valid before semantic validation: {exc.message}")
-    if reused["successor_ref"] != reused["predecessor_ref"]:
-        fail("retry reused-identity negative fixture does not exercise identity reuse")
+    expect_runtime_conformance_reject(
+        "retry reused-identity fixture",
+        enforce_retry_identity_separation,
+        reused,
+    )
 
 
 def validate_execution_attempt_fixtures(
@@ -1142,10 +1318,16 @@ def validate_routing_runtime_semantics(
             "routing same-key fixture must be structurally valid before semantic "
             f"validation, but failed schema validation: {exc.message}"
         )
-    request_key = data["operation_control"]["operation_request_key"]
-    decision_ref = data.get("routing_decision_ref")
-    if decision_ref is None or request_key != decision_ref:
-        fail("routing same-key negative fixture does not exercise request/result identity collision")
+    expect_runtime_conformance_reject(
+        "routing request-key/result collision fixture",
+        enforce_routing_request_result_separation,
+        data,
+    )
+    expect_runtime_conformance_reject(
+        "routing request-key/runtime-owner-result collision fixture",
+        enforce_operation_request_key_separation,
+        data,
+    )
 
 
 def validate_fixtures(
