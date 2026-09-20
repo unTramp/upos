@@ -56,5 +56,6 @@
   "command_bindings": [],
   "validation_result": "VALID",
   "configuration_completeness": "COMPLETE",
-  "extensions": {}
+  "extensions": {},
+  "provider_adapters": []
 }
