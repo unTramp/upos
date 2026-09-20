@@ -449,6 +449,44 @@ def validate_project_manifest_adapter_pair(
                     f"Repository Binding repository_ref {repository_ref!r}"
                 )
 
+    provider_adapters: dict[tuple[str, str], dict[str, Any]] = {}
+    for provider in adapter.get("provider_adapters", []):
+        identity = (
+            provider["provider_adapter_ref"],
+            provider["provider_adapter_version"],
+        )
+        if identity in provider_adapters:
+            errors.append(
+                "duplicate Provider Adapter identity: "
+                f"{identity[0]}@{identity[1]}"
+            )
+        provider_adapters[identity] = provider
+
+    for declaration in manifest.get("providers", []):
+        identity = (
+            declaration.get("provider_adapter_ref"),
+            declaration.get("provider_adapter_version"),
+        )
+        if identity not in provider_adapters:
+            errors.append(
+                "manifest providers references missing Provider Adapter: "
+                f"{identity[0]}@{identity[1]}"
+            )
+
+    for binding in adapter.get("bindings", []):
+        provider_ref = binding.get("provider_adapter_ref")
+        provider_version = binding.get("provider_adapter_version")
+        if provider_ref is not None or provider_version is not None:
+            if not provider_ref or not provider_version:
+                errors.append(
+                    f"binding {binding['binding_id']} has incomplete Provider Adapter identity"
+                )
+            elif (provider_ref, provider_version) not in provider_adapters:
+                errors.append(
+                    f"binding {binding['binding_id']} references missing Provider Adapter "
+                    f"{provider_ref}@{provider_version}"
+                )
+
     command_ids: dict[str, dict[str, Any]] = {}
     for command in adapter.get("command_bindings", []):
         command_id = command["command_binding_id"]
@@ -464,7 +502,6 @@ def validate_project_manifest_adapter_pair(
 
     expected_types = {
         "paths": {"PATH_BINDING"},
-        "providers": {"PROVIDER_BINDING"},
         "environments": {"ENVIRONMENT_BINDING"},
         "identity_bindings": {"IDENTITY_BINDING"},
         "resource_bindings": {"RESOURCE_BINDING"},
