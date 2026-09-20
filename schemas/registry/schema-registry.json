@@ -520,6 +520,26 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Identity/reference-only representation. No policy evaluation, ALLOW/DENY execution, grant lookup, protected-action enforcement, secret access runtime, or permission engine."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.adapter_resolution_reference",
+      "schema_uri": "urn:upos:schema:11:project-adapter:adapter-resolution-reference:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project_adapter/adapter-resolution-reference.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "00_system/GLOBAL_IDENTITY_REFERENCE_REGISTRY.md",
+        "11_project_adapter/PROJECT_ADAPTER_ONTOLOGY.md",
+        "11_project_adapter/BINDING_RESOLUTION_STANDARD.md"
+      ],
+      "identity_model": "Serializes adapter_resolution_id as the independent identity/reference for an immutable execution-time Resolved Adapter View. It does not define resolution behavior.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Reference-only representation. Scope/precedence/compatibility/availability resolution and Adapter resolver runtime remain Phase 3."
     }
   ]
 }

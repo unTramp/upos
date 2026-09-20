@@ -41,12 +41,18 @@ SOT_REGISTRY_INVALID_ACTIVE_INFORMATIVE = SCHEMAS / "fixtures" / "documentation"
 
 PROJECT_MANIFEST_SCHEMA = SCHEMAS / "11" / "project_adapter" / "project-manifest.schema.json"
 PROJECT_ADAPTER_SCHEMA = SCHEMAS / "11" / "project_adapter" / "project-adapter.schema.json"
+ADAPTER_RESOLUTION_REF_SCHEMA = SCHEMAS / "11" / "project_adapter" / "adapter-resolution-reference.schema.json"
 
 PROJECT_ADAPTER_FIXTURES = [
     (
         PROJECT_MANIFEST_SCHEMA,
         SCHEMAS / "fixtures" / "project_adapter" / "project-manifest.valid.json",
         SCHEMAS / "fixtures" / "project_adapter" / "project-manifest.invalid.json",
+    ),
+    (
+        ADAPTER_RESOLUTION_REF_SCHEMA,
+        SCHEMAS / "fixtures" / "project_adapter" / "adapter-resolution-reference.valid.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "adapter-resolution-reference.invalid.json",
     ),
 ]
 
