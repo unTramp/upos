@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": {
+    "id": "artist-os",
+    "name": "Artist OS",
+    "docsRoot": "docs/artist-os",
+    "sourceOfTruthPath": ".upos/SOURCE_OF_TRUTH_MAP.md",
+    "docsIndexPath": "docs/artist-os/README.md"
+  },
+  "documents": [
+    {
+      "id": "artist-os-master-v1.4",
+      "title": "Artist OS MASTER v1.4",
+      "path": "docs/artist-os/00_governance/MASTER_ARCHITECTURE_v1.4.md",
+      "type": "MASTER",
+      "status": "ACTIVE",
+      "normativity": "NORMATIVE",
+      "owner": "Architecture Governance",
+      "version": "1.4",
+      "lifetime": "STABLE",
+      "canonicalScope": "product.architecture",
+      "freshness": "CURRENT",
+      "supersedes": ["artist-os-master-v1.3"],
+      "related": [
+        "docs/artist-os/00_governance/ARCHITECTURE_RESOLUTION_PASS1.md",
+        "docs/artist-os/00_governance/MASTER_v1.4_FREEZE_DECISION.md"
+      ],
+      "implementationRefs": [],
+      "testRefs": [],
+      "evidenceRefs": []
+    },
+    {
+      "id": "artist-os-master-v1.3",
+      "title": "Artist OS MASTER v1.3",
+      "path": "docs/artist-os/00_governance/MASTER_ARCHITECTURE_v1.3.md",
+      "type": "MASTER",
+      "status": "SUPERSEDED",
+      "normativity": "INFORMATIVE",
+      "owner": "Architecture Governance",
+      "version": "1.3",
+      "lifetime": "HISTORICAL",
+      "canonicalScope": null,
+      "freshness": "NOT_APPLICABLE",
+      "supersedes": [],
+      "supersededBy": "artist-os-master-v1.4",
+      "related": [],
+      "implementationRefs": [],
+      "testRefs": [],
+      "evidenceRefs": []
+    },
+    {
+      "id": "artist-os-ar-pass1",
+      "title": "Artist OS Architecture Resolution Pass 1 — AR-001…AR-062",
+      "path": "docs/artist-os/00_governance/ARCHITECTURE_RESOLUTION_PASS1.md",
+      "type": "CONTRACT",
+      "status": "ACTIVE",
+      "normativity": "NORMATIVE",
+      "owner": "Architecture Governance",
+      "version": null,
+      "lifetime": "STABLE",
+      "canonicalScope": "product.domain_model",
+      "freshness": "CURRENT",
+      "supersedes": [],
+      "related": [
+        "docs/artist-os/00_governance/MASTER_ARCHITECTURE_v1.4.md"
+      ],
+      "implementationRefs": [],
+      "testRefs": [],
+      "evidenceRefs": []
+    },
+    {
+      "id": "artist-os-master-v1.4-freeze-decision",
+      "title": "Artist OS MASTER v1.4 Freeze Decision",
+      "path": "docs/artist-os/00_governance/MASTER_v1.4_FREEZE_DECISION.md",
+      "type": "DECISION_RECORD",
+      "status": "ACTIVE",
+      "normativity": "EVIDENCE",
+      "owner": "Architecture Governance",
+      "version": null,
+      "lifetime": "HISTORICAL",
+      "canonicalScope": null,
+      "freshness": "NOT_APPLICABLE",
+      "supersedes": [],
+      "related": [
+        "artist-os-master-v1.4",
+        "artist-os-ar-pass1"
+      ],
+      "implementationRefs": [],
+      "testRefs": [],
+      "evidenceRefs": []
+    },
+    {
+      "id": "artist-os-ui-redesign-plan",
+      "title": "Artist OS UI Redesign Implementation Plan",
+      "path": "docs/artist-os/implementation/UI_REDESIGN_IMPLEMENTATION_PLAN.md",
+      "type": "PLAN",
+      "status": "ACTIVE",
+      "normativity": "INFORMATIVE",
+      "owner": "UX / Engineering",
+      "version": null,
+      "lifetime": "TEMPORARY",
+      "canonicalScope": null,
+      "freshness": "CURRENT",
+      "supersedes": [],
+      "related": [
+        "docs/artist-os/UX_VISUAL_DIRECTION.md"
+      ],
+      "implementationRefs": [],
+      "testRefs": [],
+      "evidenceRefs": []
+    },
+    {
+      "id": "artist-os-stage0-completion-report",
+      "title": "Artist OS Stage 0 Completion Report",
+      "path": "docs/artist-os/implementation/STAGE_0_COMPLETION_REPORT.md",
+      "type": "REPORT",
+      "status": "ACTIVE",
+      "normativity": "EVIDENCE",
+      "owner": "Engineering",
+      "version": null,
+      "lifetime": "HISTORICAL",
+      "canonicalScope": null,
+      "freshness": "NOT_APPLICABLE",
+      "supersedes": [],
+      "related": [],
+      "implementationRefs": [],
+      "testRefs": [],
+      "evidenceRefs": []
+    },
+    {
+      "id": "artist-os-phase1-completion-report",
+      "title": "Artist OS Phase 1 Artist Foundation Completion Report",
+      "path": "docs/artist-os/implementation/PHASE_1_ARTIST_FOUNDATION_COMPLETION_REPORT.md",
+      "type": "REPORT",
+      "status": "ACTIVE",
+      "normativity": "EVIDENCE",
+      "owner": "Engineering",
+      "version": null,
+      "lifetime": "HISTORICAL",
+      "canonicalScope": null,
+      "freshness": "NOT_APPLICABLE",
+      "supersedes": [],
+      "related": [],
+      "implementationRefs": [],
+      "testRefs": [],
+      "evidenceRefs": []
+    }
+  ]
+}
