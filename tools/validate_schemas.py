@@ -97,6 +97,118 @@ CROSS_MODULE_REFERENCE_VALID = SCHEMAS / "fixtures" / "cross_module_references" 
 CROSS_MODULE_REFERENCE_INVALID = SCHEMAS / "fixtures" / "cross_module_references" / "invalid-imported-version-requirement.json"
 ARTIST_OS_IDENTITY_NAMESPACE = SCHEMAS / "dogfooding" / "artist-os" / "identity-namespace-compatibility.json"
 
+RUNTIME_COMMON_FIXTURES = [
+    (
+        SCHEMAS / "common" / "runtime-operation-control.schema.json",
+        SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-operation-control.valid.json",
+        SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-operation-control.invalid-empty-key.json",
+    ),
+    (
+        SCHEMAS / "common" / "runtime-operation-outcome.schema.json",
+        SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-operation-outcome.valid.json",
+        SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-operation-outcome.invalid-domain-verdict.json",
+    ),
+    (
+        SCHEMAS / "common" / "runtime-failure-envelope.schema.json",
+        SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-failure-envelope.valid.json",
+        SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-failure-envelope.invalid-runtime-error-id.json",
+    ),
+]
+
+RUNTIME_OWNER_RESULT_OUTCOME_VALIDS = [
+    SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-operation-outcome.security-deny.valid.json",
+    SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-operation-outcome.quality-fail.valid.json",
+]
+RUNTIME_OWNER_RESULT_OUTCOME_INVALID = SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-operation-outcome.invalid-quality-pass-state.json"
+RUNTIME_OWNER_RESULT_FAILURE_INVALIDS = [
+    SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-failure-envelope.invalid-security-deny.json",
+    SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-failure-envelope.invalid-quality-fail.json",
+]
+
+RUNTIME_ATTRIBUTION_FIXTURES = [
+    (
+        SCHEMAS / "02" / "agent_organization" / "agent-run-attribution.schema.json",
+        SCHEMAS / "fixtures" / "runtime" / "agent_organization" / "agent-run-attribution.valid.json",
+        SCHEMAS / "fixtures" / "runtime" / "agent_organization" / "agent-run-attribution.invalid-execution-state.json",
+    ),
+    (
+        SCHEMAS / "03" / "skills" / "skill-invocation-attribution.schema.json",
+        SCHEMAS / "fixtures" / "runtime" / "skills" / "skill-invocation-attribution.valid.json",
+        SCHEMAS / "fixtures" / "runtime" / "skills" / "skill-invocation-attribution.invalid-execution-state.json",
+    ),
+]
+
+RUNTIME_TASK_FIXTURES = [
+    (
+        SCHEMAS / "04" / "workflow" / "task-runtime.schema.json",
+        SCHEMAS / "fixtures" / "runtime" / "workflow" / "task-runtime.valid.json",
+        SCHEMAS / "fixtures" / "runtime" / "workflow" / "task-runtime.invalid-in-review-state.json",
+    ),
+]
+
+RUNTIME_ROUTING_FIXTURES = [
+    (
+        SCHEMAS / "04" / "workflow" / "routing-runtime.schema.json",
+        SCHEMAS / "fixtures" / "runtime" / "workflow" / "routing-runtime.valid-failed-no-decision.json",
+        SCHEMAS / "fixtures" / "runtime" / "workflow" / "routing-runtime.invalid-missing-request-key.json",
+    ),
+]
+
+RUNTIME_WORKFLOW_FIXTURES = [
+    (
+        SCHEMAS / "04" / "workflow" / "workflow-instance-runtime.schema.json",
+        SCHEMAS / "fixtures" / "runtime" / "workflow" / "workflow-instance-runtime.valid.json",
+        SCHEMAS / "fixtures" / "runtime" / "workflow" / "workflow-instance-runtime.invalid-state.json",
+    ),
+]
+
+RUNTIME_EXECUTION_ATTEMPT_SCHEMA = SCHEMAS / "04" / "workflow" / "execution-attempt.schema.json"
+RUNTIME_EXECUTION_ATTEMPT_VALIDS = [
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.valid.json",
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.failed.valid.json",
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.created.valid.json",
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.cancelled.valid.json",
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.versioned.valid.json",
+]
+RUNTIME_EXECUTION_ATTEMPT_INVALIDS = [
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.invalid-blocked-state.json",
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.invalid-synthetic-id.json",
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.invalid-unsupported-version.json",
+]
+
+RUNTIME_RETRY_SCHEMA = SCHEMAS / "04" / "workflow" / "retry-provenance.schema.json"
+RUNTIME_RETRY_VALIDS = [
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-provenance.agent-run.valid.json",
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-provenance.skill-invocation.valid.json",
+]
+RUNTIME_RETRY_INVALIDS = [
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-provenance.invalid-missing-predecessor.json",
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-provenance.invalid-missing-trigger.json",
+]
+RUNTIME_RETRY_INVALID_SAME_REF = SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-provenance.invalid-reused-identity.json"
+RUNTIME_RETRY_CHAIN_VALID = SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-chain.agent-run.valid.json"
+
+RUNTIME_EVENT_SCHEMA = SCHEMAS / "08" / "observability" / "event.schema.json"
+RUNTIME_EVENT_VALID = SCHEMAS / "fixtures" / "runtime" / "observability" / "event.valid.json"
+RUNTIME_EVENT_CORRECTION_VALID = SCHEMAS / "fixtures" / "runtime" / "observability" / "event.correction-new-id.valid.json"
+RUNTIME_EVENT_INVALID_CORRECTION = SCHEMAS / "fixtures" / "runtime" / "observability" / "event.invalid-correction-missing-reason.json"
+RUNTIME_EVENT_INVALID_SAME_CORRECTION = SCHEMAS / "fixtures" / "runtime" / "observability" / "event.invalid-correction-reuses-id.json"
+RUNTIME_EVENT_REDELIVERY = [
+    SCHEMAS / "fixtures" / "runtime" / "observability" / "event.redelivery-a.json",
+    SCHEMAS / "fixtures" / "runtime" / "observability" / "event.redelivery-b.json",
+]
+
+RUNTIME_EXECUTION_SPINE_VALID = SCHEMAS / "fixtures" / "runtime" / "execution-spine.valid.json"
+RUNTIME_OPERATION_KEY_COLLISION_INVALIDS = [
+    SCHEMAS / "fixtures" / "runtime" / "common" / "operation-request-key.invalid-permission-decision.json",
+    SCHEMAS / "fixtures" / "runtime" / "common" / "operation-request-key.invalid-adapter-resolution.json",
+]
+RUNTIME_REDELIVERY_AS_RETRY_INVALID = SCHEMAS / "fixtures" / "runtime" / "workflow" / "technical-redelivery.invalid-as-retry.json"
+RUNTIME_PRIVATE_REASONING_INVALID = SCHEMAS / "fixtures" / "runtime" / "execution-spine.invalid-private-reasoning.json"
+RUNTIME_ROUTING_INVALID_SAME_KEY = (
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "routing-runtime.invalid-request-key-equals-decision.json"
+)
+
 FORBIDDEN_SYNTHETIC_IDENTITY_FIELDS = {
     "agent_instance_id",
     "context_view_id",
@@ -113,6 +225,30 @@ FORBIDDEN_SYNTHETIC_IDENTITY_FIELDS = {
     "project_manifest_id",
     "project_adapter_id",
     "security_approval_id",
+    "execution_attempt_id",
+    "run_attempt_id",
+    "invocation_attempt_id",
+    "runtime_error_id",
+    "retry_id",
+    "retry_attempt_id",
+}
+
+RUNTIME_CONTRACT_ARTIFACTS = {
+    "UPOS-RUNTIME-GOV-001": ("runtime/RUNTIME_CONTRACT_GOVERNANCE.md", "0.1.0"),
+    "UPOS-RUNTIME-OPS-001": ("runtime/RUNTIME_OPERATION_AND_IDEMPOTENCY_STANDARD.md", "0.1.0"),
+    "UPOS-RUNTIME-RES-001": ("runtime/RUNTIME_RESULT_AND_FAILURE_STANDARD.md", "0.1.0"),
+    "UPOS-RUNTIME-VER-001": ("runtime/RUNTIME_COMPATIBILITY_AND_VERSIONING.md", "0.1.0"),
+    "UPOS-RUNTIME-REC-001": ("runtime/RUNTIME_RECONSTRUCTABILITY_STANDARD.md", "0.1.0"),
+    "UPOS-RUNTIME-PER-001": ("runtime/RUNTIME_PERSISTENCE_BOUNDARY.md", "0.1.0"),
+    "UPOS-02-AGENT-RUN-ATTRIBUTION": ("runtime/contracts/AGENT_RUN_ATTRIBUTION_CONTRACT.md", "0.1.0"),
+    "UPOS-03-SKILL-INVOCATION-ATTRIBUTION": ("runtime/contracts/SKILL_INVOCATION_ATTRIBUTION_CONTRACT.md", "0.1.0"),
+    "UPOS-04-TASK-RUNTIME": ("runtime/contracts/TASK_RUNTIME_CONTRACT.md", "0.1.0"),
+    "UPOS-04-ROUTING-RUNTIME": ("runtime/contracts/ROUTING_RUNTIME_CONTRACT.md", "0.1.0"),
+    "UPOS-04-WORKFLOW-INSTANCE-RUNTIME": ("runtime/contracts/WORKFLOW_INSTANCE_RUNTIME_CONTRACT.md", "0.1.0"),
+    "UPOS-04-EXECUTION-ATTEMPT": ("runtime/contracts/EXECUTION_ATTEMPT_RUNTIME_CONTRACT.md", "0.1.0"),
+    "UPOS-04-RETRY-PROVENANCE": ("runtime/contracts/RETRY_PROVENANCE_RUNTIME_CONTRACT.md", "0.1.0"),
+    "UPOS-08-EVENT-EMISSION": ("runtime/contracts/EVENT_EMISSION_INTERFACE.md", "0.1.0"),
+    "UPOS-08-EVT-001": ("08_observability/EVENT_STANDARD.md", "1.0.0"),
 }
 
 OWNER_BY_PREFIX = {
@@ -139,6 +275,138 @@ def load_json(path: Path) -> Any:
 def fail(message: str) -> None:
     print(f"ERROR: {message}")
     raise SystemExit(1)
+
+
+class RuntimeConformanceViolation(ValueError):
+    """Deterministic cross-record/runtime-contract conformance rejection."""
+
+
+PROHIBITED_PRIVATE_REASONING_FIELDS = {
+    "private_chain_of_thought",
+    "chain_of_thought",
+    "private_reasoning",
+    "reasoning_trace",
+}
+
+
+def enforce_distinct_values(
+    left_name: str,
+    left_value: Any,
+    right_name: str,
+    right_value: Any,
+) -> None:
+    if left_value is not None and right_value is not None and left_value == right_value:
+        raise RuntimeConformanceViolation(
+            f"{left_name} must differ from {right_name}: {left_value!r}"
+        )
+
+
+def enforce_operation_request_key_separation(data: dict[str, Any]) -> None:
+    control = data.get("operation_control")
+    if not isinstance(control, dict):
+        return
+    request_key = control.get("operation_request_key")
+    enforce_distinct_values(
+        "operation_request_key",
+        request_key,
+        "owner_result_ref",
+        data.get("owner_result_ref"),
+    )
+    outcome = data.get("runtime_outcome")
+    if isinstance(outcome, dict):
+        enforce_distinct_values(
+            "operation_request_key",
+            request_key,
+            "runtime_outcome.owner_result_ref",
+            outcome.get("owner_result_ref"),
+        )
+
+
+def enforce_routing_request_result_separation(data: dict[str, Any]) -> None:
+    control = data.get("operation_control")
+    if not isinstance(control, dict):
+        return
+    enforce_distinct_values(
+        "operation_request_key",
+        control.get("operation_request_key"),
+        "routing_decision_ref",
+        data.get("routing_decision_ref"),
+    )
+
+
+def enforce_retry_identity_separation(data: dict[str, Any]) -> None:
+    enforce_distinct_values(
+        "successor_ref",
+        data.get("successor_ref"),
+        "predecessor_ref",
+        data.get("predecessor_ref"),
+    )
+
+
+def enforce_redelivery_not_retry(data: dict[str, Any]) -> None:
+    control = data.get("operation_control")
+    retry = data.get("retry_provenance")
+    if not isinstance(control, dict) or not isinstance(retry, dict):
+        return
+    same_subject = (
+        control.get("subject_ref") is not None
+        and control.get("subject_ref") == retry.get("predecessor_ref")
+        and retry.get("predecessor_ref") == retry.get("successor_ref")
+    )
+    if same_subject:
+        raise RuntimeConformanceViolation(
+            "technical redelivery of the same bounded execution identity "
+            "must not be represented as UPOS-04 RETRY_OF"
+        )
+
+
+def enforce_event_correction_identity(data: dict[str, Any]) -> None:
+    if data.get("correction_of_event_id") is None:
+        return
+    enforce_distinct_values(
+        "event_id",
+        data.get("event_id"),
+        "correction_of_event_id",
+        data.get("correction_of_event_id"),
+    )
+
+
+def enforce_no_private_reasoning(value: Any, *, path: str = "$") -> None:
+    if isinstance(value, dict):
+        for key, child in value.items():
+            if key in PROHIBITED_PRIVATE_REASONING_FIELDS:
+                raise RuntimeConformanceViolation(
+                    f"private reasoning field is forbidden in persisted runtime provenance: {path}.{key}"
+                )
+            enforce_no_private_reasoning(child, path=f"{path}.{key}")
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            enforce_no_private_reasoning(child, path=f"{path}[{index}]")
+
+
+def expect_runtime_conformance_pass(
+    label: str,
+    check,
+    data: dict[str, Any],
+) -> None:
+    try:
+        check(data)
+    except RuntimeConformanceViolation as exc:
+        fail(f"{label} unexpectedly rejected by runtime conformance: {exc}")
+    print(f"FOCUSED PASS: {label}")
+
+
+def expect_runtime_conformance_reject(
+    label: str,
+    check,
+    data: dict[str, Any],
+) -> None:
+    try:
+        check(data)
+    except RuntimeConformanceViolation:
+        print(f"FOCUSED REJECT: {label}")
+        return
+    fail(f"{label} unexpectedly passed runtime conformance")
 
 
 def iter_refs(value: Any):
@@ -757,6 +1025,168 @@ def collect_schema_property_names(value: Any) -> set[str]:
     return names
 
 
+def validate_runtime_contract_references() -> None:
+    for contract_ref, (artifact_path, supported_version) in RUNTIME_CONTRACT_ARTIFACTS.items():
+        artifact = ROOT / artifact_path
+        if not artifact.is_file():
+            fail(f"runtime contract reference {contract_ref} resolves to missing artifact: {artifact_path}")
+        text = artifact.read_text(encoding="utf-8")
+        if f"**ID:** {contract_ref}" not in text:
+            fail(f"runtime contract artifact ID mismatch for {contract_ref}: {artifact_path}")
+        if f"**Version:** {supported_version}" in text:
+            continue
+        if contract_ref.startswith("UPOS-RUNTIME-") and f"**Status:** CANDIDATE" in text:
+            # Cross-cutting Slice-1 standards predate explicit Version metadata.
+            # Their supported runtime-contract version is fixed by the machine fixtures.
+            continue
+        fail(
+            f"runtime contract artifact version mismatch for {contract_ref}: "
+            f"expected {supported_version} in {artifact_path}"
+        )
+
+    fixture_root = SCHEMAS / "fixtures" / "runtime"
+    contract_key_to_version_key = {
+        "runtime_contract_ref": "runtime_contract_version",
+        "event_contract_ref": "event_contract_version",
+        "producer_contract_ref": "producer_contract_version",
+    }
+
+    def walk(value: Any, source: Path, path: str = "$") -> None:
+        if isinstance(value, dict):
+            for ref_key, version_key in contract_key_to_version_key.items():
+                if ref_key not in value:
+                    continue
+                ref = value.get(ref_key)
+                version = value.get(version_key)
+                if ref not in RUNTIME_CONTRACT_ARTIFACTS:
+                    fail(
+                        f"unresolved {ref_key} in {source.relative_to(ROOT)} at {path}: {ref!r}"
+                    )
+                expected_version = RUNTIME_CONTRACT_ARTIFACTS[ref][1]
+                if version != expected_version:
+                    fail(
+                        f"unsupported {ref_key} version in {source.relative_to(ROOT)} at {path}: "
+                        f"{ref}@{version!r}; supported={expected_version}"
+                    )
+            for key, child in value.items():
+                walk(child, source, f"{path}.{key}")
+        elif isinstance(value, list):
+            for index, child in enumerate(value):
+                walk(child, source, f"{path}[{index}]")
+
+    for fixture in sorted(fixture_root.rglob("*.json")):
+        if fixture.name.endswith(".invalid-unsupported-version.json"):
+            continue
+        walk(load_json(fixture), fixture)
+
+
+def validate_durable_runtime_version_carriage(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    cases = [
+        (
+            SCHEMAS / "02" / "agent_organization" / "agent-run-attribution.schema.json",
+            SCHEMAS / "fixtures" / "runtime" / "agent_organization" / "agent-run-attribution.valid.json",
+        ),
+        (
+            SCHEMAS / "03" / "skills" / "skill-invocation-attribution.schema.json",
+            SCHEMAS / "fixtures" / "runtime" / "skills" / "skill-invocation-attribution.valid.json",
+        ),
+        (
+            SCHEMAS / "04" / "workflow" / "task-runtime.schema.json",
+            SCHEMAS / "fixtures" / "runtime" / "workflow" / "task-runtime.valid.json",
+        ),
+        (
+            SCHEMAS / "04" / "workflow" / "workflow-instance-runtime.schema.json",
+            SCHEMAS / "fixtures" / "runtime" / "workflow" / "workflow-instance-runtime.valid.json",
+        ),
+        (
+            RUNTIME_EXECUTION_ATTEMPT_SCHEMA,
+            SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.created.valid.json",
+        ),
+        (
+            RUNTIME_RETRY_SCHEMA,
+            SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-provenance.agent-run.valid.json",
+        ),
+    ]
+
+    required_version_fields = (
+        "runtime_contract_ref",
+        "runtime_contract_version",
+        "runtime_schema_version",
+    )
+
+    for schema_path, fixture_path in cases:
+        validator = validator_for(schema_path, docs, resource_registry)
+        stored = load_json(fixture_path)
+
+        for field in required_version_fields:
+            if field not in stored:
+                fail(
+                    f"stored durable fixture {fixture_path.relative_to(ROOT)} "
+                    f"is missing required version carriage field: {field}"
+                )
+
+        try:
+            validator.validate(stored)
+        except ValidationError as exc:
+            fail(
+                f"stored durable versioned fixture unexpectedly failed for "
+                f"{schema_path.relative_to(ROOT)}: {exc.message}"
+            )
+        print(
+            f"FOCUSED PASS: stored durable version carriage "
+            f"{schema_path.relative_to(ROOT)}"
+        )
+
+        for field in required_version_fields:
+            missing = json.loads(json.dumps(stored))
+            del missing[field]
+            try:
+                validator.validate(missing)
+            except ValidationError:
+                print(
+                    f"FOCUSED REJECT: missing {field} "
+                    f"{schema_path.relative_to(ROOT)}"
+                )
+            else:
+                fail(
+                    f"durable record missing {field} unexpectedly passed for "
+                    f"{schema_path.relative_to(ROOT)}"
+                )
+
+        unsupported_contract = json.loads(json.dumps(stored))
+        unsupported_contract["runtime_contract_version"] = "99.0.0"
+        try:
+            validator.validate(unsupported_contract)
+        except ValidationError:
+            print(
+                f"FOCUSED REJECT: unsupported runtime contract version "
+                f"{schema_path.relative_to(ROOT)}"
+            )
+        else:
+            fail(
+                f"unsupported runtime contract version unexpectedly passed for "
+                f"{schema_path.relative_to(ROOT)}"
+            )
+
+        unsupported_schema = json.loads(json.dumps(stored))
+        unsupported_schema["runtime_schema_version"] = "99.0.0"
+        try:
+            validator.validate(unsupported_schema)
+        except ValidationError:
+            print(
+                f"FOCUSED REJECT: unsupported runtime schema version "
+                f"{schema_path.relative_to(ROOT)}"
+            )
+        else:
+            fail(
+                f"unsupported runtime schema version unexpectedly passed for "
+                f"{schema_path.relative_to(ROOT)}"
+            )
+
+
 def validate_forbidden_identity_properties(
     docs: dict[str, dict[str, Any]],
 ) -> None:
@@ -798,6 +1228,464 @@ def validate_artist_os_identity_namespace() -> None:
             fail(f"Artist OS product concept collides with U-POS namespace: {concept!r}")
 
 
+def validate_operation_request_key_boundaries(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    control_validator = validator_for(
+        SCHEMAS / "common" / "runtime-operation-control.schema.json",
+        docs,
+        resource_registry,
+    )
+    for invalid_path in RUNTIME_OPERATION_KEY_COLLISION_INVALIDS:
+        data = load_json(invalid_path)
+        try:
+            control_validator.validate(data["operation_control"])
+        except ValidationError as exc:
+            fail(f"operation-key collision fixture must have a valid operation_control: {invalid_path.name}: {exc.message}")
+        expect_runtime_conformance_reject(
+            f"operation-key/owner-result collision fixture {invalid_path.name}",
+            enforce_operation_request_key_separation,
+            data,
+        )
+        distinct = json.loads(json.dumps(data))
+        distinct["owner_result_ref"] = str(distinct["owner_result_ref"]) + ":distinct"
+        expect_runtime_conformance_pass(
+            f"operation-key/owner-result distinct positive case {invalid_path.name}",
+            enforce_operation_request_key_separation,
+            distinct,
+        )
+
+
+def validate_execution_spine_reconstructability(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    data = load_json(RUNTIME_EXECUTION_SPINE_VALID)
+    expect_runtime_conformance_pass(
+        "execution-spine private-reasoning exclusion",
+        enforce_no_private_reasoning,
+        data,
+    )
+    expect_runtime_conformance_pass(
+        "execution-spine routing request/result separation",
+        enforce_routing_request_result_separation,
+        data["routing"],
+    )
+    expect_runtime_conformance_pass(
+        "execution-spine operation-key/owner-result separation",
+        enforce_operation_request_key_separation,
+        data["routing"],
+    )
+    if data.get("fixture_level") != "FIXTURE":
+        fail("execution-spine conformance data must be explicitly labeled FIXTURE")
+
+    component_schemas = {
+        "task": SCHEMAS / "04" / "workflow" / "task-runtime.schema.json",
+        "routing": SCHEMAS / "04" / "workflow" / "routing-runtime.schema.json",
+        "workflow": SCHEMAS / "04" / "workflow" / "workflow-instance-runtime.schema.json",
+        "agent_run_attribution": SCHEMAS / "02" / "agent_organization" / "agent-run-attribution.schema.json",
+        "agent_run_attempt": SCHEMAS / "04" / "workflow" / "execution-attempt.schema.json",
+        "skill_invocation_attribution": SCHEMAS / "03" / "skills" / "skill-invocation-attribution.schema.json",
+        "skill_invocation_attempt": SCHEMAS / "04" / "workflow" / "execution-attempt.schema.json",
+        "runtime_outcome": SCHEMAS / "common" / "runtime-operation-outcome.schema.json",
+        "event": SCHEMAS / "08" / "observability" / "event.schema.json",
+    }
+    for key, schema_path in component_schemas.items():
+        try:
+            validator_for(schema_path, docs, resource_registry).validate(data[key])
+        except ValidationError as exc:
+            fail(f"execution-spine component {key} failed validation: {exc.message}")
+
+    control_validator = validator_for(
+        SCHEMAS / "common" / "runtime-operation-control.schema.json",
+        docs,
+        resource_registry,
+    )
+    redelivery = data.get("technical_redelivery", [])
+    if len(redelivery) != 2:
+        fail("execution-spine fixture must contain two technical redelivery records")
+    for control in redelivery:
+        try:
+            control_validator.validate(control)
+        except ValidationError as exc:
+            fail(f"technical redelivery operation_control failed validation: {exc.message}")
+    if redelivery[0]["operation_request_key"] != redelivery[1]["operation_request_key"]:
+        fail("technical redelivery must reuse operation_request_key")
+    if redelivery[0]["subject_ref"] != redelivery[1]["subject_ref"]:
+        fail("technical redelivery must preserve owner subject identity")
+    expect_runtime_conformance_pass(
+        "technical redelivery preserves identity without RETRY_OF",
+        enforce_redelivery_not_retry,
+        {"operation_control": redelivery[0]},
+    )
+
+    task_ref = data["task"]["task_ref"]
+    routing_ref = data["routing"].get("routing_decision_ref")
+    workflow_ref = data["workflow"]["workflow_instance_ref"]
+    stage_ref = data["workflow"]["stages"][0]["stage_ref"]
+    agent_run_ref = data["agent_run_attribution"]["agent_run_ref"]
+    skill_invocation_ref = data["skill_invocation_attribution"]["skill_invocation_ref"]
+
+    consistency_checks = [
+        (data["routing"]["task_ref"], task_ref, "routing task"),
+        (data["workflow"]["task_ref"], task_ref, "workflow task"),
+        (data["workflow"]["routing_decision_ref"], routing_ref, "workflow routing decision"),
+        (data["agent_run_attribution"]["task_ref"], task_ref, "Agent Run task"),
+        (data["agent_run_attribution"].get("workflow_instance_ref"), workflow_ref, "Agent Run workflow"),
+        (data["agent_run_attribution"].get("stage_ref"), stage_ref, "Agent Run stage"),
+        (data["agent_run_attempt"]["subject_ref"], agent_run_ref, "Agent Run attempt subject"),
+        (data["skill_invocation_attribution"]["agent_run_ref"], agent_run_ref, "Skill Invocation Agent Run"),
+        (data["skill_invocation_attribution"]["task_ref"], task_ref, "Skill Invocation task"),
+        (data["skill_invocation_attribution"].get("workflow_instance_ref"), workflow_ref, "Skill Invocation workflow"),
+        (data["skill_invocation_attribution"].get("stage_ref"), stage_ref, "Skill Invocation stage"),
+        (data["skill_invocation_attempt"]["subject_ref"], skill_invocation_ref, "Skill Invocation attempt subject"),
+        (data["skill_invocation_attribution"]["context_bundle_refs"][0], data["context_bundle_ref"], "Context Bundle"),
+        (data["skill_invocation_attribution"]["skill_result_ref"], data["skill_result_ref"], "Skill Result"),
+        (data["runtime_outcome"]["subject_ref"], skill_invocation_ref, "runtime outcome subject"),
+        (data["runtime_outcome"]["owner_result_ref"], data["skill_result_ref"], "runtime owner result"),
+        (data["event"]["event_id"], data["runtime_outcome"]["event_refs"][0], "Event reference"),
+        (data["event"]["task_ref"], task_ref, "Event task"),
+        (data["event"]["routing_decision_ref"], routing_ref, "Event routing decision"),
+        (data["event"]["workflow_instance_ref"], workflow_ref, "Event workflow"),
+        (data["event"]["stage_ref"], stage_ref, "Event stage"),
+        (data["event"]["producer_agent_run_ref"], agent_run_ref, "Event Agent Run"),
+        (data["event"]["skill_invocation_ref"], skill_invocation_ref, "Event Skill Invocation"),
+        (data["event"]["context_bundle_ref"], data["context_bundle_ref"], "Event Context Bundle"),
+        (data["event"]["owner_result_ref"], data["skill_result_ref"], "Event owner result"),
+    ]
+    for actual, expected, label in consistency_checks:
+        if actual != expected:
+            fail(f"execution-spine reconstructability mismatch for {label}: {actual!r} != {expected!r}")
+
+    redelivery_retry = load_json(RUNTIME_REDELIVERY_AS_RETRY_INVALID)
+    try:
+        control_validator.validate(redelivery_retry["operation_control"])
+        validator_for(RUNTIME_RETRY_SCHEMA, docs, resource_registry).validate(redelivery_retry["retry_provenance"])
+    except ValidationError as exc:
+        fail(f"redelivery-as-retry negative fixture must be structurally valid: {exc.message}")
+    expect_runtime_conformance_reject(
+        "technical redelivery represented as workflow retry",
+        enforce_redelivery_not_retry,
+        redelivery_retry,
+    )
+
+    private = load_json(RUNTIME_PRIVATE_REASONING_INVALID)
+    expect_runtime_conformance_reject(
+        "persisted private reasoning fixture",
+        enforce_no_private_reasoning,
+        private,
+    )
+
+
+def validate_failure_envelope_version_carriage(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    schema_path = SCHEMAS / "common" / "runtime-failure-envelope.schema.json"
+    valid_path = (
+        SCHEMAS / "fixtures" / "runtime" / "common"
+        / "runtime-failure-envelope.valid.json"
+    )
+    validator = validator_for(schema_path, docs, resource_registry)
+    stored = load_json(valid_path)
+
+    try:
+        validator.validate(stored)
+    except ValidationError as exc:
+        fail(f"stored runtime failure envelope unexpectedly failed: {exc.message}")
+
+    ref = stored.get("runtime_contract_ref")
+    version = stored.get("runtime_contract_version")
+    if ref not in RUNTIME_CONTRACT_ARTIFACTS:
+        fail(f"stored runtime failure envelope has unresolved runtime contract: {ref!r}")
+    expected = RUNTIME_CONTRACT_ARTIFACTS[ref][1]
+    if version != expected:
+        fail(
+            "stored runtime failure envelope has unsupported runtime contract "
+            f"version: {ref}@{version!r}; supported={expected}"
+        )
+    print("FOCUSED PASS: stored runtime failure envelope with supported contract metadata")
+
+    for field in ("runtime_contract_ref", "runtime_contract_version"):
+        missing = json.loads(json.dumps(stored))
+        del missing[field]
+        try:
+            validator.validate(missing)
+        except ValidationError as exc:
+            if exc.validator != "required":
+                fail(
+                    f"runtime failure envelope missing {field} rejected for "
+                    f"unexpected reason: {exc.validator}: {exc.message}"
+                )
+            print(f"FOCUSED REJECT: runtime failure envelope missing {field}")
+        else:
+            fail(f"runtime failure envelope missing {field} unexpectedly passed")
+
+    unsupported = json.loads(json.dumps(stored))
+    unsupported["runtime_contract_version"] = "99.0.0"
+    try:
+        validator.validate(unsupported)
+    except ValidationError as exc:
+        fail(
+            "unsupported runtime failure envelope contract version should remain "
+            f"structurally valid before fail-closed contract resolution: {exc.message}"
+        )
+    unsupported_ref = unsupported["runtime_contract_ref"]
+    expected = RUNTIME_CONTRACT_ARTIFACTS[unsupported_ref][1]
+    if unsupported["runtime_contract_version"] == expected:
+        fail("unsupported runtime failure envelope contract mutation did not change version")
+    print("FOCUSED REJECT: unsupported runtime failure envelope contract version")
+
+    negative_expectations = (
+        (
+            SCHEMAS / "fixtures" / "runtime" / "common"
+            / "runtime-failure-envelope.invalid-security-deny.json",
+            "not",
+            "failure_code",
+            "Security verdict contamination",
+        ),
+        (
+            SCHEMAS / "fixtures" / "runtime" / "common"
+            / "runtime-failure-envelope.invalid-quality-fail.json",
+            "not",
+            "failure_code",
+            "Quality verdict contamination",
+        ),
+        (
+            SCHEMAS / "fixtures" / "runtime" / "common"
+            / "runtime-failure-envelope.invalid-runtime-error-id.json",
+            "additionalProperties",
+            None,
+            "synthetic runtime error identity",
+        ),
+    )
+    for path, expected_validator, expected_path, label in negative_expectations:
+        errors = list(validator.iter_errors(load_json(path)))
+        if len(errors) != 1:
+            fail(
+                f"{label} fixture must reject for exactly one original invariant; "
+                f"got {len(errors)} errors"
+            )
+        exc = errors[0]
+        actual_path = "/".join(str(x) for x in exc.absolute_path)
+        if exc.validator != expected_validator:
+            fail(
+                f"{label} fixture rejected for unexpected validator "
+                f"{exc.validator!r}: {exc.message}"
+            )
+        if expected_path is not None and actual_path != expected_path:
+            fail(
+                f"{label} fixture rejected at unexpected path "
+                f"{actual_path!r}: {exc.message}"
+            )
+        if label == "synthetic runtime error identity" and "runtime_error_id" not in exc.message:
+            fail(
+                "synthetic runtime error identity fixture did not reject "
+                f"runtime_error_id specifically: {exc.message}"
+            )
+        print(f"FOCUSED REJECT: {label} preserved")
+
+
+def validate_owner_result_runtime_boundaries(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    outcome_schema = SCHEMAS / "common" / "runtime-operation-outcome.schema.json"
+    outcome_validator = validator_for(outcome_schema, docs, resource_registry)
+    for valid_path in RUNTIME_OWNER_RESULT_OUTCOME_VALIDS:
+        try:
+            outcome_validator.validate(load_json(valid_path))
+        except ValidationError as exc:
+            fail(f"owner-result/technical-outcome positive fixture failed: {valid_path.name}: {exc.message}")
+    try:
+        outcome_validator.validate(load_json(RUNTIME_OWNER_RESULT_OUTCOME_INVALID))
+    except ValidationError:
+        pass
+    else:
+        fail("Quality PASS used as technical execution state unexpectedly passed")
+
+    failure_schema = SCHEMAS / "common" / "runtime-failure-envelope.schema.json"
+    failure_validator = validator_for(failure_schema, docs, resource_registry)
+    for invalid_path in RUNTIME_OWNER_RESULT_FAILURE_INVALIDS:
+        try:
+            failure_validator.validate(load_json(invalid_path))
+        except ValidationError:
+            continue
+        fail(f"owner result used as technical runtime failure unexpectedly passed: {invalid_path.name}")
+
+
+def validate_runtime_event_fixtures(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    validator = validator_for(RUNTIME_EVENT_SCHEMA, docs, resource_registry)
+    try:
+        validator.validate(load_json(RUNTIME_EVENT_VALID))
+    except ValidationError as exc:
+        fail(f"positive runtime Event fixture unexpectedly failed: {exc.message}")
+    correction_valid = load_json(RUNTIME_EVENT_CORRECTION_VALID)
+    try:
+        validator.validate(correction_valid)
+    except ValidationError as exc:
+        fail(f"positive Event correction fixture unexpectedly failed: {exc.message}")
+    expect_runtime_conformance_pass(
+        "Event correction uses new identity",
+        enforce_event_correction_identity,
+        correction_valid,
+    )
+    try:
+        validator.validate(load_json(RUNTIME_EVENT_INVALID_CORRECTION))
+    except ValidationError:
+        pass
+    else:
+        fail("Event correction without correction_reason unexpectedly passed")
+
+    correction = load_json(RUNTIME_EVENT_INVALID_SAME_CORRECTION)
+    try:
+        validator.validate(correction)
+    except ValidationError as exc:
+        fail(f"same-id Event correction fixture must be structurally valid: {exc.message}")
+    expect_runtime_conformance_reject(
+        "same-id Event correction fixture",
+        enforce_event_correction_identity,
+        correction,
+    )
+    expect_runtime_conformance_pass(
+        "ordinary Event without correction relation",
+        enforce_event_correction_identity,
+        load_json(RUNTIME_EVENT_VALID),
+    )
+
+    redelivery = [load_json(path) for path in RUNTIME_EVENT_REDELIVERY]
+    for data in redelivery:
+        try:
+            validator.validate(data)
+        except ValidationError as exc:
+            fail(f"Event redelivery fixture unexpectedly failed: {exc.message}")
+    if redelivery[0]["event_id"] != redelivery[1]["event_id"]:
+        fail("same logical Event redelivery must preserve event_id in fixture")
+
+
+def validate_retry_provenance_fixtures(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    validator = validator_for(RUNTIME_RETRY_SCHEMA, docs, resource_registry)
+    attempt_validator = validator_for(
+        RUNTIME_EXECUTION_ATTEMPT_SCHEMA,
+        docs,
+        resource_registry,
+    )
+    for valid_path in RUNTIME_RETRY_VALIDS:
+        valid = load_json(valid_path)
+        try:
+            validator.validate(valid)
+        except ValidationError as exc:
+            fail(f"positive retry provenance fixture unexpectedly failed: {valid_path.name}: {exc.message}")
+        expect_runtime_conformance_pass(
+            f"positive retry identity separation {valid_path.name}",
+            enforce_retry_identity_separation,
+            valid,
+        )
+    for invalid_path in RUNTIME_RETRY_INVALIDS:
+        try:
+            validator.validate(load_json(invalid_path))
+        except ValidationError:
+            continue
+        fail(f"negative retry provenance fixture unexpectedly passed: {invalid_path.name}")
+
+    reused = load_json(RUNTIME_RETRY_INVALID_SAME_REF)
+    try:
+        validator.validate(reused)
+    except ValidationError as exc:
+        fail(f"retry reused-identity fixture must be structurally valid before semantic validation: {exc.message}")
+    expect_runtime_conformance_reject(
+        "retry reused-identity fixture",
+        enforce_retry_identity_separation,
+        reused,
+    )
+
+    chain = load_json(RUNTIME_RETRY_CHAIN_VALID)
+    predecessor = chain["predecessor_attempt"]
+    retry = chain["retry_provenance"]
+    successor = chain["successor_attempt"]
+    for label, attempt in (
+        ("retry-chain predecessor", predecessor),
+        ("retry-chain successor", successor),
+    ):
+        try:
+            attempt_validator.validate(attempt)
+        except ValidationError as exc:
+            fail(f"{label} execution attempt unexpectedly failed: {exc.message}")
+    try:
+        validator.validate(retry)
+    except ValidationError as exc:
+        fail(f"retry-chain provenance unexpectedly failed: {exc.message}")
+    if predecessor["execution_state"] != "FAILED":
+        fail("retry-chain predecessor must be a terminal FAILED execution attempt")
+    if predecessor.get("failure_ref") != retry.get("trigger_ref"):
+        fail("retry-chain trigger_ref must anchor to predecessor failure_ref")
+    if predecessor["subject_ref"] != retry["predecessor_ref"]:
+        fail("retry-chain predecessor_ref must match failed predecessor subject_ref")
+    if successor["execution_state"] != "CREATED":
+        fail("retry-chain successor must start as CREATED")
+    if successor["subject_ref"] != retry["successor_ref"]:
+        fail("retry-chain successor_ref must match CREATED successor subject_ref")
+    expect_runtime_conformance_pass(
+        "retry-chain successor/predecessor identity separation",
+        enforce_retry_identity_separation,
+        retry,
+    )
+
+
+def validate_execution_attempt_fixtures(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    validator = validator_for(RUNTIME_EXECUTION_ATTEMPT_SCHEMA, docs, resource_registry)
+    for valid_path in RUNTIME_EXECUTION_ATTEMPT_VALIDS:
+        try:
+            validator.validate(load_json(valid_path))
+        except ValidationError as exc:
+            fail(
+                f"positive execution-attempt fixture unexpectedly failed "
+                f"for {valid_path.name}: {exc.message}"
+            )
+    for invalid_path in RUNTIME_EXECUTION_ATTEMPT_INVALIDS:
+        try:
+            validator.validate(load_json(invalid_path))
+        except ValidationError:
+            continue
+        fail(f"negative execution-attempt fixture unexpectedly passed: {invalid_path.name}")
+
+
+def validate_routing_runtime_semantics(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    schema_path = SCHEMAS / "04" / "workflow" / "routing-runtime.schema.json"
+    validator = validator_for(schema_path, docs, resource_registry)
+    data = load_json(RUNTIME_ROUTING_INVALID_SAME_KEY)
+    try:
+        validator.validate(data)
+    except ValidationError as exc:
+        fail(
+            "routing same-key fixture must be structurally valid before semantic "
+            f"validation, but failed schema validation: {exc.message}"
+        )
+    expect_runtime_conformance_reject(
+        "routing request-key/result collision fixture",
+        enforce_routing_request_result_separation,
+        data,
+    )
+    expect_runtime_conformance_reject(
+        "routing request-key/runtime-owner-result collision fixture",
+        enforce_operation_request_key_separation,
+        data,
+    )
+
+
 def validate_fixtures(
     docs: dict[str, dict[str, Any]],
     resource_registry: Registry,
@@ -836,11 +1724,36 @@ def validate_fixtures(
         resource_registry,
     )
 
+    for schema_path, valid_path, invalid_path in RUNTIME_COMMON_FIXTURES:
+        validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
+    validate_failure_envelope_version_carriage(docs, resource_registry)
+    validate_owner_result_runtime_boundaries(docs, resource_registry)
+    validate_operation_request_key_boundaries(docs, resource_registry)
+    validate_execution_spine_reconstructability(docs, resource_registry)
+
+    for schema_path, valid_path, invalid_path in RUNTIME_ATTRIBUTION_FIXTURES:
+        validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
+
+    for schema_path, valid_path, invalid_path in RUNTIME_TASK_FIXTURES:
+        validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
+
+    for schema_path, valid_path, invalid_path in RUNTIME_ROUTING_FIXTURES:
+        validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
+    validate_routing_runtime_semantics(docs, resource_registry)
+
+    for schema_path, valid_path, invalid_path in RUNTIME_WORKFLOW_FIXTURES:
+        validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
+    validate_execution_attempt_fixtures(docs, resource_registry)
+    validate_retry_provenance_fixtures(docs, resource_registry)
+    validate_runtime_event_fixtures(docs, resource_registry)
+
 
 def main() -> int:
     schema_ids, docs = load_schema_documents()
     resource_registry = build_resource_registry(docs)
     validate_registry(schema_ids)
+    validate_runtime_contract_references()
+    validate_durable_runtime_version_carriage(docs, resource_registry)
     validate_forbidden_identity_properties(docs)
     validate_artist_os_identity_namespace()
     validate_fixtures(docs, resource_registry)
@@ -855,8 +1768,22 @@ def main() -> int:
     print("Artist OS Phase 2C dogfooding: PASS")
     print("Cross-module identity/reference fixtures: PASS")
     print("Canonical cross-schema reference conformance: PASS")
+    print("Runtime contract reference/version resolution: PASS")
+    print("Durable runtime version carriage/fail-closed validation: PASS")
     print("Identity anti-duplication validation: PASS")
     print("Artist OS namespace compatibility: PASS")
+    print("Phase-3 common runtime primitive fixtures: PASS")
+    print("Runtime failure envelope version carriage: PASS")
+    print("Owner-result/runtime-outcome separation: PASS")
+    print("Operation request key / owner result separation: PASS")
+    print("Phase-3 execution-spine reconstructability: PASS")
+    print("Phase-3 attribution fixtures: PASS")
+    print("Phase-3 Task runtime fixtures: PASS")
+    print("Phase-3 Routing runtime fixtures: PASS")
+    print("Phase-3 Workflow runtime fixtures: PASS")
+    print("Phase-3 Execution Attempt fixtures: PASS")
+    print("Phase-3 Retry provenance fixtures: PASS")
+    print("Phase-3 Event fixtures: PASS")
     return 0
 
 

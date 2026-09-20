@@ -571,6 +571,263 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Conformance-only artifact. Future Phase 3 schemas should import owner refs directly; they do not consume this harness as a domain model."
+    },
+    {
+      "schema_key": "upos.common.runtime_operation_control",
+      "schema_uri": "urn:upos:schema:common:runtime-operation-control:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/common/runtime-operation-control.schema.json",
+      "implementation_state": "STABLE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "NONE_INFRASTRUCTURE",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "runtime/RUNTIME_OPERATION_AND_IDEMPOTENCY_STANDARD.md",
+        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md",
+        "schemas/SCHEMA_VERSIONING_AND_COMPATIBILITY.md"
+      ],
+      "identity_model": "Infrastructure-only request control. operation_request_key is not a domain identity and is not registered in the Global Identity & Reference Registry.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Phase-3 Slice-1 candidate. No owner result identity is required to exist before the technical request completes."
+    },
+    {
+      "schema_key": "upos.common.runtime_operation_outcome",
+      "schema_uri": "urn:upos:schema:common:runtime-operation-outcome:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/common/runtime-operation-outcome.schema.json",
+      "implementation_state": "STABLE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "NONE_INFRASTRUCTURE",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "runtime/RUNTIME_RESULT_AND_FAILURE_STANDARD.md",
+        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md",
+        "08_observability/EVENT_STANDARD.md"
+      ],
+      "identity_model": "Infrastructure-only technical outcome; introduces no result identity and preserves owner result/status references separately.",
+      "reference_dependencies": [
+        "upos.08.observability.identity_references"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "COMPLETED/FAILED/CANCELLED describe technical execution only; they are not owner-domain verdicts."
+    },
+    {
+      "schema_key": "upos.common.runtime_failure_envelope",
+      "schema_uri": "urn:upos:schema:common:runtime-failure-envelope:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/common/runtime-failure-envelope.schema.json",
+      "implementation_state": "STABLE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "NONE_INFRASTRUCTURE",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "runtime/RUNTIME_RESULT_AND_FAILURE_STANDARD.md",
+        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md",
+        "04_workflow_engine/FAILURE_RETRY_RECOVERY.md"
+      ],
+      "identity_model": "Infrastructure-only failure envelope; no runtime_error_id, error_id, failure_id or other universal failure identity is introduced.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "retryability_hint is technical metadata and never a Workflow retry decision."
+    },
+    {
+      "schema_key": "upos.02.agent_organization.agent_run_attribution",
+      "schema_uri": "urn:upos:schema:02:agent-organization:agent-run-attribution:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/02/agent_organization/agent-run-attribution.schema.json",
+      "implementation_state": "STABLE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-02",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "02_agent_organization/AGENT_OPERATING_MODEL.md",
+        "02_agent_organization/AGENT_LIFECYCLE.md",
+        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md"
+      ],
+      "identity_model": "Reuses canonical Agent Run, Role, versioned Agent Definition and Agent Instance references; introduces no new identity and no Agent Run execution lifecycle.",
+      "reference_dependencies": [
+        "upos.02.agent_organization.identity_references",
+        "upos.04.workflow.identity_references"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Phase-3 Slice-1 attribution only; technical execution state is intentionally absent and owned by UPOS-04."
+    },
+    {
+      "schema_key": "upos.03.skills.skill_invocation_attribution",
+      "schema_uri": "urn:upos:schema:03:skills:skill-invocation-attribution:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/03/skills/skill-invocation-attribution.schema.json",
+      "implementation_state": "STABLE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-03",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "03_skills_system/SKILLS_OPERATING_MODEL.md",
+        "03_skills_system/SKILL_CONTRACT_STANDARD.md",
+        "03_skills_system/SKILL_LIFECYCLE.md",
+        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md"
+      ],
+      "identity_model": "Reuses canonical versioned Skill, Skill Invocation, Skill Result, Agent Run and Workflow/Context references; introduces no invocation execution-state identity.",
+      "reference_dependencies": [
+        "upos.03.skills.identity_references",
+        "upos.02.agent_organization.identity_references",
+        "upos.04.workflow.identity_references",
+        "upos.05.context_memory.identity_references"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Phase-3 Slice-1 attribution only; invocation execution state and retry remain UPOS-04/runtime concerns."
+    },
+    {
+      "schema_key": "upos.04.workflow.task_runtime",
+      "schema_uri": "urn:upos:schema:04:workflow:task-runtime:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/04/workflow/task-runtime.schema.json",
+      "implementation_state": "STABLE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-04",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "04_workflow_engine/TASK_AND_WORKFLOW_INSTANCE_MODEL.md",
+        "04_workflow_engine/WORKFLOW_STATE_MODEL.md",
+        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md"
+      ],
+      "identity_model": "Reuses canonical task_id through TaskRef. No new Task/runtime identity is introduced.",
+      "reference_dependencies": [
+        "upos.04.workflow.identity_references"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Frozen Task states only. transition_request is a precondition/intention record and does not execute transitions."
+    },
+    {
+      "schema_key": "upos.04.workflow.routing_runtime",
+      "schema_uri": "urn:upos:schema:04:workflow:routing-runtime:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/04/workflow/routing-runtime.schema.json",
+      "implementation_state": "STABLE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-04",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "04_workflow_engine/ROUTING_STANDARD.md",
+        "04_workflow_engine/FAILURE_RETRY_RECOVERY.md",
+        "runtime/RUNTIME_OPERATION_AND_IDEMPOTENCY_STANDARD.md"
+      ],
+      "identity_model": "Reuses TaskRef and optional RoutingDecisionRef. operation_request_key is infrastructure-only request control and is explicitly distinct from routing_decision_id.",
+      "reference_dependencies": [
+        "upos.04.workflow.identity_references",
+        "upos.common.runtime_operation_control",
+        "upos.common.runtime_operation_outcome"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Routing algorithm execution is out of scope. A technical routing failure may exist without a Routing Decision result."
+    },
+    {
+      "schema_key": "upos.04.workflow.workflow_instance_runtime",
+      "schema_uri": "urn:upos:schema:04:workflow:workflow-instance-runtime:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/04/workflow/workflow-instance-runtime.schema.json",
+      "implementation_state": "STABLE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-04",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "04_workflow_engine/TASK_AND_WORKFLOW_INSTANCE_MODEL.md",
+        "04_workflow_engine/WORKFLOW_STATE_MODEL.md",
+        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md"
+      ],
+      "identity_model": "Reuses WorkflowInstanceRef, TaskRef, RoutingDecisionRef, StageRef and TransitionRef. No new runtime identity is introduced.",
+      "reference_dependencies": [
+        "upos.04.workflow.identity_references"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Expected-state transition requests are concurrency preconditions only; scheduler/transition execution remains Phase 4."
+    },
+    {
+      "schema_key": "upos.04.workflow.execution_attempt",
+      "schema_uri": "urn:upos:schema:04:workflow:execution-attempt:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/04/workflow/execution-attempt.schema.json",
+      "implementation_state": "STABLE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-04",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "02_agent_organization/AGENT_LIFECYCLE.md",
+        "03_skills_system/SKILL_LIFECYCLE.md",
+        "04_workflow_engine/FAILURE_RETRY_RECOVERY.md",
+        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md"
+      ],
+      "identity_model": "Execution Attempt has no independent identity. subject_ref reuses AgentRunRef or SkillInvocationRef; technical attempt state is UPOS-04-owned.",
+      "reference_dependencies": [
+        "upos.02.agent_organization.identity_references",
+        "upos.03.skills.identity_references",
+        "upos.08.observability.identity_references"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Technical states are limited to CREATED/RUNNING/COMPLETED/FAILED/CANCELLED. COMPLETED does not imply Quality PASS, Security ALLOW, Task DONE or Workflow COMPLETED."
+    },
+    {
+      "schema_key": "upos.04.workflow.retry_provenance",
+      "schema_uri": "urn:upos:schema:04:workflow:retry-provenance:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/04/workflow/retry-provenance.schema.json",
+      "implementation_state": "STABLE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-04",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "04_workflow_engine/FAILURE_RETRY_RECOVERY.md",
+        "02_agent_organization/AGENT_OPERATING_MODEL.md",
+        "03_skills_system/SKILLS_OPERATING_MODEL.md",
+        "runtime/RUNTIME_OPERATION_AND_IDEMPOTENCY_STANDARD.md"
+      ],
+      "identity_model": "No retry_id or retry_attempt_id. RETRY_OF relates distinct existing Agent Run or Skill Invocation identities while ownership of those identities remains UPOS-02/03.",
+      "reference_dependencies": [
+        "upos.02.agent_organization.identity_references",
+        "upos.03.skills.identity_references",
+        "upos.04.workflow.identity_references"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "RETRY is distinct from REWORK and RECOVERY. Full bounded-operation retry uses a new successor execution identity."
+    },
+    {
+      "schema_key": "upos.08.observability.event",
+      "schema_uri": "urn:upos:schema:08:observability:event:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/08/observability/event.schema.json",
+      "implementation_state": "STABLE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-08",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "08_observability/EVENT_STANDARD.md",
+        "08_observability/OBSERVABILITY_LIFECYCLE_AND_VERSIONING.md",
+        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md",
+        "runtime/RUNTIME_RECONSTRUCTABILITY_STANDARD.md"
+      ],
+      "identity_model": "Reuses canonical event_id through EventRef plus owner-domain references. Same logical redelivery retains event_id; correction uses a new event_id with correction relation.",
+      "reference_dependencies": [
+        "upos.08.observability.identity_references",
+        "upos.02.agent_organization.identity_references",
+        "upos.03.skills.identity_references",
+        "upos.04.workflow.identity_references",
+        "upos.05.context_memory.identity_references",
+        "upos.10.security.identity_references"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Phase-3 emission representation only. Trace/Span are references only; Event Store, trace propagation, collectors, projections and metrics are out of scope."
     }
   ]
 }

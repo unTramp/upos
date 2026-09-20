@@ -1,0 +1,10 @@
+{
+  "operation_control": {
+    "runtime_contract_ref": "UPOS-RUNTIME-OPS-001",
+    "runtime_contract_version": "0.1.0",
+    "operation_kind": "ADAPTER_RESOLUTION",
+    "subject_ref": "adapter-resolution-request:1",
+    "operation_request_key": "adapter-resolution:A-1"
+  },
+  "owner_result_ref": "adapter-resolution:A-1"
+}

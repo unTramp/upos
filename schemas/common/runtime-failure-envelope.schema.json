@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:common:runtime-failure-envelope:0.1.0",
+  "title": "U-POS Runtime Failure Envelope",
+  "description": "Infrastructure-only technical failure envelope. It does not create a universal error identity or reinterpret Quality verdicts/Security decisions as runtime failures.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "runtime_contract_ref",
+    "runtime_contract_version",
+    "failure_owner_module",
+    "operation_kind",
+    "subject_ref",
+    "failure_code",
+    "retryability_hint"
+  ],
+  "properties": {
+    "runtime_contract_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runtime_contract_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "failure_owner_module": {
+      "enum": [
+        "NONE_INFRASTRUCTURE",
+        "UPOS-01",
+        "UPOS-02",
+        "UPOS-03",
+        "UPOS-04",
+        "UPOS-05",
+        "UPOS-06",
+        "UPOS-07",
+        "UPOS-08",
+        "UPOS-09",
+        "UPOS-10",
+        "UPOS-11"
+      ]
+    },
+    "operation_kind": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "failure_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "failure_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cause_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_error_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "retryability_hint": {
+      "enum": [
+        "SAFE_RETRY",
+        "CONDITIONALLY_RETRYABLE",
+        "NOT_RETRYABLE",
+        "UNKNOWN"
+      ]
+    },
+    "details_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provenance_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "failure_owner_module": {
+            "const": "UPOS-10"
+          }
+        },
+        "required": [
+          "failure_owner_module"
+        ]
+      },
+      "then": {
+        "properties": {
+          "failure_code": {
+            "not": {
+              "enum": [
+                "ALLOW",
+                "DENY",
+                "CONDITIONAL",
+                "BLOCKED",
+                "UNKNOWN"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "failure_owner_module": {
+            "const": "UPOS-07"
+          }
+        },
+        "required": [
+          "failure_owner_module"
+        ]
+      },
+      "then": {
+        "properties": {
+          "failure_code": {
+            "not": {
+              "enum": [
+                "PASS",
+                "FAIL",
+                "BLOCKED",
+                "INCONCLUSIVE"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

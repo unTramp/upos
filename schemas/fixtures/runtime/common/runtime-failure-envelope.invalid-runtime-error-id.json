@@ -1,0 +1,10 @@
+{
+  "runtime_contract_ref": "UPOS-RUNTIME-RES-001",
+  "runtime_contract_version": "0.1.0",
+  "runtime_error_id": "runtime-error:1",
+  "failure_owner_module": "UPOS-11",
+  "operation_kind": "PROVIDER_CALL",
+  "subject_ref": "skill-invocation:SI-1",
+  "failure_code": "PROVIDER_TIMEOUT",
+  "retryability_hint": "CONDITIONALLY_RETRYABLE"
+}

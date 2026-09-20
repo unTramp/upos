@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:03:skills:skill-invocation-attribution:0.1.0",
+  "title": "UPOS-03 Skill Invocation Attribution",
+  "description": "Phase-3 attribution for one bounded Skill Invocation. Execution state/retry remain UPOS-04/runtime concerns.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "runtime_contract_ref",
+    "runtime_contract_version",
+    "runtime_schema_version",
+    "skill_ref",
+    "skill_invocation_ref",
+    "agent_run_ref",
+    "task_ref"
+  ],
+  "properties": {
+    "runtime_contract_ref": {
+      "const": "UPOS-03-SKILL-INVOCATION-ATTRIBUTION"
+    },
+    "runtime_contract_version": {
+      "const": "0.1.0"
+    },
+    "runtime_schema_version": {
+      "const": "0.1.0"
+    },
+    "skill_ref": {
+      "$ref": "urn:upos:schema:03:skills:identity-references:0.1.0#/$defs/skillRef"
+    },
+    "skill_invocation_ref": {
+      "$ref": "urn:upos:schema:03:skills:identity-references:0.1.0#/$defs/skillInvocationRef"
+    },
+    "agent_run_ref": {
+      "$ref": "urn:upos:schema:02:agent-organization:identity-references:0.1.0#/$defs/agentRunRef"
+    },
+    "task_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/taskRef"
+    },
+    "workflow_instance_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/workflowInstanceRef"
+    },
+    "stage_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/stageRef"
+    },
+    "input_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "context_request_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "urn:upos:schema:05:context-memory:identity-references:0.1.0#/$defs/contextRequestRef"
+      }
+    },
+    "context_bundle_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "urn:upos:schema:05:context-memory:identity-references:0.1.0#/$defs/contextBundleRef"
+      }
+    },
+    "skill_result_ref": {
+      "$ref": "urn:upos:schema:03:skills:identity-references:0.1.0#/$defs/skillResultRef"
+    }
+  }
+}

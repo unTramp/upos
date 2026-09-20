@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:02:agent-organization:agent-run-attribution:0.1.0",
+  "title": "UPOS-02 Agent Run Attribution",
+  "description": "Phase-3 organizational attribution for one Agent Run. Technical execution state remains UPOS-04-owned.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "runtime_contract_ref",
+    "runtime_contract_version",
+    "runtime_schema_version",
+    "agent_run_ref",
+    "role_ref",
+    "agent_definition_ref",
+    "agent_instance_ref",
+    "task_ref"
+  ],
+  "properties": {
+    "runtime_contract_ref": {
+      "const": "UPOS-02-AGENT-RUN-ATTRIBUTION"
+    },
+    "runtime_contract_version": {
+      "const": "0.1.0"
+    },
+    "runtime_schema_version": {
+      "const": "0.1.0"
+    },
+    "agent_run_ref": {
+      "$ref": "urn:upos:schema:02:agent-organization:identity-references:0.1.0#/$defs/agentRunRef"
+    },
+    "role_ref": {
+      "$ref": "urn:upos:schema:02:agent-organization:identity-references:0.1.0#/$defs/roleRef"
+    },
+    "agent_definition_ref": {
+      "$ref": "urn:upos:schema:02:agent-organization:identity-references:0.1.0#/$defs/agentDefinitionRef"
+    },
+    "agent_instance_ref": {
+      "$ref": "urn:upos:schema:02:agent-organization:identity-references:0.1.0#/$defs/agentInstanceRef"
+    },
+    "task_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/taskRef"
+    },
+    "workflow_instance_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/workflowInstanceRef"
+    },
+    "stage_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/stageRef"
+    },
+    "responsibility_ref": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

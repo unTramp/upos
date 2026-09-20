@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:04:workflow:execution-attempt:0.1.0",
+  "title": "UPOS-04 Execution Attempt",
+  "description": "Technical execution-attempt representation for an Agent Run or Skill Invocation. It has no independent identity and does not own domain verdicts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "runtime_contract_ref",
+    "runtime_contract_version",
+    "runtime_schema_version",
+    "subject_type",
+    "subject_ref",
+    "execution_state"
+  ],
+  "properties": {
+    "runtime_contract_ref": {
+      "const": "UPOS-04-EXECUTION-ATTEMPT"
+    },
+    "runtime_contract_version": {
+      "const": "0.1.0"
+    },
+    "runtime_schema_version": {
+      "const": "0.1.0"
+    },
+    "subject_type": {
+      "enum": [
+        "AGENT_RUN",
+        "SKILL_INVOCATION"
+      ]
+    },
+    "subject_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "execution_state": {
+      "enum": [
+        "CREATED",
+        "RUNNING",
+        "COMPLETED",
+        "FAILED",
+        "CANCELLED"
+      ]
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "terminal_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "failure_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trace_ref": {
+      "$ref": "urn:upos:schema:08:observability:identity-references:0.1.0#/$defs/traceRef"
+    },
+    "span_ref": {
+      "$ref": "urn:upos:schema:08:observability:identity-references:0.1.0#/$defs/spanRef"
+    },
+    "provenance_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "subject_type": {
+            "const": "AGENT_RUN"
+          }
+        },
+        "required": [
+          "subject_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "subject_ref": {
+            "$ref": "urn:upos:schema:02:agent-organization:identity-references:0.1.0#/$defs/agentRunRef"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "subject_type": {
+            "const": "SKILL_INVOCATION"
+          }
+        },
+        "required": [
+          "subject_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "subject_ref": {
+            "$ref": "urn:upos:schema:03:skills:identity-references:0.1.0#/$defs/skillInvocationRef"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution_state": {
+            "enum": [
+              "COMPLETED",
+              "FAILED",
+              "CANCELLED"
+            ]
+          }
+        },
+        "required": [
+          "execution_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "terminal_at"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution_state": {
+            "const": "FAILED"
+          }
+        },
+        "required": [
+          "execution_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "failure_ref"
+        ]
+      }
+    }
+  ]
+}

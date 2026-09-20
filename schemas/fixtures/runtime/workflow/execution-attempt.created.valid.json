@@ -1,0 +1,8 @@
+{
+  "runtime_contract_ref": "UPOS-04-EXECUTION-ATTEMPT",
+  "runtime_contract_version": "0.1.0",
+  "runtime_schema_version": "0.1.0",
+  "subject_type": "AGENT_RUN",
+  "subject_ref": "agent-run:AR-2",
+  "execution_state": "CREATED"
+}

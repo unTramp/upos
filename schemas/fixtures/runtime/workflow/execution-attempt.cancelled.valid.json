@@ -1,0 +1,10 @@
+{
+  "runtime_contract_ref": "UPOS-04-EXECUTION-ATTEMPT",
+  "runtime_contract_version": "0.1.0",
+  "runtime_schema_version": "0.1.0",
+  "subject_type": "SKILL_INVOCATION",
+  "subject_ref": "skill-invocation:SI-9",
+  "execution_state": "CANCELLED",
+  "started_at": "2026-09-20T10:02:00Z",
+  "terminal_at": "2026-09-20T10:02:01Z"
+}

@@ -1,0 +1,11 @@
+{
+  "runtime_contract_ref": "UPOS-RUNTIME-RES-001",
+  "runtime_contract_version": "0.1.0",
+  "operation_kind": "PERMISSION_EVALUATION",
+  "subject_ref": "permission-request:P-1",
+  "execution_outcome": "COMPLETED",
+  "owner_status_ref": "DENY",
+  "owner_result_ref": "permission-decision:D-1",
+  "started_at": "2026-09-20T10:00:00Z",
+  "ended_at": "2026-09-20T10:00:01Z"
+}

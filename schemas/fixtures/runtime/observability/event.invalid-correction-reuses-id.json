@@ -1,0 +1,44 @@
+{
+  "event_id": "event:E-1",
+  "event_type": "upos.workflow.execution-attempt.completed",
+  "event_class": "DOMAIN_RUNTIME",
+  "event_schema_version": "0.1.0",
+  "event_contract_ref": "UPOS-08-EVT-001",
+  "event_contract_version": "1.0.0",
+  "occurred_at": "2026-09-20T10:00:05Z",
+  "recorded_at": "2026-09-20T10:00:05Z",
+  "timestamp_quality": "EXACT",
+  "producer_module": "UPOS-04",
+  "producer_component_ref": "runtime:execution-spine",
+  "producer_contract_ref": "UPOS-04-EXECUTION-ATTEMPT",
+  "producer_contract_version": "0.1.0",
+  "domain_owner_module": "UPOS-04",
+  "initiator_type": "AGENT_RUN",
+  "initiator_ref": "agent-run:AR-1",
+  "producer_agent_run_ref": "agent-run:AR-1",
+  "trace_id": "trace:TR-1",
+  "span_id": "span:SP-1",
+  "task_ref": "task:T-1",
+  "routing_decision_ref": "routing:R-1",
+  "workflow_instance_ref": "workflow:W-1",
+  "stage_ref": "WFL-FEATURE:IMPLEMENT",
+  "skill_ref": {
+    "skill_id": "implement-change",
+    "skill_version": "1.0.0"
+  },
+  "skill_invocation_ref": "skill-invocation:SI-1",
+  "context_bundle_ref": "context-bundle:CB-1",
+  "primary_domain_entity_type": "AGENT_RUN",
+  "primary_domain_entity_ref": "agent-run:AR-1",
+  "primary_domain_state_ref": "COMPLETED",
+  "event_payload": {
+    "execution_outcome": "COMPLETED"
+  },
+  "owner_status_ref": "COMPLETED",
+  "source_provenance_refs": [
+    "context-bundle:CB-1"
+  ],
+  "telemetry_importance": "REQUIRED_AUDIT",
+  "correction_of_event_id": "event:E-1",
+  "correction_reason": "correct timestamp"
+}

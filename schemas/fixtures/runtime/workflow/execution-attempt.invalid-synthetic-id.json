@@ -1,0 +1,9 @@
+{
+  "runtime_contract_ref": "UPOS-04-EXECUTION-ATTEMPT",
+  "runtime_contract_version": "0.1.0",
+  "runtime_schema_version": "0.1.0",
+  "execution_attempt_id": "attempt:A-1",
+  "subject_type": "SKILL_INVOCATION",
+  "subject_ref": "skill-invocation:SI-1",
+  "execution_state": "RUNNING"
+}

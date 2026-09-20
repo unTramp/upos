@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:04:workflow:task-runtime:0.1.0",
+  "title": "UPOS-04 Task Runtime",
+  "description": "Phase-3 runtime representation of frozen UPOS-04 Task identity/state. It represents transition preconditions but does not execute transitions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "runtime_contract_ref",
+    "runtime_contract_version",
+    "runtime_schema_version",
+    "task_ref",
+    "current_state"
+  ],
+  "properties": {
+    "runtime_contract_ref": {
+      "const": "UPOS-04-TASK-RUNTIME"
+    },
+    "runtime_contract_version": {
+      "const": "0.1.0"
+    },
+    "runtime_schema_version": {
+      "const": "0.1.0"
+    },
+    "task_ref": {
+      "$ref": "urn:upos:schema:04:workflow:identity-references:0.1.0#/$defs/taskRef"
+    },
+    "current_state": {
+      "$ref": "#/$defs/taskState"
+    },
+    "transition_request": {
+      "$ref": "#/$defs/transitionRequest"
+    }
+  },
+  "$defs": {
+    "taskState": {
+      "enum": [
+        "NEW",
+        "CLASSIFIED",
+        "ROUTED",
+        "IN_PROGRESS",
+        "BLOCKED",
+        "DONE",
+        "CANCELLED"
+      ]
+    },
+    "transitionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expected_current_state",
+        "requested_state",
+        "transition_basis_ref"
+      ],
+      "properties": {
+        "expected_current_state": {
+          "$ref": "#/$defs/taskState"
+        },
+        "requested_state": {
+          "$ref": "#/$defs/taskState"
+        },
+        "transition_basis_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "description": "Precondition/intent only. Transition legality and execution remain UPOS-04 runtime/orchestration concerns."
+    }
+  }
+}

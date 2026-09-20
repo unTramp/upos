@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:common:runtime-operation-control:0.1.0",
+  "title": "U-POS Runtime Operation Control",
+  "description": "Infrastructure-only control metadata for a Phase-3 runtime operation request. It introduces no domain identity.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "runtime_contract_ref",
+    "runtime_contract_version",
+    "operation_kind"
+  ],
+  "properties": {
+    "runtime_contract_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runtime_contract_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "operation_kind": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "operation_request_key": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Infrastructure-only idempotency/correlation key. Not a U-POS domain identity."
+    }
+  }
+}
