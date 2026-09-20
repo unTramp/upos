@@ -1,6 +1,7 @@
 # Runtime Result and Failure Standard
 
 **ID:** UPOS-RUNTIME-RES-001  
+**Version:** 0.1.0  
 **Phase:** 3  
 **Status:** CANDIDATE  
 **Normativity:** NORMATIVE IMPLEMENTATION-LAYER STANDARD  
