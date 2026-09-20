@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:common:schema-registry:0.1.0",
+  "title": "U-POS Schema Registry",
+  "description": "Machine-readable index of U-POS schemas. The registry is not a semantic owner.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["registry_version", "upos_baseline", "entries"],
+  "properties": {
+    "registry_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "upos_baseline": {"type": "string", "const": "v1.0.0"},
+    "entries": {"type": "array", "items": {"$ref": "#/$defs/entry"}}
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_key",
+        "schema_uri",
+        "schema_version",
+        "artifact_path",
+        "implementation_state",
+        "upos_baseline",
+        "semantic_owner_module",
+        "schema_steward",
+        "normative_source_refs",
+        "identity_model",
+        "reference_dependencies",
+        "instance_compatibility",
+        "semantic_compatibility",
+        "notes"
+      ],
+      "properties": {
+        "schema_key": {
+          "type": "string",
+          "pattern": "^upos\\.(common|01\\.documentation|02\\.agent_organization|03\\.skills|04\\.workflow|05\\.context_memory|06\\.engineering|07\\.quality|08\\.observability|09\\.learning|10\\.security|11\\.project_adapter)\\.[a-z0-9_.-]+$"
+        },
+        "schema_uri": {
+          "type": "string",
+          "pattern": "^urn:upos:schema:(common|01:documentation|02:agent-organization|03:skills|04:workflow|05:context-memory|06:engineering|07:quality|08:observability|09:learning|10:security|11:project-adapter):[a-z0-9-]+:[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "schema_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "artifact_path": {"type": "string", "pattern": "^schemas/.+\\.schema\\.json$"},
+        "implementation_state": {"enum": ["DRAFT", "CANDIDATE", "STABLE", "DEPRECATED", "RETIRED"]},
+        "upos_baseline": {"type": "string", "const": "v1.0.0"},
+        "semantic_owner_module": {
+          "enum": [
+            "NONE_INFRASTRUCTURE",
+            "UPOS-01", "UPOS-02", "UPOS-03", "UPOS-04", "UPOS-05",
+            "UPOS-06", "UPOS-07", "UPOS-08", "UPOS-09", "UPOS-10", "UPOS-11"
+          ]
+        },
+        "schema_steward": {"type": "string", "const": "UPOS_SCHEMA_LAYER"},
+        "normative_source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "identity_model": {"type": "string", "minLength": 1},
+        "reference_dependencies": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^upos\\.(common|01\\.documentation|02\\.agent_organization|03\\.skills|04\\.workflow|05\\.context_memory|06\\.engineering|07\\.quality|08\\.observability|09\\.learning|10\\.security|11\\.project_adapter)\\.[a-z0-9_.-]+$"
+          }
+        },
+        "instance_compatibility": {
+          "enum": [
+            "INITIAL",
+            "BACKWARD_INSTANCE_COMPATIBLE",
+            "FORWARD_INSTANCE_COMPATIBLE",
+            "FULL_INSTANCE_COMPATIBLE",
+            "BREAKING_OR_MIXED"
+          ]
+        },
+        "semantic_compatibility": {"enum": ["INITIAL", "COMPATIBLE", "BREAKING", "REQUIRES_OWNER_REVIEW"]},
+        "notes": {"type": "string"}
+      }
+    }
+  }
+}

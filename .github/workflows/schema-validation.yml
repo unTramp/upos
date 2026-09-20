@@ -1,0 +1,40 @@
+name: Schema Validation
+
+on:
+  pull_request:
+    paths:
+      - "schemas/**"
+      - "tools/validate_schemas.py"
+      - "requirements/schema.txt"
+      - ".github/workflows/schema-validation.yml"
+  push:
+    branches: [main]
+    paths:
+      - "schemas/**"
+      - "tools/validate_schemas.py"
+      - "requirements/schema.txt"
+      - ".github/workflows/schema-validation.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install schema validator
+        run: python -m pip install -r requirements/schema.txt
+
+      - name: Validate U-POS schemas
+        run: python tools/validate_schemas.py
+
+      - name: Verify frozen U-POS baseline
+        run: python tools/verify_frozen_baseline.py
