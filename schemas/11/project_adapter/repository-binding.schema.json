@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:11:project-adapter:repository-binding:0.1.0",
+  "title": "U-POS Repository Binding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "binding_id",
+    "binding_type",
+    "repository_ref",
+    "repository_role",
+    "provider_adapter_ref",
+    "provider_adapter_version",
+    "provider_repository_ref",
+    "remote_ref",
+    "workspace_strategy_ref",
+    "path_binding_refs",
+    "integration_target_binding",
+    "protected_target_refs",
+    "ci_binding_refs",
+    "security_resource_refs",
+    "validation_state",
+    "health_state"
+  ],
+  "properties": {
+    "binding_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "binding_type": {
+      "const": "REPOSITORY_BINDING"
+    },
+    "repository_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repository_role": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_adapter_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "provider_adapter_version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "provider_repository_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "remote_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "workspace_strategy_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "path_binding_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "integration_target_binding": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "protected_target_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "ci_binding_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "security_resource_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "validation_state": {
+      "enum": [
+        "VALID",
+        "VALID_WITH_WARNINGS",
+        "INCOMPLETE",
+        "INVALID"
+      ]
+    },
+    "health_state": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
