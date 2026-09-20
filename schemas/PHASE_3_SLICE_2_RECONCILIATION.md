@@ -1,7 +1,7 @@
 # Phase 3 / Slice 2 — Adapter Resolution Reconciliation
 
 **ID:** UPOS-P3-S2-REC-001  
-**Status:** CANDIDATE — PENDING INDEPENDENT AUDIT / STABILITY  
+**Status:** CANDIDATE — TARGETED REMEDIATION APPLIED / FOCUSED INDEPENDENT RE-AUDIT PENDING  
 **Canonical baseline:** `d65d1bc5d1e9df85e41aff1ec1a4cb3dcab9dfb4`  
 **Planning authority:** `PHASE_3_SLICE_2_ADAPTER_RESOLUTION_SINGLE.md`
 
@@ -34,6 +34,8 @@ Slice 2 mints **zero** new domain identities.
 Adapter Views). A resolution terminating in an Adapter Failure produces no
 Resolved Adapter View and therefore no `adapter_resolution_id`; attempt
 correlation is carried solely by the infrastructure-only `operation_request_key`.
+The material Adapter Failure physically retains the originating key; this reuses
+the canonical common runtime-operation-control field and introduces no new identity.
 
 Ten synthetic identities are mechanically rejected, including
 `adapter_resolution_attempt_id`, `fallback_id`, `adapter_failure_id` and generic
@@ -49,6 +51,17 @@ Validation Result is neither a Quality Verdict nor a Security Decision.
 Adapter Failure uses only the 17 canonical `ADAPTER_FAILURE_MODEL.md` classes.
 `FALLBACK_EXHAUSTED` was deliberately **not** invented: an exhausted fallback
 chain terminates in an existing canonical class carrying fallback provenance.
+
+### S2-F08 pre-STABLE semantic decision
+
+A Resolved Adapter View MAY exist with `validation_state = INCOMPLETE` only when
+`missing_required_binding_refs = []`. This preserves P10 for incompleteness
+limited to OPTIONAL/CONDITIONAL bindings.
+
+`INCOMPLETE` with one or more `missing_required_binding_refs` MUST NOT produce a
+Resolved Adapter View. It follows the Adapter Failure path using the applicable
+existing canonical UPOS-11 failure class; no new failure code is introduced.
+Focused evidence uses `BINDING_NOT_FOUND`.
 
 ## 4. Fallback reconciliation
 
@@ -89,8 +102,33 @@ Slice-2 validator plan required.
 F-07, F-08, F-10, F-11, F-13, F-14 remain deferred or inherited and were not
 reopened.
 
-## 8. Authority boundary
+## 8. Independent blind audit remediation record
 
-This record states implementation evidence only. It does **not** declare a blind
-audit PASS, a Stability PASS, promotion authorization, Exit Acceptance or merge
-authorization. Those belong to later independent stages.
+The independent Slice-2 blind audit at audited HEAD
+`aac54bf6320676960e0a81453e7d43b7982fe8e5` returned:
+
+```text
+P0 = 0
+P1 = 1
+P2 = 10
+SLICE-2 BLIND AUDIT: REMEDIATION REQUIRED
+```
+
+Blocking finding `S2-F01` was remediated by requiring every material Adapter
+Failure to store the originating `operation_request_key` and by mechanically
+checking request↔failure equality in composite failed-resolution evidence.
+
+`S2-F08` received the explicit pre-STABLE decision recorded above and is
+structurally enforced on Resolved Adapter View.
+
+Remaining blind-audit P2 inputs are intentionally not broadly remediated here:
+`S2-F02`, `S2-F03`, `S2-F04`, `S2-F05`, `S2-F06`, `S2-F07`, `S2-F09`,
+`S2-F10`, and unrelated portions of `S2-F11`.
+
+Independent focused re-audit is still required.
+
+## 9. Authority boundary
+
+This record states remediation evidence only. It does **not** declare focused
+re-audit PASS, a Stability PASS, promotion authorization, Exit Acceptance or
+merge authorization. Those belong to later independent stages.

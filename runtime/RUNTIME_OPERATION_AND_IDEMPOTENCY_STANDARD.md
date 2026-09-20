@@ -74,6 +74,11 @@ Adapter Failure produces no Resolved Adapter View and therefore no
 `adapter_resolution_id`, so attempt correlation is carried solely by
 `operation_request_key`.
 
+When an Adapter Resolution terminates in a material Adapter Failure, the failure
+MUST physically retain that same originating `operation_request_key`. Durable
+failure correlation MUST NOT depend on `RUNTIME_WORKING_STATE` request data
+remaining available.
+
 Operations owned by later slices are not enumerated here; each slice states its
 own per-operation basis when the operation enters scope.
 

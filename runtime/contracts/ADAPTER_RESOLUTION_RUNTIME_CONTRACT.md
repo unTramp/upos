@@ -18,13 +18,16 @@ Represents one technical Adapter Resolution request, the binding evaluation basi
 - `adapter_resolution_id` is success-only: it identifies the immutable Resolved Adapter View and never a resolution attempt;
 - a resolution may fail before any `adapter_resolution_id` exists;
 - `operation_request_key` is infrastructure-only technical request correlation;
+- every material Adapter Failure produced by an Adapter Resolution MUST retain the originating `operation_request_key`;
 - `operation_request_key != adapter_resolution_id`;
 - binding candidates are references to canonical `binding_id`, never new entities;
 - fallback is UPOS-11 alternate binding selection and is not UPOS-04 retry, rework, recovery or rerouting;
 - fallback introduces no identity;
 - Adapter Validation Result is not a Security Decision and not a Quality Verdict;
 - `VALID_WITH_WARNINGS` must not conceal a missing REQUIRED binding;
-- Adapter Failure carries no independent identity and uses only canonical UPOS-11 failure classes;
+- `INCOMPLETE` MAY yield a Resolved Adapter View only when `missing_required_binding_refs` is empty; optional/conditional incompleteness therefore remains representable;
+- `INCOMPLETE` with one or more `missing_required_binding_refs` MUST NOT yield a Resolved Adapter View and follows the Adapter Failure path using an applicable existing canonical UPOS-11 failure class;
+- Adapter Failure carries no independent identity, carries no `adapter_resolution_id`, and uses only canonical UPOS-11 failure classes;
 - provider execution, invocation, health probing, credentials and secrets are out of scope;
 - consume exact versioned Phase-2 UPOS-11 refs.
 
