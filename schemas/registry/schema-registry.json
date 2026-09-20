@@ -116,7 +116,11 @@
         "11_project_adapter/templates/PROJECT_MANIFEST_TEMPLATE.md"
       ],
       "identity_model": "Project Manifest identity remains project_id + manifest_version; no project_manifest_id exists.",
-      "reference_dependencies": [],
+      "reference_dependencies": [
+        "upos.11.project_adapter.repository_binding",
+        "upos.11.project_adapter.command_binding",
+        "upos.11.project_adapter.binding"
+      ],
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Declarative Project Manifest representation; project facts remain owned by UPOS-01/project canonical sources."
@@ -140,6 +144,8 @@
       "identity_model": "Project Adapter identity remains project_id + project_adapter_version; no project_adapter_id exists.",
       "reference_dependencies": [
         "upos.11.project_adapter.binding",
+        "upos.11.project_adapter.repository_binding",
+        "upos.11.project_adapter.command_binding",
         "upos.11.project_adapter.project_manifest"
       ],
       "instance_compatibility": "INITIAL",

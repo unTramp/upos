@@ -2,7 +2,7 @@
   "project": {
     "project_id": "artist-os",
     "name": "Artist OS",
-    "canonical_project_source_ref": ".upos/SOURCE_OF_TRUTH_MAP.md"
+    "canonical_project_source_ref": "docs/artist-os/00_governance/MASTER_ARCHITECTURE_v1.4.md"
   },
   "upos_baseline": {
     "version": "v1.0.0",
@@ -11,8 +11,14 @@
   "manifest_version": "candidate-0.1",
   "project_adapter_version": "candidate-0.1",
   "repositories": [
-    {"repository_ref": "artist-os-primary", "binding_id": "repo.artist-os-primary"},
-    {"repository_ref": "upos-framework", "binding_id": "repo.upos-framework"}
+    {
+      "repository_ref": "artist-os-primary",
+      "binding_id": "repo.artist-os-primary"
+    },
+    {
+      "repository_ref": "upos-framework",
+      "binding_id": "repo.upos-framework"
+    }
   ],
   "paths": [
     "path.artist-os.canonical-architecture",
@@ -36,7 +42,10 @@
     "product_ai": "disabled/mock only",
     "production_runtime": "UNRESOLVED"
   },
-  "environments": ["env.artist-os.local", "env.artist-os.ci"],
+  "environments": [
+    "env.artist-os.local",
+    "env.artist-os.ci"
+  ],
   "identity_bindings": [],
   "resource_bindings": [],
   "capability_bindings": [],
@@ -57,7 +66,8 @@
         "upos_context_bundle": "upos.05.context_memory.context_bundle",
         "product_learning": "artist.product.learning",
         "upos_learning": "upos.09.learning.*"
-      }
+      },
+      "authority_overlay_ref": ".upos/SOURCE_OF_TRUTH_MAP.md"
     }
   }
 }

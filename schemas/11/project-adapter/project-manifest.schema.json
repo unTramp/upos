@@ -30,48 +30,103 @@
     "project": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["project_id", "name", "canonical_project_source_ref"],
+      "required": [
+        "project_id",
+        "name",
+        "canonical_project_source_ref"
+      ],
       "properties": {
-        "project_id": {"type": "string", "minLength": 1},
-        "name": {"type": "string", "minLength": 1},
-        "canonical_project_source_ref": {"type": "string", "minLength": 1}
+        "project_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_project_source_ref": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "upos_baseline": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["version", "module_interface_requirements"],
+      "required": [
+        "version",
+        "module_interface_requirements"
+      ],
       "properties": {
-        "version": {"type": "string", "minLength": 1},
+        "version": {
+          "type": "string",
+          "const": "v1.0.0"
+        },
         "module_interface_requirements": {
           "type": "object",
-          "additionalProperties": {"type": "string"}
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       }
     },
-    "manifest_version": {"type": "string", "minLength": 1},
-    "project_adapter_version": {"type": "string", "minLength": 1},
+    "manifest_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_adapter_version": {
+      "type": "string",
+      "minLength": 1
+    },
     "repositories": {
       "$ref": "#/$defs/repositoryDeclarationsOrNA"
     },
-    "paths": {"$ref": "#/$defs/refListOrNA"},
-    "commands": {"$ref": "#/$defs/refListOrNA"},
-    "providers": {"$ref": "#/$defs/providerDeclarationsOrNA"},
+    "paths": {
+      "$ref": "#/$defs/refListOrNA"
+    },
+    "commands": {
+      "$ref": "#/$defs/refListOrNA"
+    },
+    "providers": {
+      "$ref": "#/$defs/providerDeclarationsOrNA"
+    },
     "runtime": {
       "oneOf": [
-        {"const": "N/A"},
-        {"type": "object"}
+        {
+          "const": "N/A"
+        },
+        {
+          "type": "object"
+        }
       ]
     },
-    "environments": {"$ref": "#/$defs/refListOrNA"},
-    "identity_bindings": {"$ref": "#/$defs/refListOrNA"},
-    "resource_bindings": {"$ref": "#/$defs/refListOrNA"},
-    "capability_bindings": {"$ref": "#/$defs/refListOrNA"},
-    "security_bindings": {"$ref": "#/$defs/refListOrNA"},
-    "secret_bindings": {"$ref": "#/$defs/refListOrNA"},
-    "quality_bindings": {"$ref": "#/$defs/refListOrNA"},
-    "observability_bindings": {"$ref": "#/$defs/refListOrNA"},
-    "learning_bindings": {"$ref": "#/$defs/refListOrNA"},
+    "environments": {
+      "$ref": "#/$defs/refListOrNA"
+    },
+    "identity_bindings": {
+      "$ref": "#/$defs/refListOrNA"
+    },
+    "resource_bindings": {
+      "$ref": "#/$defs/refListOrNA"
+    },
+    "capability_bindings": {
+      "$ref": "#/$defs/refListOrNA"
+    },
+    "security_bindings": {
+      "$ref": "#/$defs/refListOrNA"
+    },
+    "secret_bindings": {
+      "$ref": "#/$defs/refListOrNA"
+    },
+    "quality_bindings": {
+      "$ref": "#/$defs/refListOrNA"
+    },
+    "observability_bindings": {
+      "$ref": "#/$defs/refListOrNA"
+    },
+    "learning_bindings": {
+      "$ref": "#/$defs/refListOrNA"
+    },
     "extensions": {
       "type": "object",
       "propertyNames": {
@@ -83,26 +138,42 @@
   "$defs": {
     "refListOrNA": {
       "oneOf": [
-        {"const": "N/A"},
+        {
+          "const": "N/A"
+        },
         {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "uniqueItems": true
         }
       ]
     },
     "repositoryDeclarationsOrNA": {
       "oneOf": [
-        {"const": "N/A"},
+        {
+          "const": "N/A"
+        },
         {
           "type": "array",
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["repository_ref", "binding_id"],
+            "required": [
+              "repository_ref",
+              "binding_id"
+            ],
             "properties": {
-              "repository_ref": {"type": "string", "minLength": 1},
-              "binding_id": {"type": "string", "minLength": 1}
+              "repository_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "binding_id": {
+                "type": "string",
+                "minLength": 1
+              }
             }
           }
         }
@@ -110,16 +181,27 @@
     },
     "providerDeclarationsOrNA": {
       "oneOf": [
-        {"const": "N/A"},
+        {
+          "const": "N/A"
+        },
         {
           "type": "array",
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["provider_adapter_ref", "provider_adapter_version"],
+            "required": [
+              "provider_adapter_ref",
+              "provider_adapter_version"
+            ],
             "properties": {
-              "provider_adapter_ref": {"type": "string", "minLength": 1},
-              "provider_adapter_version": {"type": "string", "minLength": 1}
+              "provider_adapter_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "provider_adapter_version": {
+                "type": "string",
+                "minLength": 1
+              }
             }
           }
         }

@@ -63,7 +63,7 @@ PROJECT_ADAPTER_SIMPLE_FIXTURES = [
 
 PROJECT_ADAPTER_VALID = SCHEMAS / "fixtures" / "project-adapter" / "project-adapter.valid.json"
 PROJECT_ADAPTER_INVALID_MISMATCH = SCHEMAS / "fixtures" / "project-adapter" / "project-adapter.invalid-project-mismatch.json"
-PROJECT_MANIFEST_VALID = SCHEMAS / "fixtures" / "project-adapter" / "project-manifest.valid.json"
+PROJECT_MANIFEST_VALID = SCHEMAS / "fixtures" / "project-adapter" / "project-manifest.valid.json"\nPROJECT_MANIFEST_INVALID_BASELINE = SCHEMAS / "fixtures" / "project-adapter" / "project-manifest.invalid-baseline.json"
 
 REPOSITORY_BINDING_SCHEMA = SCHEMAS / "11" / "project-adapter" / "repository-binding.schema.json"
 COMMAND_BINDING_SCHEMA = SCHEMAS / "11" / "project-adapter" / "command-binding.schema.json"
@@ -453,12 +453,26 @@ def validate_artist_os_project_adapter_dogfooding(
     if adapter["project_adapter_version"] != manifest["project_adapter_version"]:
         errors.append("adapter project_adapter_version != manifest project_adapter_version")
 
+    if len(repo_by_id) != len(repository_bindings):
+        errors.append("duplicate Repository Binding identity detected")
+    if len(generic_by_id) != len(generic_bindings):
+        errors.append("duplicate Generic Binding identity detected")
+    if len(command_by_id) != len(command_bindings):
+        errors.append("duplicate Command Binding identity detected")
+
+    repository_refs = {item["repository_ref"] for item in repository_bindings}
+
     for decl in manifest["repositories"]:
         item = repo_by_id.get(decl["binding_id"])
         if item is None:
             errors.append(f"unresolved repository binding: {decl['binding_id']}")
         elif item["repository_ref"] != decl["repository_ref"]:
             errors.append(f"repository_ref mismatch for {decl['binding_id']}")
+
+    for item in repository_bindings:
+        for ref in item["path_binding_refs"]:
+            if ref not in generic_by_id:
+                errors.append(f"repository path_binding_ref unresolved: {ref}")
 
     for ref in manifest["paths"]:
         if ref not in generic_by_id:
@@ -469,6 +483,13 @@ def validate_artist_os_project_adapter_dogfooding(
     for ref in manifest["commands"]:
         if ref not in command_by_id:
             errors.append(f"unresolved command binding: {ref}")
+
+    for item in command_bindings:
+        if item["repository_ref"] not in repository_refs:
+            errors.append(f"command repository_ref unresolved: {item['command_binding_id']}")
+        for ref in item["environment_binding_refs"]:
+            if ref not in generic_by_id:
+                errors.append(f"command environment binding unresolved: {item['command_binding_id']} -> {ref}")
 
     all_binding_ids = set(repo_by_id) | set(generic_by_id)
     for ref in adapter["binding_refs"]:
@@ -545,6 +566,16 @@ def validate_fixtures(
         docs,
         resource_registry,
     )
+
+
+    invalid_baseline = load_json(PROJECT_MANIFEST_INVALID_BASELINE)
+    manifest_validator = validator_for(PROJECT_MANIFEST_SCHEMA, docs, resource_registry)
+    try:
+        manifest_validator.validate(invalid_baseline)
+    except ValidationError:
+        pass
+    else:
+        fail("Project Manifest with unsupported U-POS baseline unexpectedly passed")
 
     validate_project_adapter_cross_object(docs, resource_registry)
     validate_artist_os_project_adapter_dogfooding(docs, resource_registry)

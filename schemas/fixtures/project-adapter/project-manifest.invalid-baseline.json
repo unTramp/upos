@@ -1,0 +1,28 @@
+{
+  "project": {
+    "project_id": "artist-os",
+    "name": "Artist OS",
+    "canonical_project_source_ref": "docs/artist-os/00_governance/MASTER_ARCHITECTURE_v1.4.md"
+  },
+  "upos_baseline": {
+    "version": "v9.9.9",
+    "module_interface_requirements": {}
+  },
+  "manifest_version": "candidate-0.1",
+  "project_adapter_version": "candidate-0.1",
+  "repositories": [],
+  "paths": [],
+  "commands": [],
+  "providers": [],
+  "runtime": {},
+  "environments": [],
+  "identity_bindings": [],
+  "resource_bindings": [],
+  "capability_bindings": [],
+  "security_bindings": [],
+  "secret_bindings": [],
+  "quality_bindings": [],
+  "observability_bindings": [],
+  "learning_bindings": [],
+  "extensions": {}
+}
