@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:upos:schema:11:project-adapter:binding:0.1.0",
   "title": "U-POS Project Adapter Binding",
-  "description": "Generic non-command binding representation for UPOS-011. COMMAND_BINDING uses its dedicated schema because command_binding_id is a distinct frozen identity.",
+  "description": "Generic UPOS-011 binding representation for classes without a dedicated Phase 2C specialized schema. Repository, Path, Environment and Command bindings use dedicated schemas.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -25,14 +25,11 @@
     },
     "binding_type": {
       "enum": [
-        "REPOSITORY_BINDING",
-        "PATH_BINDING",
         "TOOL_BINDING",
         "PROVIDER_BINDING",
         "IDENTITY_BINDING",
         "RESOURCE_BINDING",
         "CAPABILITY_BINDING",
-        "ENVIRONMENT_BINDING",
         "SECRET_BINDING",
         "QUALITY_BINDING",
         "OBSERVABILITY_BINDING",

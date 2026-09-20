@@ -35,7 +35,20 @@
     "bindings": {
       "type": "array",
       "items": {
-        "$ref": "urn:upos:schema:11:project-adapter:binding:0.1.0"
+        "oneOf": [
+          {
+            "$ref": "urn:upos:schema:11:project-adapter:repository-binding:0.1.0"
+          },
+          {
+            "$ref": "urn:upos:schema:11:project-adapter:path-binding:0.1.0"
+          },
+          {
+            "$ref": "urn:upos:schema:11:project-adapter:environment-binding:0.1.0"
+          },
+          {
+            "$ref": "urn:upos:schema:11:project-adapter:binding:0.1.0"
+          }
+        ]
       }
     },
     "command_bindings": {

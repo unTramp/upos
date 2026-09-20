@@ -167,6 +167,61 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Governed binding collection; not project Source of Truth."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.repository_binding",
+      "schema_uri": "urn:upos:schema:11:project-adapter:repository-binding:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project_adapter/repository-binding.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "11_project_adapter/REPOSITORY_BINDING_STANDARD.md",
+        "11_project_adapter/templates/REPOSITORY_BINDING_TEMPLATE.md"
+      ],
+      "identity_model": "Repository Binding identity is binding_id; repository_ref is a distinct project repository reference and MUST NOT be conflated with binding_id.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Specialized repository binding."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.path_binding",
+      "schema_uri": "urn:upos:schema:11:project-adapter:path-binding:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project_adapter/path-binding.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "11_project_adapter/PATH_BINDING_STANDARD.md"
+      ],
+      "identity_model": "Path Binding identity is binding_id; abstract_path_ref and concrete_path preserve role/path separation.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Specialized path binding."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.environment_binding",
+      "schema_uri": "urn:upos:schema:11:project-adapter:environment-binding:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project_adapter/environment-binding.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "11_project_adapter/RESOURCE_AND_ENVIRONMENT_BINDINGS.md"
+      ],
+      "identity_model": "Environment Binding identity is binding_id; project_environment_name does not create universal dev/staging/prod semantics.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Specialized environment binding."
     }
   ]
 }
