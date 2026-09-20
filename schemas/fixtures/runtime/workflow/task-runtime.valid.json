@@ -1,0 +1,9 @@
+{
+  "task_ref": "task:T-1",
+  "current_state": "ROUTED",
+  "transition_request": {
+    "expected_current_state": "ROUTED",
+    "requested_state": "IN_PROGRESS",
+    "transition_basis_ref": "routing-decision:R-1"
+  }
+}

@@ -682,6 +682,28 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Phase-3 Slice-1 attribution only; invocation execution state and retry remain UPOS-04/runtime concerns."
+    },
+    {
+      "schema_key": "upos.04.workflow.task_runtime",
+      "schema_uri": "urn:upos:schema:04:workflow:task-runtime:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/04/workflow/task-runtime.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-04",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "04_workflow_engine/TASK_AND_WORKFLOW_INSTANCE_MODEL.md",
+        "04_workflow_engine/WORKFLOW_STATE_MODEL.md",
+        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md"
+      ],
+      "identity_model": "Reuses canonical task_id through TaskRef. No new Task/runtime identity is introduced.",
+      "reference_dependencies": [
+        "upos.04.workflow.identity_references"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Frozen Task states only. transition_request is a precondition/intention record and does not execute transitions."
     }
   ]
 }

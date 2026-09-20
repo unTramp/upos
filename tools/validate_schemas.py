@@ -128,6 +128,14 @@ RUNTIME_ATTRIBUTION_FIXTURES = [
     ),
 ]
 
+RUNTIME_TASK_FIXTURES = [
+    (
+        SCHEMAS / "04" / "workflow" / "task-runtime.schema.json",
+        SCHEMAS / "fixtures" / "runtime" / "workflow" / "task-runtime.valid.json",
+        SCHEMAS / "fixtures" / "runtime" / "workflow" / "task-runtime.invalid-in-review-state.json",
+    ),
+]
+
 FORBIDDEN_SYNTHETIC_IDENTITY_FIELDS = {
     "agent_instance_id",
     "context_view_id",
@@ -873,6 +881,9 @@ def validate_fixtures(
     for schema_path, valid_path, invalid_path in RUNTIME_ATTRIBUTION_FIXTURES:
         validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
 
+    for schema_path, valid_path, invalid_path in RUNTIME_TASK_FIXTURES:
+        validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
+
 
 def main() -> int:
     schema_ids, docs = load_schema_documents()
@@ -896,6 +907,7 @@ def main() -> int:
     print("Artist OS namespace compatibility: PASS")
     print("Phase-3 common runtime primitive fixtures: PASS")
     print("Phase-3 attribution fixtures: PASS")
+    print("Phase-3 Task runtime fixtures: PASS")
     return 0
 
 
