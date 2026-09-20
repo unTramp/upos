@@ -4,7 +4,7 @@
 **Status:** REMEDIATED CANDIDATE — PENDING INDEPENDENT RE-AUDIT  
 **Canonical baseline:** `338692cb3677bf395e9c5f17dc3e2a3ff9793960`  
 **Audited candidate:** `2a291aa5d8e76198205efbfec075bb0755dd4bfc`
-**F-03 validated checkpoint:** `ac887a16848a5c34d9af5caec29214fe9e3ff89c`
+**F-03 mandatory-carriage checkpoint:** `9fb19829ec0d0d44cb1117aca6af7172adb88ce6`
 
 ## 1. Ownership remains unchanged
 
@@ -67,9 +67,11 @@ Resolution is fail-closed.
 
 ## 5. F-03 versioning reconciliation
 
-Durable records identified by the audit now expose separate runtime-contract and runtime-schema version carriage.
+All six durable record families identified by the independent re-audit now require stored runtime-contract and runtime-schema version carriage.
 
-Unsupported declared versions are rejected rather than silently interpreted as the newest supported version.
+The canonical durable fixtures contain the required fields as persisted data. Positive validation reads those fixtures unchanged. Controlled negative mutations prove that omission of any required carriage field is rejected.
+
+Unsupported runtime contract versions and unsupported runtime schema versions are rejected rather than silently interpreted as the newest supported version.
 
 This preserves:
 

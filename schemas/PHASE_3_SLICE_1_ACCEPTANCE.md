@@ -5,7 +5,7 @@
 **Baseline:** U-POS v1.0.0  
 **Canonical baseline:** `338692cb3677bf395e9c5f17dc3e2a3ff9793960`  
 **Audited candidate:** `2a291aa5d8e76198205efbfec075bb0755dd4bfc`
-**F-03 validated checkpoint:** `ac887a16848a5c34d9af5caec29214fe9e3ff89c`
+**F-03 mandatory-carriage checkpoint:** `9fb19829ec0d0d44cb1117aca6af7172adb88ce6`
 
 This artifact records implementation evidence after remediation of blind-audit findings F-01 through F-05. It does **not** perform the independent acceptance, stability decision, merge decision, or CANDIDATE→STABLE promotion.
 
@@ -58,15 +58,24 @@ Validator resolution is fail-closed for runtime/Event/producer contract referenc
 
 ### F-03 — version carriage and fail-closed compatibility
 
-The six durable schema families identified by the blind audit can now carry separate:
+The six durable schema families identified by the independent re-audit now require stored:
 
 - `runtime_contract_ref`;
 - `runtime_contract_version`;
 - `runtime_schema_version`.
 
-Supported values are constrained by the corresponding schema contract. A supported version fixture passes; an unsupported runtime-contract version fixture is required to reject.
+Positive evidence comes from the canonical persisted fixture content itself; the validator does not manufacture these fields in memory before the positive check.
 
-These axes remain distinct; the implementation does not assert that semantic-contract and serialization versions must evolve together.
+For every durable family:
+
+- stored fixture with supported contract/schema versions → POSITIVE PASS;
+- missing `runtime_contract_ref` → SCHEMA REJECT;
+- missing `runtime_contract_version` → SCHEMA REJECT;
+- missing `runtime_schema_version` → SCHEMA REJECT;
+- unsupported runtime contract version → SCHEMA REJECT;
+- unsupported runtime schema version → SCHEMA REJECT.
+
+These axes remain distinct; mandatory carriage does not collapse runtime contract version, runtime schema version, owner semantic version, Phase-2 schema version, Event versioning, implementation version, persistence version, or provider/adapter version.
 
 ### F-05 — evidence truthfulness
 
@@ -99,7 +108,7 @@ The remediation is not considered ready for re-audit until the exact remediation
 - full Schema Validation PASS;
 - focused F-01 reject/pass evidence;
 - F-02 positive lifecycle/retry evidence;
-- F-03 supported-version PASS and unsupported-version REJECT;
+- F-03 stored supported-version PASS, missing-carriage REJECTs, unsupported contract-version REJECT and unsupported schema-version REJECT;
 - F-04 contract-reference resolution PASS.
 
 ## 4. Authority boundary
@@ -123,7 +132,7 @@ F-01 core enforcement       e3fd4543c2c92eb2288d7b0cbb92d0d6a44d3df0  PASS
 F-02 lifecycle/retry        e6346115a3a196ee575207fd97b1772a57d1fae7  PASS
 F-04 contract artifacts     bf3a65d83a1c5faddc223caac1fef1d93d7eb5fb  PASS
 F-04 fail-closed resolver   253a3a2c4bf3a79b6cc8804543977c4d06a20db6  PASS
-F-03 carriage proof         ac887a16848a5c34d9af5caec29214fe9e3ff89c  PASS
+F-03 mandatory carriage     9fb19829ec0d0d44cb1117aca6af7172adb88ce6  PASS
 ```
 
 The F-05 commit that updates this evidence must itself pass the same exact-HEAD gates before handoff.

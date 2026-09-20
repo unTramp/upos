@@ -4,7 +4,7 @@
 **Status:** REMEDIATED CANDIDATE — PENDING INDEPENDENT RE-AUDIT  
 **Canonical baseline:** `338692cb3677bf395e9c5f17dc3e2a3ff9793960`  
 **Audited candidate:** `2a291aa5d8e76198205efbfec075bb0755dd4bfc`
-**F-03 validated checkpoint:** `ac887a16848a5c34d9af5caec29214fe9e3ff89c`
+**F-03 mandatory-carriage checkpoint:** `9fb19829ec0d0d44cb1117aca6af7172adb88ce6`
 
 ## 1. Evidence taxonomy
 
@@ -28,7 +28,7 @@ An illustrative bad fixture alone is not rejection evidence.
 | Event correction | new Event ID + correction relation/reason — POSITIVE PASS | missing reason — SCHEMA REJECT; correction reuses own Event ID — CONFORMANCE REJECT |
 | Reconstructability | execution-spine fixture validates and cross-references canonical refs — POSITIVE PASS | persisted private reasoning — recursive CONFORMANCE REJECT |
 | Runtime contract resolution | known contract IDs and supported versions resolve — POSITIVE PASS | unknown/dangling or unsupported referenced contract version — fail-closed |
-| Durable version carriage | supported Execution Attempt contract/schema version — POSITIVE PASS | unsupported runtime-contract version — SCHEMA REJECT |
+| Durable version carriage | stored supported-version fixtures for all six durable families — POSITIVE PASS | missing contract ref/version/schema version — SCHEMA REJECT; unsupported runtime-contract or runtime-schema version — SCHEMA REJECT |
 
 ## 3. Owner-bound runtime contract artifacts
 
@@ -47,7 +47,7 @@ The extra Retry Provenance contract binds the already-authorized UPOS-04 retry-p
 
 ## 4. Version carriage
 
-The six durable families called out by the blind audit can carry:
+The six durable families called out by the independent re-audit require stored:
 
 ```text
 runtime_contract_ref
@@ -55,7 +55,9 @@ runtime_contract_version
 runtime_schema_version
 ```
 
-Their values are constrained to the supported Slice-1 contract/schema version where present.
+The positive proof validates canonical persisted fixture content directly. For each family, controlled mutations remove each required field independently and must be rejected. Unsupported runtime contract and runtime schema versions must also be rejected fail-closed.
+
+The required carriage remains a representation concern only and does not merge independent owner-semantic, Phase-2 schema, Event, implementation, persistence, or provider/adapter version axes.
 
 ## 5. Phase boundary
 
