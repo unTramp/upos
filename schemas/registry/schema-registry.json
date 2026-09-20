@@ -23,6 +23,65 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Infrastructure-only bootstrap contract. Semantic ownership remains with frozen owner modules."
+    },
+    {
+      "schema_key": "upos.01.documentation.document_manifest",
+      "schema_uri": "urn:upos:schema:01:documentation:document-manifest:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/01/documentation/document-manifest.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-01",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "01_documentation_system/00_governance/DOCUMENT_MANIFEST_SCHEMA_v1.0.json",
+        "01_documentation_system/00_governance/PROJECT_DOCUMENTATION_OPERATING_MODEL_v1.1.md"
+      ],
+      "identity_model": "Preserves UPOS-01 document IDs and project manifest structure; does not introduce a new document-manifest domain ID.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Candidate normalized schema-layer representation of the existing frozen UPOS-01 manifest schema."
+    },
+    {
+      "schema_key": "upos.01.documentation.source_of_truth_entry",
+      "schema_uri": "urn:upos:schema:01:documentation:source-of-truth-entry:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/01/documentation/source-of-truth-entry.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-01",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "01_documentation_system/00_governance/PROJECT_SOURCE_OF_TRUTH_MODEL_v1.0.md",
+        "01_documentation_system/00_governance/PROJECT_DOCUMENTATION_OPERATING_MODEL_v1.1.md"
+      ],
+      "identity_model": "Scoped Source-of-Truth record has no synthetic schema-layer entity ID; identity/authority is determined by project scope and canonical owner/source semantics from UPOS-01.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Conservative candidate representation; upstream MAY fields are not promoted to universal required fields."
+    },
+    {
+      "schema_key": "upos.01.documentation.source_of_truth_registry",
+      "schema_uri": "urn:upos:schema:01:documentation:source-of-truth-registry:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/01/documentation/source-of-truth-registry.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-01",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "01_documentation_system/00_governance/PROJECT_SOURCE_OF_TRUTH_MODEL_v1.0.md",
+        "schemas/PHASE_2B_AUTHORITY_REGISTRY_RULES.md"
+      ],
+      "identity_model": "Registry is a collection/profile and receives no synthetic owner-domain ID. Entries remain scoped authority records without source_of_truth_entry_id.",
+      "reference_dependencies": [
+        "upos.01.documentation.source_of_truth_entry"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Operational larger-project profile. Requires minimum authority-resolution fields while preserving optional upstream metadata."
     }
   ]
 }

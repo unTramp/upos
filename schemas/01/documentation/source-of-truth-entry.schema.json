@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:01:documentation:source-of-truth-entry:0.1.0",
+  "title": "U-POS Source-of-Truth Entry",
+  "description": "Conservative machine-readable representation of the UPOS-01 scoped Source-of-Truth record. UPOS-01 states that larger projects MAY include these fields, so this schema does not promote optional upstream fields into universal MUST requirements.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "scope": {"type": "string", "minLength": 1},
+    "owner": {"type": "string", "minLength": 1},
+    "canonicalSource": {"type": "string", "minLength": 1},
+    "status": {
+      "enum": [
+        "DRAFT", "REVIEW", "APPROVED", "ACTIVE",
+        "DEPRECATED", "SUPERSEDED", "ARCHIVED"
+      ]
+    },
+    "normativity": {
+      "enum": ["NORMATIVE", "INFORMATIVE", "EVIDENCE", "GENERATED"]
+    },
+    "relatedDecisions": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "lastReviewed": {
+      "type": "string",
+      "format": "date"
+    }
+  }
+}

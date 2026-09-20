@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "0.1.0",
+  "entries": [
+    {
+      "scope": "product.architecture",
+      "owner": "Architecture Governance",
+      "canonicalSource": "docs/artist-os/00_governance/MASTER_ARCHITECTURE_v1.4.md",
+      "status": "ACTIVE",
+      "normativity": "NORMATIVE",
+      "relatedDecisions": [
+        "docs/artist-os/00_governance/MASTER_v1.4_FREEZE_DECISION.md"
+      ],
+      "lastReviewed": "2026-09-20"
+    },
+    {
+      "scope": "product.architecture",
+      "owner": "Architecture Governance",
+      "canonicalSource": "docs/artist-os/00_governance/MASTER_ARCHITECTURE_v1.3.md",
+      "status": "SUPERSEDED",
+      "normativity": "INFORMATIVE",
+      "lastReviewed": "2026-09-20"
+    },
+    {
+      "scope": "product.domain_model",
+      "owner": "Architecture Governance",
+      "canonicalSource": "docs/artist-os/00_governance/MASTER_ARCHITECTURE_v1.4.md",
+      "status": "ACTIVE",
+      "normativity": "NORMATIVE",
+      "relatedDecisions": [
+        "docs/artist-os/00_governance/MASTER_v1.4_FREEZE_DECISION.md"
+      ],
+      "lastReviewed": "2026-09-20"
+    },
+    {
+      "scope": "product.domain_model",
+      "owner": "Architecture Governance",
+      "canonicalSource": "docs/artist-os/00_governance/ARCHITECTURE_RESOLUTION_PASS1.md",
+      "status": "ACTIVE",
+      "normativity": "NORMATIVE",
+      "relatedDecisions": [
+        "docs/artist-os/00_governance/MASTER_v1.4_FREEZE_DECISION.md"
+      ],
+      "lastReviewed": "2026-09-20"
+    }
+  ]
+}

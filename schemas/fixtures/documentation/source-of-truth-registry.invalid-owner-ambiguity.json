@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "0.1.0",
+  "entries": [
+    {
+      "scope": "security.authorization",
+      "owner": "Security",
+      "canonicalSource": "docs/security/AUTHORIZATION.md",
+      "status": "ACTIVE",
+      "normativity": "NORMATIVE"
+    },
+    {
+      "scope": "security.authorization",
+      "owner": "Product",
+      "canonicalSource": "docs/product/FEATURE_POLICY.md",
+      "status": "ACTIVE",
+      "normativity": "NORMATIVE"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "0.1.0",
+  "entries": [
+    {
+      "scope": "product.master",
+      "owner": "Product",
+      "canonicalSource": "docs/MASTER_v1.4.md",
+      "status": "ACTIVE",
+      "normativity": "NORMATIVE",
+      "relatedDecisions": ["MASTER_v1.4_FREEZE_DECISION"],
+      "lastReviewed": "2026-09-20"
+    },
+    {
+      "scope": "product.master",
+      "owner": "Product",
+      "canonicalSource": "docs/archive/MASTER_v1.3.md",
+      "status": "SUPERSEDED",
+      "normativity": "INFORMATIVE",
+      "lastReviewed": "2026-09-20"
+    },
+    {
+      "scope": "product.authoring.requirements",
+      "owner": "Product",
+      "canonicalSource": "docs/AR_INDEX.md",
+      "status": "ACTIVE",
+      "normativity": "NORMATIVE",
+      "lastReviewed": "2026-09-20"
+    }
+  ]
+}
