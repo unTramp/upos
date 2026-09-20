@@ -571,6 +571,68 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Conformance-only artifact. Future Phase 3 schemas should import owner refs directly; they do not consume this harness as a domain model."
+    },
+    {
+      "schema_key": "upos.common.runtime_operation_control",
+      "schema_uri": "urn:upos:schema:common:runtime-operation-control:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/common/runtime-operation-control.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "NONE_INFRASTRUCTURE",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "runtime/RUNTIME_OPERATION_AND_IDEMPOTENCY_STANDARD.md",
+        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md",
+        "schemas/SCHEMA_VERSIONING_AND_COMPATIBILITY.md"
+      ],
+      "identity_model": "Infrastructure-only request control. operation_request_key is not a domain identity and is not registered in the Global Identity & Reference Registry.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Phase-3 Slice-1 candidate. No owner result identity is required to exist before the technical request completes."
+    },
+    {
+      "schema_key": "upos.common.runtime_operation_outcome",
+      "schema_uri": "urn:upos:schema:common:runtime-operation-outcome:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/common/runtime-operation-outcome.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "NONE_INFRASTRUCTURE",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "runtime/RUNTIME_RESULT_AND_FAILURE_STANDARD.md",
+        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md",
+        "08_observability/EVENT_STANDARD.md"
+      ],
+      "identity_model": "Infrastructure-only technical outcome; introduces no result identity and preserves owner result/status references separately.",
+      "reference_dependencies": [
+        "upos.08.observability.identity_references"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "COMPLETED/FAILED/CANCELLED describe technical execution only; they are not owner-domain verdicts."
+    },
+    {
+      "schema_key": "upos.common.runtime_failure_envelope",
+      "schema_uri": "urn:upos:schema:common:runtime-failure-envelope:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/common/runtime-failure-envelope.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "NONE_INFRASTRUCTURE",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "runtime/RUNTIME_RESULT_AND_FAILURE_STANDARD.md",
+        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md",
+        "04_workflow_engine/FAILURE_RETRY_RECOVERY.md"
+      ],
+      "identity_model": "Infrastructure-only failure envelope; no runtime_error_id, error_id, failure_id or other universal failure identity is introduced.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "retryability_hint is technical metadata and never a Workflow retry decision."
     }
   ]
 }

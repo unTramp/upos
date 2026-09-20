@@ -1,0 +1,7 @@
+{
+  "runtime_contract_ref": "UPOS-RUNTIME-OPS-001",
+  "runtime_contract_version": "0.1.0",
+  "operation_kind": "ROUTING_EVALUATION",
+  "subject_ref": "task:T-1",
+  "operation_request_key": ""
+}

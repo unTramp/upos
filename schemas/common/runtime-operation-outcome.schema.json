@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:common:runtime-operation-outcome:0.1.0",
+  "title": "U-POS Runtime Operation Outcome",
+  "description": "Infrastructure-only technical operation outcome. Owner-domain verdicts remain owned by their modules.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "runtime_contract_ref",
+    "runtime_contract_version",
+    "operation_kind",
+    "subject_ref",
+    "execution_outcome",
+    "started_at",
+    "ended_at"
+  ],
+  "properties": {
+    "runtime_contract_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runtime_contract_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "operation_kind": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "execution_outcome": {
+      "enum": [
+        "COMPLETED",
+        "FAILED",
+        "CANCELLED"
+      ]
+    },
+    "owner_status_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner_result_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "output_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "failure_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "urn:upos:schema:08:observability:identity-references:0.1.0#/$defs/eventRef"
+      }
+    },
+    "trace_ref": {
+      "$ref": "urn:upos:schema:08:observability:identity-references:0.1.0#/$defs/traceRef"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ended_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "provenance_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

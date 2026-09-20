@@ -97,6 +97,24 @@ CROSS_MODULE_REFERENCE_VALID = SCHEMAS / "fixtures" / "cross_module_references" 
 CROSS_MODULE_REFERENCE_INVALID = SCHEMAS / "fixtures" / "cross_module_references" / "invalid-imported-version-requirement.json"
 ARTIST_OS_IDENTITY_NAMESPACE = SCHEMAS / "dogfooding" / "artist-os" / "identity-namespace-compatibility.json"
 
+RUNTIME_COMMON_FIXTURES = [
+    (
+        SCHEMAS / "common" / "runtime-operation-control.schema.json",
+        SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-operation-control.valid.json",
+        SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-operation-control.invalid-empty-key.json",
+    ),
+    (
+        SCHEMAS / "common" / "runtime-operation-outcome.schema.json",
+        SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-operation-outcome.valid.json",
+        SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-operation-outcome.invalid-domain-verdict.json",
+    ),
+    (
+        SCHEMAS / "common" / "runtime-failure-envelope.schema.json",
+        SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-failure-envelope.valid.json",
+        SCHEMAS / "fixtures" / "runtime" / "common" / "runtime-failure-envelope.invalid-runtime-error-id.json",
+    ),
+]
+
 FORBIDDEN_SYNTHETIC_IDENTITY_FIELDS = {
     "agent_instance_id",
     "context_view_id",
@@ -836,6 +854,9 @@ def validate_fixtures(
         resource_registry,
     )
 
+    for schema_path, valid_path, invalid_path in RUNTIME_COMMON_FIXTURES:
+        validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
+
 
 def main() -> int:
     schema_ids, docs = load_schema_documents()
@@ -857,6 +878,7 @@ def main() -> int:
     print("Canonical cross-schema reference conformance: PASS")
     print("Identity anti-duplication validation: PASS")
     print("Artist OS namespace compatibility: PASS")
+    print("Phase-3 common runtime primitive fixtures: PASS")
     return 0
 
 

@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:upos:schema:common:runtime-failure-envelope:0.1.0",
+  "title": "U-POS Runtime Failure Envelope",
+  "description": "Infrastructure-only technical failure envelope. It does not create a universal error identity or owner-domain failure taxonomy.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "failure_owner_module",
+    "operation_kind",
+    "subject_ref",
+    "failure_code",
+    "retryability_hint"
+  ],
+  "properties": {
+    "failure_owner_module": {
+      "enum": [
+        "NONE_INFRASTRUCTURE",
+        "UPOS-01",
+        "UPOS-02",
+        "UPOS-03",
+        "UPOS-04",
+        "UPOS-05",
+        "UPOS-06",
+        "UPOS-07",
+        "UPOS-08",
+        "UPOS-09",
+        "UPOS-10",
+        "UPOS-11"
+      ]
+    },
+    "operation_kind": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "failure_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "failure_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cause_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_error_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "retryability_hint": {
+      "enum": [
+        "SAFE_RETRY",
+        "CONDITIONALLY_RETRYABLE",
+        "NOT_RETRYABLE",
+        "UNKNOWN"
+      ]
+    },
+    "details_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provenance_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "failure_owner_module": "UPOS-11",
+  "operation_kind": "PROVIDER_CALL",
+  "subject_ref": "skill-invocation:SI-1",
+  "failure_code": "PROVIDER_TIMEOUT",
+  "retryability_hint": "CONDITIONALLY_RETRYABLE",
+  "provider_error_ref": "provider-error:timeout-1"
+}
