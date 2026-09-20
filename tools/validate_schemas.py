@@ -62,6 +62,25 @@ IDENTITY_FIXTURE_ROOT = SCHEMAS / "fixtures" / "identity_references"
 CROSS_MODULE_REFERENCE_SCHEMA = SCHEMAS / "meta" / "cross-module-reference-conformance.schema.json"
 CROSS_MODULE_REFERENCE_VALID = SCHEMAS / "fixtures" / "cross_module_references" / "valid.json"
 CROSS_MODULE_REFERENCE_INVALID = SCHEMAS / "fixtures" / "cross_module_references" / "invalid-imported-version-requirement.json"
+ARTIST_OS_IDENTITY_NAMESPACE = SCHEMAS / "dogfooding" / "artist-os" / "identity-namespace-compatibility.json"
+
+FORBIDDEN_SYNTHETIC_IDENTITY_FIELDS = {
+    "agent_instance_id",
+    "context_view_id",
+    "integration_request_id",
+    "quality_readiness_id",
+    "metric_observation_id",
+    "learning_signal_id",
+    "learning_evidence_set_id",
+    "confirmed_pattern_id",
+    "root_cause_hypothesis_id",
+    "improvement_opportunity_id",
+    "promotion_recommendation_id",
+    "learning_backlog_item_id",
+    "project_manifest_id",
+    "project_adapter_id",
+    "security_approval_id",
+}
 
 OWNER_BY_PREFIX = {
     "upos.common.": "NONE_INFRASTRUCTURE",
@@ -688,6 +707,61 @@ def validate_identity_reference_fixtures(
             )
 
 
+def collect_schema_property_names(value: Any) -> set[str]:
+    names: set[str] = set()
+    if isinstance(value, dict):
+        properties = value.get("properties")
+        if isinstance(properties, dict):
+            names.update(properties.keys())
+        for child in value.values():
+            names.update(collect_schema_property_names(child))
+    elif isinstance(value, list):
+        for child in value:
+            names.update(collect_schema_property_names(child))
+    return names
+
+
+def validate_forbidden_identity_properties(
+    docs: dict[str, dict[str, Any]],
+) -> None:
+    for schema_id, schema in docs.items():
+        forbidden = (
+            collect_schema_property_names(schema)
+            & FORBIDDEN_SYNTHETIC_IDENTITY_FIELDS
+        )
+        if forbidden:
+            fail(
+                f"schema {schema_id} introduces frozen-rejected synthetic identity "
+                f"field(s): {sorted(forbidden)}"
+            )
+
+
+def validate_artist_os_identity_namespace() -> None:
+    data = load_json(ARTIST_OS_IDENTITY_NAMESPACE)
+    project_namespace = data.get("project_namespace")
+    reserved_prefix = data.get("reserved_framework_schema_prefix")
+    concepts = data.get("project_concepts")
+    automatic_mappings = data.get("automatic_mappings")
+
+    if not isinstance(project_namespace, str) or not project_namespace:
+        fail("Artist OS namespace fixture has missing project_namespace")
+    if not isinstance(reserved_prefix, str) or not reserved_prefix:
+        fail("Artist OS namespace fixture has missing reserved framework prefix")
+    if project_namespace == "upos" or project_namespace.startswith(reserved_prefix):
+        fail("Artist OS product namespace collides with reserved U-POS namespace")
+    if not isinstance(concepts, list) or not concepts:
+        fail("Artist OS namespace fixture has no product concepts")
+    if automatic_mappings != []:
+        fail("Artist OS namespace fixture authorizes automatic U-POS mappings")
+
+    expected_prefix = project_namespace + "."
+    for concept in concepts:
+        if not isinstance(concept, str) or not concept.startswith(expected_prefix):
+            fail(f"Artist OS product concept is outside project namespace: {concept!r}")
+        if concept.startswith(reserved_prefix):
+            fail(f"Artist OS product concept collides with U-POS namespace: {concept!r}")
+
+
 def validate_fixtures(
     docs: dict[str, dict[str, Any]],
     resource_registry: Registry,
@@ -731,6 +805,8 @@ def main() -> int:
     schema_ids, docs = load_schema_documents()
     resource_registry = build_resource_registry(docs)
     validate_registry(schema_ids)
+    validate_forbidden_identity_properties(docs)
+    validate_artist_os_identity_namespace()
     validate_fixtures(docs, resource_registry)
 
     print("U-POS schema validation: PASS")
@@ -742,6 +818,8 @@ def main() -> int:
     print("Artist OS Phase 2C dogfooding: PASS")
     print("Cross-module identity/reference fixtures: PASS")
     print("Canonical cross-schema reference conformance: PASS")
+    print("Identity anti-duplication validation: PASS")
+    print("Artist OS namespace compatibility: PASS")
     return 0
 
 

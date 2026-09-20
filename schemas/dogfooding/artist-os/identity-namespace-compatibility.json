@@ -1,0 +1,17 @@
+{
+  "source_project": "unTramp/artistos",
+  "source_ref": "feat/upos-adoption",
+  "source_path": ".upos/PROJECT_ADAPTER.md",
+  "project_namespace": "artist.product",
+  "reserved_framework_schema_prefix": "upos.",
+  "project_concepts": [
+    "artist.product.AgentRun",
+    "artist.product.ContextPack",
+    "artist.product.Learning",
+    "artist.product.Decision",
+    "artist.product.OperationalAction",
+    "artist.product.AuditEvent",
+    "artist.product.AgentConfiguration"
+  ],
+  "automatic_mappings": []
+}
