@@ -1,0 +1,25 @@
+{
+  "binding_id": "resource-db",
+  "binding_type": "RESOURCE_BINDING",
+  "version": "1.0.0",
+  "status": "ACTIVE",
+  "abstract_requirement_ref": "resource.database",
+  "scope": {
+    "project_id": "example-project",
+    "repository_ref": null,
+    "environment_ref": "production",
+    "operation_ref": null
+  },
+  "concrete_target_ref": "provider:db-main",
+  "requiredness": "REQUIRED",
+  "validation_state": "VALID",
+  "compatibility_state": "COMPATIBLE",
+  "health_state": "HEALTHY",
+  "abstract_resource_ref": "resource.database",
+  "resource_type": "DATABASE",
+  "provider_adapter_ref": "provider:db",
+  "provider_adapter_version": "1.0.0",
+  "provider_resource_ref": "db-main",
+  "environment_ref": "production",
+  "security_resource_ref": "security:db-main"
+}

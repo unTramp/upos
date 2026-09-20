@@ -56,6 +56,39 @@ PROJECT_ADAPTER_FIXTURES = [
     ),
 ]
 
+PROJECT_ADAPTER_DIRECT_FIXTURES = [
+    (
+        SCHEMAS / "11" / "project_adapter" / "binding.schema.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "binding.valid.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "binding.invalid-specialized-type.json",
+    ),
+    (
+        SCHEMAS / "11" / "project_adapter" / "identity-binding.schema.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "identity-binding.valid.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "identity-binding.invalid-missing-provider-version.json",
+    ),
+    (
+        SCHEMAS / "11" / "project_adapter" / "resource-binding.schema.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "resource-binding.valid.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "resource-binding.invalid-missing-resource-type.json",
+    ),
+    (
+        SCHEMAS / "11" / "project_adapter" / "secret-binding.schema.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "secret-binding.valid.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "secret-binding.invalid-missing-use-mode.json",
+    ),
+    (
+        SCHEMAS / "11" / "project_adapter" / "capability-binding.schema.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "capability-binding.valid.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "capability-binding.invalid-missing-support-state.json",
+    ),
+    (
+        SCHEMAS / "11" / "project_adapter" / "provider-adapter.schema.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "provider-adapter.valid.json",
+        SCHEMAS / "fixtures" / "project_adapter" / "provider-adapter.invalid-missing-version.json",
+    ),
+]
+
 ARTIST_OS_PROJECT_MANIFEST = SCHEMAS / "dogfooding" / "artist-os" / "project-manifest.json"
 ARTIST_OS_PROJECT_ADAPTER = SCHEMAS / "dogfooding" / "artist-os" / "project-adapter.json"
 IDENTITY_FIXTURE_ROOT = SCHEMAS / "fixtures" / "identity_references"
@@ -629,6 +662,9 @@ def validate_project_adapter_fixtures(
     for schema_path, valid_path, invalid_path in PROJECT_ADAPTER_FIXTURES:
         validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
 
+    for schema_path, valid_path, invalid_path in PROJECT_ADAPTER_DIRECT_FIXTURES:
+        validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
+
     adapter_validator = validator_for(PROJECT_ADAPTER_SCHEMA, docs, resource_registry)
 
     manifest = load_json(
@@ -814,7 +850,7 @@ def main() -> int:
     print("Registry: schemas/registry/schema-registry.json")
     print(f"Schema documents: {len(schema_ids)}")
     print("Documentation Authority fixtures: PASS")
-    print("Project Manifest / Adapter fixtures: PASS")
+    print("Project Manifest / Adapter fixtures: PASS")\n    print("Project Adapter direct branch fixtures: PASS")
     print("Artist OS Phase 2C dogfooding: PASS")
     print("Cross-module identity/reference fixtures: PASS")
     print("Canonical cross-schema reference conformance: PASS")

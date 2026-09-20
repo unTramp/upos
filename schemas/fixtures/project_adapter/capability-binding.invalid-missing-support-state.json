@@ -1,0 +1,25 @@
+{
+  "binding_id": "capability-pr-read",
+  "binding_type": "CAPABILITY_BINDING",
+  "version": "1.0.0",
+  "status": "ACTIVE",
+  "abstract_requirement_ref": "provider.pull_request.read",
+  "scope": {
+    "project_id": "example-project",
+    "repository_ref": "repo-primary",
+    "environment_ref": null,
+    "operation_ref": null
+  },
+  "concrete_target_ref": "github:pull_request.read",
+  "requiredness": "REQUIRED",
+  "validation_state": "VALID",
+  "compatibility_state": "COMPATIBLE",
+  "health_state": "HEALTHY",
+  "abstract_capability_ref": "provider.pull_request.read",
+  "provider_adapter_ref": "provider:github",
+  "provider_adapter_version": "1.0.0",
+  "provider_native_capability_ref": "pull_requests:read",
+  "constraints": [],
+  "required_provider_auth_ref": "github-app:installation",
+  "known_limitations": []
+}
