@@ -1,4 +1,7 @@
 {
+  "runtime_contract_ref": "UPOS-04-WORKFLOW-INSTANCE-RUNTIME",
+  "runtime_contract_version": "0.1.0",
+  "runtime_schema_version": "0.1.0",
   "workflow_instance_ref": "workflow:W-1",
   "task_ref": "task:T-1",
   "routing_decision_ref": "routing:R-1",

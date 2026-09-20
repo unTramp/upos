@@ -1088,61 +1088,78 @@ def validate_durable_runtime_version_carriage(
         (
             SCHEMAS / "02" / "agent_organization" / "agent-run-attribution.schema.json",
             SCHEMAS / "fixtures" / "runtime" / "agent_organization" / "agent-run-attribution.valid.json",
-            "UPOS-02-AGENT-RUN-ATTRIBUTION",
         ),
         (
             SCHEMAS / "03" / "skills" / "skill-invocation-attribution.schema.json",
             SCHEMAS / "fixtures" / "runtime" / "skills" / "skill-invocation-attribution.valid.json",
-            "UPOS-03-SKILL-INVOCATION-ATTRIBUTION",
         ),
         (
             SCHEMAS / "04" / "workflow" / "task-runtime.schema.json",
             SCHEMAS / "fixtures" / "runtime" / "workflow" / "task-runtime.valid.json",
-            "UPOS-04-TASK-RUNTIME",
         ),
         (
             SCHEMAS / "04" / "workflow" / "workflow-instance-runtime.schema.json",
             SCHEMAS / "fixtures" / "runtime" / "workflow" / "workflow-instance-runtime.valid.json",
-            "UPOS-04-WORKFLOW-INSTANCE-RUNTIME",
         ),
         (
             RUNTIME_EXECUTION_ATTEMPT_SCHEMA,
             SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.created.valid.json",
-            "UPOS-04-EXECUTION-ATTEMPT",
         ),
         (
             RUNTIME_RETRY_SCHEMA,
             SCHEMAS / "fixtures" / "runtime" / "workflow" / "retry-provenance.agent-run.valid.json",
-            "UPOS-04-RETRY-PROVENANCE",
         ),
     ]
 
-    for schema_path, fixture_path, contract_ref in cases:
+    required_version_fields = (
+        "runtime_contract_ref",
+        "runtime_contract_version",
+        "runtime_schema_version",
+    )
+
+    for schema_path, fixture_path in cases:
         validator = validator_for(schema_path, docs, resource_registry)
-        supported = load_json(fixture_path)
-        supported.update(
-            {
-                "runtime_contract_ref": contract_ref,
-                "runtime_contract_version": "0.1.0",
-                "runtime_schema_version": "0.1.0",
-            }
-        )
+        stored = load_json(fixture_path)
+
+        for field in required_version_fields:
+            if field not in stored:
+                fail(
+                    f"stored durable fixture {fixture_path.relative_to(ROOT)} "
+                    f"is missing required version carriage field: {field}"
+                )
+
         try:
-            validator.validate(supported)
+            validator.validate(stored)
         except ValidationError as exc:
             fail(
-                f"durable runtime version carriage unexpectedly failed for "
+                f"stored durable versioned fixture unexpectedly failed for "
                 f"{schema_path.relative_to(ROOT)}: {exc.message}"
             )
         print(
-            f"FOCUSED PASS: durable version carriage "
+            f"FOCUSED PASS: stored durable version carriage "
             f"{schema_path.relative_to(ROOT)}"
         )
 
-        unsupported = json.loads(json.dumps(supported))
-        unsupported["runtime_contract_version"] = "99.0.0"
+        for field in required_version_fields:
+            missing = json.loads(json.dumps(stored))
+            del missing[field]
+            try:
+                validator.validate(missing)
+            except ValidationError:
+                print(
+                    f"FOCUSED REJECT: missing {field} "
+                    f"{schema_path.relative_to(ROOT)}"
+                )
+            else:
+                fail(
+                    f"durable record missing {field} unexpectedly passed for "
+                    f"{schema_path.relative_to(ROOT)}"
+                )
+
+        unsupported_contract = json.loads(json.dumps(stored))
+        unsupported_contract["runtime_contract_version"] = "99.0.0"
         try:
-            validator.validate(unsupported)
+            validator.validate(unsupported_contract)
         except ValidationError:
             print(
                 f"FOCUSED REJECT: unsupported runtime contract version "
@@ -1151,6 +1168,21 @@ def validate_durable_runtime_version_carriage(
         else:
             fail(
                 f"unsupported runtime contract version unexpectedly passed for "
+                f"{schema_path.relative_to(ROOT)}"
+            )
+
+        unsupported_schema = json.loads(json.dumps(stored))
+        unsupported_schema["runtime_schema_version"] = "99.0.0"
+        try:
+            validator.validate(unsupported_schema)
+        except ValidationError:
+            print(
+                f"FOCUSED REJECT: unsupported runtime schema version "
+                f"{schema_path.relative_to(ROOT)}"
+            )
+        else:
+            fail(
+                f"unsupported runtime schema version unexpectedly passed for "
                 f"{schema_path.relative_to(ROOT)}"
             )
 

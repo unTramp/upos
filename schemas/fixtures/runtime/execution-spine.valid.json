@@ -1,6 +1,9 @@
 {
   "fixture_level": "FIXTURE",
   "task": {
+    "runtime_contract_ref": "UPOS-04-TASK-RUNTIME",
+    "runtime_contract_version": "0.1.0",
+    "runtime_schema_version": "0.1.0",
     "task_ref": "task:T-1",
     "current_state": "ROUTED"
   },
@@ -30,6 +33,9 @@
     }
   },
   "workflow": {
+    "runtime_contract_ref": "UPOS-04-WORKFLOW-INSTANCE-RUNTIME",
+    "runtime_contract_version": "0.1.0",
+    "runtime_schema_version": "0.1.0",
     "workflow_instance_ref": "workflow:W-1",
     "task_ref": "task:T-1",
     "routing_decision_ref": "routing:R-1",
@@ -44,6 +50,9 @@
     ]
   },
   "agent_run_attribution": {
+    "runtime_contract_ref": "UPOS-02-AGENT-RUN-ATTRIBUTION",
+    "runtime_contract_version": "0.1.0",
+    "runtime_schema_version": "0.1.0",
     "agent_run_ref": "agent-run:AR-1",
     "role_ref": "ROLE-IMPLEMENTER",
     "agent_definition_ref": {
@@ -57,6 +66,9 @@
     "responsibility_ref": "implement approved change"
   },
   "agent_run_attempt": {
+    "runtime_contract_ref": "UPOS-04-EXECUTION-ATTEMPT",
+    "runtime_contract_version": "0.1.0",
+    "runtime_schema_version": "0.1.0",
     "subject_type": "AGENT_RUN",
     "subject_ref": "agent-run:AR-1",
     "execution_state": "COMPLETED",
@@ -64,6 +76,9 @@
     "terminal_at": "2026-09-20T10:00:05Z"
   },
   "skill_invocation_attribution": {
+    "runtime_contract_ref": "UPOS-03-SKILL-INVOCATION-ATTRIBUTION",
+    "runtime_contract_version": "0.1.0",
+    "runtime_schema_version": "0.1.0",
     "skill_ref": {
       "skill_id": "implement-change",
       "skill_version": "1.0.0"
@@ -82,6 +97,9 @@
     "skill_result_ref": "skill-result:SR-1"
   },
   "skill_invocation_attempt": {
+    "runtime_contract_ref": "UPOS-04-EXECUTION-ATTEMPT",
+    "runtime_contract_version": "0.1.0",
+    "runtime_schema_version": "0.1.0",
     "subject_type": "SKILL_INVOCATION",
     "subject_ref": "skill-invocation:SI-1",
     "execution_state": "COMPLETED",

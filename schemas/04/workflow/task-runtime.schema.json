@@ -6,6 +6,9 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
+    "runtime_contract_ref",
+    "runtime_contract_version",
+    "runtime_schema_version",
     "task_ref",
     "current_state"
   ],

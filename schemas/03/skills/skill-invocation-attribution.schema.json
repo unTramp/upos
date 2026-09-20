@@ -6,6 +6,9 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
+    "runtime_contract_ref",
+    "runtime_contract_version",
+    "runtime_schema_version",
     "skill_ref",
     "skill_invocation_ref",
     "agent_run_ref",

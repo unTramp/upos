@@ -1,4 +1,7 @@
 {
+  "runtime_contract_ref": "UPOS-04-RETRY-PROVENANCE",
+  "runtime_contract_version": "0.1.0",
+  "runtime_schema_version": "0.1.0",
   "subject_type": "SKILL_INVOCATION",
   "relation": "RETRY_OF",
   "successor_ref": "skill-invocation:SI-2",

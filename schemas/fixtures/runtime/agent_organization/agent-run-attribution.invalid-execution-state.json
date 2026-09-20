@@ -1,4 +1,7 @@
 {
+  "runtime_contract_ref": "UPOS-02-AGENT-RUN-ATTRIBUTION",
+  "runtime_contract_version": "0.1.0",
+  "runtime_schema_version": "0.1.0",
   "agent_run_ref": "agent-run:AR-1",
   "role_ref": "ROLE-IMPLEMENTER",
   "agent_definition_ref": {

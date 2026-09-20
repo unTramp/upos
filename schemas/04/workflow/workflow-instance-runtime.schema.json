@@ -6,6 +6,9 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
+    "runtime_contract_ref",
+    "runtime_contract_version",
+    "runtime_schema_version",
     "workflow_instance_ref",
     "task_ref",
     "routing_decision_ref",
