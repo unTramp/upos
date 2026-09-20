@@ -115,6 +115,19 @@ RUNTIME_COMMON_FIXTURES = [
     ),
 ]
 
+RUNTIME_ATTRIBUTION_FIXTURES = [
+    (
+        SCHEMAS / "02" / "agent_organization" / "agent-run-attribution.schema.json",
+        SCHEMAS / "fixtures" / "runtime" / "agent_organization" / "agent-run-attribution.valid.json",
+        SCHEMAS / "fixtures" / "runtime" / "agent_organization" / "agent-run-attribution.invalid-execution-state.json",
+    ),
+    (
+        SCHEMAS / "03" / "skills" / "skill-invocation-attribution.schema.json",
+        SCHEMAS / "fixtures" / "runtime" / "skills" / "skill-invocation-attribution.valid.json",
+        SCHEMAS / "fixtures" / "runtime" / "skills" / "skill-invocation-attribution.invalid-execution-state.json",
+    ),
+]
+
 FORBIDDEN_SYNTHETIC_IDENTITY_FIELDS = {
     "agent_instance_id",
     "context_view_id",
@@ -857,6 +870,9 @@ def validate_fixtures(
     for schema_path, valid_path, invalid_path in RUNTIME_COMMON_FIXTURES:
         validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
 
+    for schema_path, valid_path, invalid_path in RUNTIME_ATTRIBUTION_FIXTURES:
+        validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
+
 
 def main() -> int:
     schema_ids, docs = load_schema_documents()
@@ -879,6 +895,7 @@ def main() -> int:
     print("Identity anti-duplication validation: PASS")
     print("Artist OS namespace compatibility: PASS")
     print("Phase-3 common runtime primitive fixtures: PASS")
+    print("Phase-3 attribution fixtures: PASS")
     return 0
 
 

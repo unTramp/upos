@@ -1,0 +1,13 @@
+{
+  "agent_run_ref": "agent-run:AR-1",
+  "role_ref": "ROLE-IMPLEMENTER",
+  "agent_definition_ref": {
+    "agent_definition_id": "agent-def:implementer",
+    "agent_definition_version": "1.0.0"
+  },
+  "agent_instance_ref": "agent-instance:configured-1",
+  "task_ref": "task:T-1",
+  "workflow_instance_ref": "workflow:W-1",
+  "stage_ref": "WFL-FEATURE:IMPLEMENT",
+  "responsibility_ref": "implement approved change"
+}

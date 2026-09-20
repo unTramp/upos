@@ -633,6 +633,55 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "retryability_hint is technical metadata and never a Workflow retry decision."
+    },
+    {
+      "schema_key": "upos.02.agent_organization.agent_run_attribution",
+      "schema_uri": "urn:upos:schema:02:agent-organization:agent-run-attribution:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/02/agent_organization/agent-run-attribution.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-02",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "02_agent_organization/AGENT_OPERATING_MODEL.md",
+        "02_agent_organization/AGENT_LIFECYCLE.md",
+        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md"
+      ],
+      "identity_model": "Reuses canonical Agent Run, Role, versioned Agent Definition and Agent Instance references; introduces no new identity and no Agent Run execution lifecycle.",
+      "reference_dependencies": [
+        "upos.02.agent_organization.identity_references",
+        "upos.04.workflow.identity_references"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Phase-3 Slice-1 attribution only; technical execution state is intentionally absent and owned by UPOS-04."
+    },
+    {
+      "schema_key": "upos.03.skills.skill_invocation_attribution",
+      "schema_uri": "urn:upos:schema:03:skills:skill-invocation-attribution:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/03/skills/skill-invocation-attribution.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-03",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "03_skills_system/SKILLS_OPERATING_MODEL.md",
+        "03_skills_system/SKILL_CONTRACT_STANDARD.md",
+        "03_skills_system/SKILL_LIFECYCLE.md",
+        "runtime/RUNTIME_CONTRACT_GOVERNANCE.md"
+      ],
+      "identity_model": "Reuses canonical versioned Skill, Skill Invocation, Skill Result, Agent Run and Workflow/Context references; introduces no invocation execution-state identity.",
+      "reference_dependencies": [
+        "upos.03.skills.identity_references",
+        "upos.02.agent_organization.identity_references",
+        "upos.04.workflow.identity_references",
+        "upos.05.context_memory.identity_references"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Phase-3 Slice-1 attribution only; invocation execution state and retry remain UPOS-04/runtime concerns."
     }
   ]
 }
