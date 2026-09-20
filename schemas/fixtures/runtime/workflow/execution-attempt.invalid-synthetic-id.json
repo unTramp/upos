@@ -1,0 +1,6 @@
+{
+  "execution_attempt_id": "attempt:A-1",
+  "subject_type": "SKILL_INVOCATION",
+  "subject_ref": "skill-invocation:SI-1",
+  "execution_state": "RUNNING"
+}

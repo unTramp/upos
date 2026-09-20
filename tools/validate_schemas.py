@@ -151,6 +151,13 @@ RUNTIME_WORKFLOW_FIXTURES = [
         SCHEMAS / "fixtures" / "runtime" / "workflow" / "workflow-instance-runtime.invalid-state.json",
     ),
 ]
+
+RUNTIME_EXECUTION_ATTEMPT_SCHEMA = SCHEMAS / "04" / "workflow" / "execution-attempt.schema.json"
+RUNTIME_EXECUTION_ATTEMPT_VALID = SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.valid.json"
+RUNTIME_EXECUTION_ATTEMPT_INVALIDS = [
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.invalid-blocked-state.json",
+    SCHEMAS / "fixtures" / "runtime" / "workflow" / "execution-attempt.invalid-synthetic-id.json",
+]
 RUNTIME_ROUTING_INVALID_SAME_KEY = (
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "routing-runtime.invalid-request-key-equals-decision.json"
 )
@@ -171,6 +178,10 @@ FORBIDDEN_SYNTHETIC_IDENTITY_FIELDS = {
     "project_manifest_id",
     "project_adapter_id",
     "security_approval_id",
+    "execution_attempt_id",
+    "run_attempt_id",
+    "invocation_attempt_id",
+    "runtime_error_id",
 }
 
 OWNER_BY_PREFIX = {
@@ -856,6 +867,23 @@ def validate_artist_os_identity_namespace() -> None:
             fail(f"Artist OS product concept collides with U-POS namespace: {concept!r}")
 
 
+def validate_execution_attempt_fixtures(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    validator = validator_for(RUNTIME_EXECUTION_ATTEMPT_SCHEMA, docs, resource_registry)
+    try:
+        validator.validate(load_json(RUNTIME_EXECUTION_ATTEMPT_VALID))
+    except ValidationError as exc:
+        fail(f"positive execution-attempt fixture unexpectedly failed: {exc.message}")
+    for invalid_path in RUNTIME_EXECUTION_ATTEMPT_INVALIDS:
+        try:
+            validator.validate(load_json(invalid_path))
+        except ValidationError:
+            continue
+        fail(f"negative execution-attempt fixture unexpectedly passed: {invalid_path.name}")
+
+
 def validate_routing_runtime_semantics(
     docs: dict[str, dict[str, Any]],
     resource_registry: Registry,
@@ -929,6 +957,7 @@ def validate_fixtures(
 
     for schema_path, valid_path, invalid_path in RUNTIME_WORKFLOW_FIXTURES:
         validate_pair(schema_path, valid_path, invalid_path, docs, resource_registry)
+    validate_execution_attempt_fixtures(docs, resource_registry)
 
 
 def main() -> int:
@@ -956,6 +985,7 @@ def main() -> int:
     print("Phase-3 Task runtime fixtures: PASS")
     print("Phase-3 Routing runtime fixtures: PASS")
     print("Phase-3 Workflow runtime fixtures: PASS")
+    print("Phase-3 Execution Attempt fixtures: PASS")
     return 0
 
 

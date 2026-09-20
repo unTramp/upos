@@ -1,0 +1,9 @@
+{
+  "subject_type": "AGENT_RUN",
+  "subject_ref": "agent-run:AR-1",
+  "execution_state": "COMPLETED",
+  "started_at": "2026-09-20T10:00:00Z",
+  "terminal_at": "2026-09-20T10:00:05Z",
+  "trace_ref": "trace:TR-1",
+  "span_ref": "span:SP-1"
+}
