@@ -138,11 +138,12 @@
       "identity_model": "Project Manifest identity is project_id + manifest_version; no project_manifest_id.",
       "reference_dependencies": [
         "upos.11.project_adapter.binding",
-        "upos.11.project_adapter.command_binding"
+        "upos.11.project_adapter.command_binding",
+        "upos.11.project_adapter.provider_adapter"
       ],
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
-      "notes": "Manifest binding/declaration sections normalized to reference lists."
+      "notes": "Manifest repository declarations preserve repository_ref + binding_id; provider declarations preserve provider_adapter_ref + provider_adapter_version; other binding sections use explicit references."
     },
     {
       "schema_key": "upos.11.project_adapter.project_adapter",
@@ -162,7 +163,15 @@
       "identity_model": "Project Adapter identity is project_id + project_adapter_version; no project_adapter_id.",
       "reference_dependencies": [
         "upos.11.project_adapter.binding",
-        "upos.11.project_adapter.command_binding"
+        "upos.11.project_adapter.command_binding",
+        "upos.11.project_adapter.repository_binding",
+        "upos.11.project_adapter.path_binding",
+        "upos.11.project_adapter.environment_binding",
+        "upos.11.project_adapter.identity_binding",
+        "upos.11.project_adapter.resource_binding",
+        "upos.11.project_adapter.secret_binding",
+        "upos.11.project_adapter.capability_binding",
+        "upos.11.project_adapter.provider_adapter"
       ],
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
@@ -222,6 +231,110 @@
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Specialized environment binding."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.identity_binding",
+      "schema_uri": "urn:upos:schema:11:project-adapter:identity-binding:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project_adapter/identity-binding.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "11_project_adapter/IDENTITY_AND_SUBJECT_BINDINGS.md",
+        "11_project_adapter/BINDING_STANDARD.md"
+      ],
+      "identity_model": "Identity Binding uses binding_id and does not confer organizational authority.",
+      "reference_dependencies": [
+        "upos.11.project_adapter.binding"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Specialized identity binding refines the common Binding lifecycle."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.resource_binding",
+      "schema_uri": "urn:upos:schema:11:project-adapter:resource-binding:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project_adapter/resource-binding.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "11_project_adapter/RESOURCE_AND_ENVIRONMENT_BINDINGS.md",
+        "11_project_adapter/BINDING_STANDARD.md"
+      ],
+      "identity_model": "Resource Binding identity is binding_id; protection/permission semantics remain UPOS-010.",
+      "reference_dependencies": [
+        "upos.11.project_adapter.binding"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Specialized resource binding."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.secret_binding",
+      "schema_uri": "urn:upos:schema:11:project-adapter:secret-binding:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project_adapter/secret-binding.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "11_project_adapter/SECRET_STORE_BINDINGS.md",
+        "11_project_adapter/BINDING_STANDARD.md"
+      ],
+      "identity_model": "Secret Binding identity is binding_id; raw secret values are forbidden.",
+      "reference_dependencies": [
+        "upos.11.project_adapter.binding"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Specialized secret reference/injection binding; never stores raw secret value."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.capability_binding",
+      "schema_uri": "urn:upos:schema:11:project-adapter:capability-binding:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project_adapter/capability-binding.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "11_project_adapter/PROVIDER_CAPABILITY_MODEL.md",
+        "11_project_adapter/BINDING_STANDARD.md",
+        "11_project_adapter/analysis/BINDING_MODEL_ANALYSIS.md"
+      ],
+      "identity_model": "Capability Binding refines the common binding_id identity; provider-native capability breadth is not a U-POS Permission Decision.",
+      "reference_dependencies": [
+        "upos.11.project_adapter.binding"
+      ],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Capability matrix fields refine the shared Binding lifecycle."
+    },
+    {
+      "schema_key": "upos.11.project_adapter.provider_adapter",
+      "schema_uri": "urn:upos:schema:11:project-adapter:provider-adapter:0.1.0",
+      "schema_version": "0.1.0",
+      "artifact_path": "schemas/11/project_adapter/provider-adapter.schema.json",
+      "implementation_state": "CANDIDATE",
+      "upos_baseline": "v1.0.0",
+      "semantic_owner_module": "UPOS-11",
+      "schema_steward": "UPOS_SCHEMA_LAYER",
+      "normative_source_refs": [
+        "11_project_adapter/PROVIDER_ADAPTER_STANDARD.md",
+        "11_project_adapter/templates/PROVIDER_ADAPTER_TEMPLATE.md"
+      ],
+      "identity_model": "Provider Adapter identity is provider_adapter_ref + provider_adapter_version; it is not a Binding identity.",
+      "reference_dependencies": [],
+      "instance_compatibility": "INITIAL",
+      "semantic_compatibility": "INITIAL",
+      "notes": "Provider support does not imply permission."
     }
   ]
 }

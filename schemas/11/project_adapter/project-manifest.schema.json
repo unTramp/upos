@@ -103,7 +103,26 @@
       "$ref": "#/$defs/refList"
     },
     "providers": {
-      "$ref": "#/$defs/refList"
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "provider_adapter_ref",
+          "provider_adapter_version"
+        ],
+        "properties": {
+          "provider_adapter_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "provider_adapter_version": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
     },
     "runtime": {
       "type": "object",

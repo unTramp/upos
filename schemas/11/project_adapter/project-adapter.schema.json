@@ -12,6 +12,7 @@
     "upos_baseline",
     "bindings",
     "command_bindings",
+    "provider_adapters",
     "validation_result",
     "configuration_completeness",
     "extensions"
@@ -91,6 +92,12 @@
         "pattern": "^[a-z][a-z0-9_.-]*$"
       },
       "additionalProperties": true
+    },
+    "provider_adapters": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:upos:schema:11:project-adapter:provider-adapter:0.1.0"
+      }
     }
   }
 }
