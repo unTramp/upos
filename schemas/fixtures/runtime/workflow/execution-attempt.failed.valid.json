@@ -1,0 +1,8 @@
+{
+  "subject_type": "AGENT_RUN",
+  "subject_ref": "agent-run:AR-1",
+  "execution_state": "FAILED",
+  "started_at": "2026-09-20T10:00:00Z",
+  "terminal_at": "2026-09-20T10:00:05Z",
+  "failure_ref": "failure:TRANSIENT_EXECUTION_FAILURE"
+}
