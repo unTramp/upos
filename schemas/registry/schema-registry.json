@@ -869,9 +869,7 @@
         "runtime/RUNTIME_CONTRACT_GOVERNANCE.md"
       ],
       "identity_model": "Introduces no identity. A validation result is a result, not an entity; no adapter_validation_id exists.",
-      "reference_dependencies": [
-        "upos.11.project_adapter.binding"
-      ],
+      "reference_dependencies": [],
       "instance_compatibility": "INITIAL",
       "semantic_compatibility": "INITIAL",
       "notes": "Canonical UPOS-11 vocabulary VALID/VALID_WITH_WARNINGS/INCOMPLETE/INVALID only. Not a Quality Verdict and not a Security Decision. VALID_WITH_WARNINGS cannot conceal a missing REQUIRED binding."

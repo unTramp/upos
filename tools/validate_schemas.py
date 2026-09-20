@@ -209,6 +209,75 @@ RUNTIME_ROUTING_INVALID_SAME_KEY = (
     SCHEMAS / "fixtures" / "runtime" / "workflow" / "routing-runtime.invalid-request-key-equals-decision.json"
 )
 
+ADAPTER_FIXTURES = SCHEMAS / "fixtures" / "runtime" / "project_adapter"
+ADAPTER_SCHEMA_PATHS = {
+    "request": SCHEMAS / "11" / "project_adapter" / "adapter-resolution-request.schema.json",
+    "validation": SCHEMAS / "11" / "project_adapter" / "adapter-validation-result.schema.json",
+    "failure": SCHEMAS / "11" / "project_adapter" / "adapter-failure.schema.json",
+    "view": SCHEMAS / "11" / "project_adapter" / "resolved-adapter-view.schema.json",
+}
+ADAPTER_COMPOSITE_KEYS = {
+    "request": "request",
+    "validation_result": "validation",
+    "adapter_failure": "failure",
+    "resolved_adapter_view": "view",
+}
+ADAPTER_POSITIVE_FIXTURES = [
+    ("adapter-resolution-request.valid.json", "request"),
+    ("adapter-resolution-request.redelivery-a.json", "request"),
+    ("adapter-resolution-request.redelivery-b.json", "request"),
+    ("adapter-validation-result.valid.json", "validation"),
+    ("adapter-validation-result.warnings.valid.json", "validation"),
+    ("adapter-validation-result.incomplete-optional.valid.json", "validation"),
+    ("adapter-failure.binding-conflict.valid.json", "failure"),
+    ("resolved-adapter-view.valid.json", "view"),
+    ("resolved-adapter-view.fallback.valid.json", "view"),
+    ("resolved-adapter-view.precedence.valid.json", "view"),
+    ("resolved-adapter-view.historical.valid.json", "view"),
+]
+ADAPTER_COMPOSITE_FIXTURES = [
+    "adapter-resolution.direct.valid.json",
+    "adapter-resolution.fallback.valid.json",
+    "adapter-resolution.precedence.valid.json",
+    "adapter-resolution.incomplete-optional.valid.json",
+    "adapter-resolution.failed-binding-conflict.valid.json",
+]
+ADAPTER_EVENT_FIXTURES = [
+    "event.adapter-resolution-requested.valid.json",
+    "event.adapter-binding-evaluated.valid.json",
+    "event.adapter-validation-result.valid.json",
+    "event.adapter-resolution-succeeded.valid.json",
+    "event.adapter-resolution-failed.valid.json",
+    "event.adapter-fallback-selected.valid.json",
+]
+# (fixture, schema key, expected validator keyword, substring the message must name)
+ADAPTER_NEGATIVE_FIXTURES = [
+    ("adapter-failure.invalid-resolution-id-on-failure.json", "failure", "additionalProperties", "adapter_resolution_id"),
+    ("adapter-resolution-request.invalid-attempt-id.json", "request", "additionalProperties", "adapter_resolution_attempt_id"),
+    ("resolved-adapter-view.invalid-binding-attempt-id.json", "view", "additionalProperties", "binding_attempt_id"),
+    ("adapter-resolution-request.invalid-missing-request-key.json", "request", "required", "operation_request_key"),
+    ("resolved-adapter-view.invalid-fallback-id.json", "view", "additionalProperties", "fallback_id"),
+    ("resolved-adapter-view.invalid-provider-execution.json", "view", "additionalProperties", "api_endpoint"),
+    ("adapter-validation-result.invalid-security-verdict.json", "validation", "enum", "DENY"),
+    ("adapter-validation-result.invalid-quality-verdict.json", "validation", "enum", "PASS"),
+    ("resolved-adapter-view.invalid-retry-as-fallback.json", "view", "additionalProperties", "relation"),
+    ("resolved-adapter-view.invalid-trace-runtime.json", "view", "additionalProperties", "span_manager"),
+    ("resolved-adapter-view.invalid-unsupported-version.json", "view", "const", "0.1.0"),
+    ("adapter-resolution-request.invalid-unknown-contract-ref.json", "request", "const", "UPOS-11-ADAPTER-RESOLUTION"),
+    ("resolved-adapter-view.invalid-fabricated-scope.json", "view", "required", "project_id"),
+    ("adapter-validation-result.invalid-warnings-hide-required.json", "validation", "maxItems", "empty"),
+    ("resolved-adapter-view.invalid-generic-adapter-id.json", "view", "additionalProperties", "adapter_id"),
+    ("adapter-resolution-request.invalid-generic-resolution-id.json", "request", "additionalProperties", "resolution_id"),
+    ("adapter-failure.invalid-noncanonical-code.json", "failure", "enum", "FALLBACK_EXHAUSTED"),
+    ("resolved-adapter-view.invalid-missing-runtime-contract-ref.json", "view", "required", "runtime_contract_ref"),
+    ("resolved-adapter-view.invalid-missing-runtime-contract-version.json", "view", "required", "runtime_contract_version"),
+    ("resolved-adapter-view.invalid-missing-runtime-schema-version.json", "view", "required", "runtime_schema_version"),
+]
+PROVIDER_EXECUTION_FIELDS = {
+    "api_endpoint", "credentials", "secret_value", "access_token", "invoke",
+    "request_body", "response_body", "http_method", "provider_client",
+}
+
 FORBIDDEN_SYNTHETIC_IDENTITY_FIELDS = {
     "agent_instance_id",
     "context_view_id",
@@ -231,6 +300,16 @@ FORBIDDEN_SYNTHETIC_IDENTITY_FIELDS = {
     "runtime_error_id",
     "retry_id",
     "retry_attempt_id",
+    "adapter_resolution_attempt_id",
+    "adapter_attempt_id",
+    "binding_attempt_id",
+    "resolution_id",
+    "adapter_id",
+    "fallback_id",
+    "adapter_validation_id",
+    "adapter_failure_id",
+    "project_adapter_id",
+    "project_manifest_id",
 }
 
 RUNTIME_CONTRACT_ARTIFACTS = {
@@ -249,7 +328,19 @@ RUNTIME_CONTRACT_ARTIFACTS = {
     "UPOS-04-RETRY-PROVENANCE": ("runtime/contracts/RETRY_PROVENANCE_RUNTIME_CONTRACT.md", "0.1.0"),
     "UPOS-08-EVENT-EMISSION": ("runtime/contracts/EVENT_EMISSION_INTERFACE.md", "0.1.0"),
     "UPOS-08-EVT-001": ("08_observability/EVENT_STANDARD.md", "1.0.0"),
+    "UPOS-11-ADAPTER-RESOLUTION": ("runtime/contracts/ADAPTER_RESOLUTION_RUNTIME_CONTRACT.md", "0.1.0"),
 }
+
+# Fixtures whose entire purpose is to violate runtime contract reference or version
+# carriage. They are excluded from the resolution walk so that the walk reports real
+# defects only; each one is separately asserted to reject by the enforcing path.
+CONTRACT_CARRIAGE_NEGATIVE_SUFFIXES = (
+    ".invalid-unsupported-version.json",
+    ".invalid-unknown-contract-ref.json",
+    ".invalid-missing-runtime-contract-ref.json",
+    ".invalid-missing-runtime-contract-version.json",
+    ".invalid-missing-runtime-schema-version.json",
+)
 
 OWNER_BY_PREFIX = {
     "upos.common.": "NONE_INFRASTRUCTURE",
@@ -1025,6 +1116,29 @@ def collect_schema_property_names(value: Any) -> set[str]:
     return names
 
 
+def resolve_runtime_contract_reference(
+    ref_key: str,
+    ref: Any,
+    version: Any,
+) -> str | None:
+    """Fail-closed runtime contract resolution.
+
+    Returns None when the reference resolves at a supported version, otherwise a
+    description of the defect. Both the fixture walk and the focused Slice-2
+    proofs call this single function, so no proof can claim a rejection that the
+    enforcing path would not actually produce.
+    """
+    if ref not in RUNTIME_CONTRACT_ARTIFACTS:
+        return f"unresolved {ref_key}: {ref!r}"
+    expected_version = RUNTIME_CONTRACT_ARTIFACTS[ref][1]
+    if version != expected_version:
+        return (
+            f"unsupported {ref_key} version: "
+            f"{ref}@{version!r}; supported={expected_version}"
+        )
+    return None
+
+
 def validate_runtime_contract_references() -> None:
     for contract_ref, (artifact_path, supported_version) in RUNTIME_CONTRACT_ARTIFACTS.items():
         artifact = ROOT / artifact_path
@@ -1052,18 +1166,11 @@ def validate_runtime_contract_references() -> None:
             for ref_key, version_key in contract_key_to_version_key.items():
                 if ref_key not in value:
                     continue
-                ref = value.get(ref_key)
-                version = value.get(version_key)
-                if ref not in RUNTIME_CONTRACT_ARTIFACTS:
-                    fail(
-                        f"unresolved {ref_key} in {source.relative_to(ROOT)} at {path}: {ref!r}"
-                    )
-                expected_version = RUNTIME_CONTRACT_ARTIFACTS[ref][1]
-                if version != expected_version:
-                    fail(
-                        f"unsupported {ref_key} version in {source.relative_to(ROOT)} at {path}: "
-                        f"{ref}@{version!r}; supported={expected_version}"
-                    )
+                problem = resolve_runtime_contract_reference(
+                    ref_key, value.get(ref_key), value.get(version_key)
+                )
+                if problem is not None:
+                    fail(f"{problem} in {source.relative_to(ROOT)} at {path}")
             for key, child in value.items():
                 walk(child, source, f"{path}.{key}")
         elif isinstance(value, list):
@@ -1071,7 +1178,7 @@ def validate_runtime_contract_references() -> None:
                 walk(child, source, f"{path}[{index}]")
 
     for fixture in sorted(fixture_root.rglob("*.json")):
-        if fixture.name.endswith(".invalid-unsupported-version.json"):
+        if fixture.name.endswith(CONTRACT_CARRIAGE_NEGATIVE_SUFFIXES):
             continue
         walk(load_json(fixture), fixture)
 
@@ -1682,6 +1789,165 @@ def validate_routing_runtime_semantics(
     )
 
 
+def enforce_resolution_result_separation(data: dict[str, Any]) -> None:
+    """A failed Adapter Resolution must not carry a Resolved Adapter View identity."""
+    if "adapter_failure" not in data and "failure_code" not in data:
+        return
+    if "adapter_resolution_id" in json.dumps(data):
+        raise RuntimeConformanceViolation(
+            "adapter_resolution_id must not appear on a failed Adapter Resolution; "
+            "it identifies an immutable Resolved Adapter View only"
+        )
+
+
+def enforce_fallback_not_retry(value: Any, *, path: str = "$") -> None:
+    """Fallback is UPOS-11 binding selection and must not borrow UPOS-04 retry semantics."""
+    if isinstance(value, dict):
+        for key, child in value.items():
+            if key in {"relation", "retry_provenance", "successor_ref", "predecessor_ref"}:
+                raise RuntimeConformanceViolation(
+                    f"UPOS-04 retry provenance must not represent UPOS-11 fallback: {path}.{key}"
+                )
+            enforce_fallback_not_retry(child, path=f"{path}.{key}")
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            enforce_fallback_not_retry(child, path=f"{path}[{index}]")
+
+
+def enforce_no_provider_execution(value: Any, *, path: str = "$") -> None:
+    """Slice 2 stops at representation; provider execution belongs to Phase 6."""
+    if isinstance(value, dict):
+        for key, child in value.items():
+            if key in PROVIDER_EXECUTION_FIELDS:
+                raise RuntimeConformanceViolation(
+                    f"provider execution field is forbidden in Slice-2 representation: {path}.{key}"
+                )
+            enforce_no_provider_execution(child, path=f"{path}.{key}")
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            enforce_no_provider_execution(child, path=f"{path}[{index}]")
+
+
+def validate_registry_file_parity(schema_ids: dict[str, Path]) -> None:
+    """Bidirectional registry/file parity: neither side may carry an entry the other lacks."""
+    registry = load_json(REGISTRY)
+    declared = {entry["artifact_path"] for entry in registry["entries"]}
+    discovered = {
+        str(path.relative_to(ROOT)) for path in sorted(SCHEMAS.rglob("*.schema.json"))
+    }
+    unregistered = sorted(discovered - declared)
+    if unregistered:
+        fail(f"schema files are not registered in the Schema Registry: {unregistered}")
+    missing = sorted(declared - discovered)
+    if missing:
+        fail(f"registry entries have no schema file on disk: {missing}")
+    print(
+        f"Registry/file parity: PASS ({len(declared)} registered, {len(discovered)} discovered)"
+    )
+
+
+def validate_adapter_resolution_contracts(
+    docs: dict[str, dict[str, Any]],
+    resource_registry: Registry,
+) -> None:
+    validators = {
+        key: validator_for(path, docs, resource_registry)
+        for key, path in ADAPTER_SCHEMA_PATHS.items()
+    }
+
+    # Positive evidence is read from stored fixture content, never manufactured.
+    for name, key in ADAPTER_POSITIVE_FIXTURES:
+        stored = load_json(ADAPTER_FIXTURES / name)
+        for field in ("runtime_contract_ref", "runtime_contract_version", "runtime_schema_version"):
+            if field not in stored:
+                fail(f"stored Slice-2 fixture {name} is missing required version carriage: {field}")
+        problem = resolve_runtime_contract_reference(
+            "runtime_contract_ref",
+            stored["runtime_contract_ref"],
+            stored["runtime_contract_version"],
+        )
+        if problem is not None:
+            fail(f"stored Slice-2 fixture {name}: {problem}")
+        try:
+            validators[key].validate(stored)
+        except ValidationError as exc:
+            fail(f"positive Slice-2 fixture unexpectedly failed: {name}: {exc.message}")
+    print(f"FOCUSED PASS: {len(ADAPTER_POSITIVE_FIXTURES)} stored Slice-2 positive fixtures")
+
+    for name in ADAPTER_COMPOSITE_FIXTURES:
+        data = load_json(ADAPTER_FIXTURES / name)
+        if data.get("fixture_level") != "FIXTURE":
+            fail(f"Slice-2 composite fixture must be labeled FIXTURE: {name}")
+        for member, key in ADAPTER_COMPOSITE_KEYS.items():
+            if member not in data:
+                continue
+            try:
+                validators[key].validate(data[member])
+            except ValidationError as exc:
+                fail(f"Slice-2 composite member {name}:{member} failed: {exc.message}")
+        expect_runtime_conformance_pass(
+            f"Slice-2 composite fallback/retry separation {name}",
+            enforce_fallback_not_retry,
+            data,
+        )
+        expect_runtime_conformance_pass(
+            f"Slice-2 composite provider-execution exclusion {name}",
+            enforce_no_provider_execution,
+            data,
+        )
+        expect_runtime_conformance_pass(
+            f"Slice-2 composite request/result separation {name}",
+            enforce_resolution_result_separation,
+            data,
+        )
+
+    event_validator = validator_for(RUNTIME_EVENT_SCHEMA, docs, resource_registry)
+    for name in ADAPTER_EVENT_FIXTURES:
+        data = load_json(ADAPTER_FIXTURES / name)
+        if data.get("domain_owner_module") != "UPOS-11":
+            fail(f"Slice-2 Event fixture must declare UPOS-11 domain ownership: {name}")
+        try:
+            event_validator.validate(data)
+        except ValidationError as exc:
+            fail(f"Slice-2 Event fixture unexpectedly failed on the STABLE schema: {name}: {exc.message}")
+    print(f"FOCUSED PASS: {len(ADAPTER_EVENT_FIXTURES)} Slice-2 Event fixtures on the unchanged STABLE Event schema")
+
+    # Negative evidence: each fixture must reject once, at the intended keyword.
+    for name, key, expected_validator, needle in ADAPTER_NEGATIVE_FIXTURES:
+        errors = list(validators[key].iter_errors(load_json(ADAPTER_FIXTURES / name)))
+        if len(errors) != 1:
+            fail(
+                f"Slice-2 negative fixture must reject for exactly one invariant: "
+                f"{name}; got {len(errors)} errors"
+            )
+        exc = errors[0]
+        if exc.validator != expected_validator:
+            fail(
+                f"Slice-2 negative fixture {name} rejected by {exc.validator!r}, "
+                f"expected {expected_validator!r}: {exc.message}"
+            )
+        if needle not in exc.message:
+            fail(
+                f"Slice-2 negative fixture {name} did not name {needle!r}: {exc.message}"
+            )
+        print(f"FOCUSED REJECT: {name} [{exc.validator}]")
+
+    # Fail-closed contract resolution, exercised through the enforcing path.
+    view = load_json(ADAPTER_FIXTURES / "resolved-adapter-view.valid.json")
+    for label, ref, version in (
+        ("unknown contract ref", "UPOS-11-DOES-NOT-EXIST", "0.1.0"),
+        ("unsupported contract version", view["runtime_contract_ref"], "99.0.0"),
+    ):
+        if resolve_runtime_contract_reference("runtime_contract_ref", ref, version) is None:
+            fail(f"Slice-2 contract resolution accepted {label}: {ref}@{version}")
+        print(f"FOCUSED REJECT: Slice-2 {label}")
+    if resolve_runtime_contract_reference(
+        "runtime_contract_ref", view["runtime_contract_ref"], view["runtime_contract_version"]
+    ) is not None:
+        fail("Slice-2 stored contract reference unexpectedly failed to resolve")
+    print("FOCUSED PASS: Slice-2 stored contract reference resolves")
+
+
 def validate_fixtures(
     docs: dict[str, dict[str, Any]],
     resource_registry: Registry,
@@ -1742,12 +2008,14 @@ def validate_fixtures(
     validate_execution_attempt_fixtures(docs, resource_registry)
     validate_retry_provenance_fixtures(docs, resource_registry)
     validate_runtime_event_fixtures(docs, resource_registry)
+    validate_adapter_resolution_contracts(docs, resource_registry)
 
 
 def main() -> int:
     schema_ids, docs = load_schema_documents()
     resource_registry = build_resource_registry(docs)
     validate_registry(schema_ids)
+    validate_registry_file_parity(schema_ids)
     validate_runtime_contract_references()
     validate_durable_runtime_version_carriage(docs, resource_registry)
     validate_forbidden_identity_properties(docs)
@@ -1780,6 +2048,7 @@ def main() -> int:
     print("Phase-3 Execution Attempt fixtures: PASS")
     print("Phase-3 Retry provenance fixtures: PASS")
     print("Phase-3 Event fixtures: PASS")
+    print("Phase-3 Slice-2 Adapter Resolution contracts: PASS")
     return 0
 
 
