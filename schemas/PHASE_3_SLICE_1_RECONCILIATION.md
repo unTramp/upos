@@ -4,6 +4,7 @@
 **Status:** REMEDIATED CANDIDATE — PENDING INDEPENDENT RE-AUDIT  
 **Canonical baseline:** `338692cb3677bf395e9c5f17dc3e2a3ff9793960`  
 **Audited candidate:** `2a291aa5d8e76198205efbfec075bb0755dd4bfc`
+**F-03 validated checkpoint:** `ac887a16848a5c34d9af5caec29214fe9e3ff89c`
 
 ## 1. Ownership remains unchanged
 
